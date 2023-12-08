@@ -4,12 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.hwalaon.wezxro_server.global.BasicResponse
 import com.hwalaon.wezxro_server.global.exception.BasicException
 import com.hwalaon.wezxro_server.global.exception.ErrorCode
-import com.hwalaon.wezxro_server.global.security.exception.ForbiddenException
-import com.hwalaon.wezxro_server.global.security.exception.UnAuthorizedException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.web.filter.OncePerRequestFilter
+import java.lang.Exception
 
 class ExceptionFilter: OncePerRequestFilter() {
     override fun doFilterInternal(
@@ -17,13 +16,13 @@ class ExceptionFilter: OncePerRequestFilter() {
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        runCatching {
+        try {
             filterChain.doFilter(request, response)
-        }.onFailure {
-            when(it) {
-                is UnAuthorizedException -> exceptionToResponse(ErrorCode.UNAUTHORIZED_ERROR, response)
-                is ForbiddenException -> exceptionToResponse(ErrorCode.FORBIDDEN_ERROR, response)
-            }
+        } catch (e: BasicException) {
+            exceptionToResponse(e.errorCode, response)
+        } catch (e: Exception) {
+            e.stackTrace
+            exceptionToResponse(ErrorCode.UNEXPECTED_ERROR, response)
         }
     }
 
