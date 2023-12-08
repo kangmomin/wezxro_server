@@ -9,9 +9,9 @@ class PrincipalDetails (
 ): UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = ArrayList()
 
-    override fun getPassword(): String = account.password
+    override fun getPassword(): String? = account.password
 
-    override fun getUsername(): String = account.name
+    override fun getUsername(): String? = account.name
 
     override fun isAccountNonExpired(): Boolean = true
 
