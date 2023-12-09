@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component
 import java.security.Key
 
 @Component
-class JwtProperties {
-    @Value("jwt.accessSecret")
-    private val accessSecret: String? = "qwertyuiopasdfghjklzxcvbnm12345678900987654321"
-    @Value("jwt.refreshSecret")
-    private val refreshSecret: String? = "qwertyuiopasdfghjklzxcvbnm12345678900987654321"
+class JwtProperties(
+    @Value("\${jwt.accessSecret}")
+    private val accessSecret: String,
+    @Value("\${jwt.refreshSecret}")
+    private val refreshSecret: String
+) {
 
     val accessExp = 1800 // 30분
     val refreshExp = 7200 // 30일
