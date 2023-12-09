@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/teentime
+    username: postgres
+    password: "#koldin13579"
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+      # show_sql: true
+      format_sql: true
+  config:
+    activate:
+      on-profile: test
+
+server:
+  port: 8080
+
+jwt:
+  accessSecret: 'asoiwaojiw'
+  refreshSecret: 'aosijdwaoij'
