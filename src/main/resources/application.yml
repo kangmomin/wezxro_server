@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/teentime
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: "#koldin13579"
     driver-class-name: org.postgresql.Driver
@@ -13,13 +13,10 @@ spring:
         default_batch_fetch_size: 100
       # show_sql: true
       format_sql: true
-  config:
-    activate:
-      on-profile: test
 
 server:
   port: 8080
 
 jwt:
-  accessSecret: 'asoiwaojiw'
-  refreshSecret: 'aosijdwaoij'
+  accessSecret: 'ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5'
+  refreshSecret: 'Y2Y3MTQ1N2EtMWQwYy00MTlhLWE2ODgtZDljMThmNDgyNzQ4'
