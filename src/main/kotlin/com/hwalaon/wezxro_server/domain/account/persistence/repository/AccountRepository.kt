@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface AccountRepository: JpaRepository<AccountEntity, Int> {
 
-    fun findOneByEmail(email: String): AccountEntity
+    fun findOneByEmail(email: String): AccountEntity?
 }
