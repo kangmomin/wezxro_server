@@ -1,7 +1,7 @@
-package com.hwalaon.wezxro_server.global.security.principal
+package com.hwalaon.wezxro_server.global.security
 
-import com.hwalaon.wezxro_server.global.security.handler.CustomAccessDeniedHandler
 import com.hwalaon.wezxro_server.global.security.filter.ExceptionFilter
+import com.hwalaon.wezxro_server.global.security.handler.CustomAccessDeniedHandler
 import com.hwalaon.wezxro_server.global.security.handler.CustomAuthenticationEntryPoint
 import com.hwalaon.wezxro_server.global.security.jwt.JwtAuthFilter
 import com.hwalaon.wezxro_server.global.security.jwt.JwtParser
@@ -48,5 +48,5 @@ class SecurityConfig(
     }
 
     @Bean
-    protected fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 }

@@ -18,8 +18,8 @@ class GlobalExceptionHandler {
         BasicResponse.error(ErrorCode.NON_BODY_ERROR)
 
     @ExceptionHandler(Exception::class)
-    fun unexpectedExceptionHandler(e: Exception) {
-        e.stackTrace
-        BasicResponse.error(ErrorCode.UNEXPECTED_ERROR)
+    fun unexpectedExceptionHandler(e: Exception): ResponseEntity<ErrorResponse> {
+        e.printStackTrace()
+        return BasicResponse.error(ErrorCode.UNEXPECTED_ERROR)
     }
 }
