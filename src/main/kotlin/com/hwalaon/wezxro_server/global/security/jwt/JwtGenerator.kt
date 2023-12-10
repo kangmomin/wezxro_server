@@ -12,7 +12,7 @@ import java.util.*
 class JwtGenerator(
     private val jwtProperties: JwtProperties
 ) {
-    fun generate(userId: Long): TokenDto {
+    fun generate(userId: Int): TokenDto {
         val accessToken = generateToken(userId, jwtProperties.accessKey, jwtProperties.accessExp)
         val refreshToken = generateToken(userId, jwtProperties.refreshKey, jwtProperties.refreshExp)
 
@@ -27,7 +27,7 @@ class JwtGenerator(
         )
     }
 
-    private fun generateToken(userId: Long, secret: Key, expiredAt: Int) =
+    private fun generateToken(userId: Int, secret: Key, expiredAt: Int) =
         Jwts.builder()
             .signWith(secret, SignatureAlgorithm.HS512)
             .setSubject(userId.toString())
