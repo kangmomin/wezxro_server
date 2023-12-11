@@ -24,10 +24,9 @@ class AccountEntity(
     val random: String?,
 
     @Column(nullable = false)
-    val money: Double?,
+    var money: Double?,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    val status: AccountStatus?
-) {
-}
+    var status: AccountStatus?
+)
