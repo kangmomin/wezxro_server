@@ -19,7 +19,7 @@ class AccountController(
 
     @PostMapping("/login")
     fun login(@RequestBody @Valid loginRequest: LoginRequest) =
-        loginAccountService.login(loginRequest)
+        loginAccountService.execute(loginRequest)
 
     @PostMapping("/join")
     fun join(@RequestBody @Valid joinRequest: JoinRequest) =

@@ -15,7 +15,7 @@ class LoginAccountService(
     private val jwtGenerator: JwtGenerator
 ) {
 
-    fun login(loginRequest: LoginRequest): TokenDto {
+    fun execute(loginRequest: LoginRequest): TokenDto {
         val account = accountPersistenceAdapter.login(loginRequest)
 
         if (!passwordEncoder.matches(loginRequest.password, account.password) &&
