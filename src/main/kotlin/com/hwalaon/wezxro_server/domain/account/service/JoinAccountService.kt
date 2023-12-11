@@ -4,13 +4,15 @@ import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountAlreadyJoinedException
 import com.hwalaon.wezxro_server.domain.account.model.constant.AccountStatus
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.AccountEntity
-import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountRepository
+import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
+import com.hwalaon.wezxro_server.global.BasicResponse
 import com.hwalaon.wezxro_server.global.annotation.Service
 import com.hwalaon.wezxro_server.global.exception.NotEnoughDataException
+import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
 
 @Service
 class JoinAccountService(
-    private val accountRepository: AccountRepository,
+    private val accountEntityRepository: AccountEntityRepository,
 ) {
 
     fun execute(joinRequest: JoinRequest) =
@@ -22,12 +24,14 @@ class JoinAccountService(
 
             account.money = 0.0
             account.status = AccountStatus.ACTIVE
+            account.random = "\$a$"
 
-            accountRepository.save(account)
+            accountEntityRepository.save(account)
+            BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
         }
 
     /**
      * 계정이 있을 때 true를 리턴
      */
-    fun validAccount(account: AccountEntity): Boolean = accountRepository.isExistAccount(account.email!!)
+    fun validAccount(account: AccountEntity): Boolean = accountEntityRepository.isExistAccount(account.email!!)
 }

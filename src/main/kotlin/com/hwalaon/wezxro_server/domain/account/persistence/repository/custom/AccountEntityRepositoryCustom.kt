@@ -1,6 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.repository.custom
 
-interface CustomAccountRepository {
+interface AccountEntityRepositoryCustom {
 
     /**
      * return ture when account is already exist

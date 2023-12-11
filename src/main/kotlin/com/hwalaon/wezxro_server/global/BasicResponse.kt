@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.global
 
 import com.hwalaon.wezxro_server.global.exception.ErrorCode
-import com.hwalaon.wezxro_server.global.exception.dto.ErrorResponse
+import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 
@@ -13,7 +13,7 @@ data class BasicResponse<T> (
     companion object {
         fun error(errorInfo: ErrorCode) = ResponseEntity
             .status(errorInfo.code)
-            .body(ErrorResponse(errorInfo.msg))
+            .body(MsgResponse(errorInfo.msg))
 
         fun ok(data: Any, headers: HttpHeaders?) = ResponseEntity
             .status(200)

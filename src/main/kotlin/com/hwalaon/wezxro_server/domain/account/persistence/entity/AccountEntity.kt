@@ -21,7 +21,7 @@ class AccountEntity(
     val email: String?,
 
     @Column(nullable = false)
-    val random: String?,
+    var random: String?,
 
     @Column(nullable = false)
     var money: Double?,
