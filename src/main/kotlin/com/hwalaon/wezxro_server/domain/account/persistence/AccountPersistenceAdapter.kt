@@ -5,14 +5,14 @@ import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundExcepti
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
-import com.hwalaon.wezxro_server.domain.account.persistence.repository.custom.AccountEntityRepositoryCustom
+import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.ValidAccountRepository
 import org.springframework.stereotype.Component
 
 @Component
 class AccountPersistenceAdapter(
     private val accountEntityRepository: AccountEntityRepository,
     private val accountMapper: AccountMapper,
-    private val accountEntityRepositoryCustom: AccountEntityRepositoryCustom
+    private val validAccountRepository: ValidAccountRepository
 ) {
     fun login(loginRequest: LoginRequest) =
         accountEntityRepository.findOneByEmail(loginRequest.email).let {
@@ -25,5 +25,6 @@ class AccountPersistenceAdapter(
             accountEntityRepository.save(it)
         }
 
-    fun isExistAccount(email: String) = accountEntityRepositoryCustom.isExistAccount(email)
+    fun isExistAccount(email: String) = validAccountRepository.isExistEmail(email)
+    fun isExistName(name: String) = validAccountRepository.isExistName(name)
 }

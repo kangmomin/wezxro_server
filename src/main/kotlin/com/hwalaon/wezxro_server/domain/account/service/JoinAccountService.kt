@@ -33,5 +33,7 @@ class JoinAccountService(
     /**
      * 계정이 있을 때 true를 리턴
      */
-    fun validAccount(account: Account): Boolean = accountPersistenceAdapter.isExistAccount(account.email!!)
+    fun validAccount(account: Account): Boolean =
+        accountPersistenceAdapter.isExistAccount(account.email!!) ||
+        accountPersistenceAdapter.isExistName(account.name!!)
 }
