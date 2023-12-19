@@ -27,4 +27,15 @@ class AccountPersistenceAdapter(
 
     fun isExistAccount(email: String) = validAccountRepository.isExistEmail(email)
     fun isExistName(name: String) = validAccountRepository.isExistName(name)
+    fun updateInfo(account: Account) =
+        accountEntityRepository.findById(account.userId!!).let {
+            if (it.isEmpty) throw AccountNotFoundException()
+
+            val accountEntity = it.get()
+            accountEntity.email = account.email
+            accountEntity.name = account.name
+            accountEntity.password = account.password
+            accountEntity.money = account.money
+            accountEntity.status = account.status
+        }
 }

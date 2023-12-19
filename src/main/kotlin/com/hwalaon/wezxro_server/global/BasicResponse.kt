@@ -19,6 +19,9 @@ data class BasicResponse<T> (
             .status(200)
             .headers(headers)
             .body(data)
+        fun ok(data: Any) = ResponseEntity
+            .status(200)
+            .body(data)
 
         fun created(data: Any?) = ResponseEntity
             .status(201)

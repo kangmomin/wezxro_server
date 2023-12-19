@@ -9,13 +9,14 @@ import com.hwalaon.wezxro_server.global.BasicResponse
 import com.hwalaon.wezxro_server.global.annotation.Service
 import com.hwalaon.wezxro_server.global.exception.NotEnoughDataException
 import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
+import org.springframework.http.ResponseEntity
 
 @Service
-class JoinAccountService(
+class CommandAccountService(
     private val accountPersistenceAdapter: AccountPersistenceAdapter,
 ) {
 
-    fun execute(joinRequest: JoinRequest) =
+    fun join(joinRequest: JoinRequest) =
         joinRequest.let {
             val account = joinRequest.toDomain()
 
@@ -29,6 +30,13 @@ class JoinAccountService(
             accountPersistenceAdapter.join(account)
             BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
         }
+
+
+    fun updateAccountInfo(account: Account): ResponseEntity<Any> {
+        accountPersistenceAdapter.updateInfo(account)
+
+        return BasicResponse.ok(MsgResponse("${account.name}님의 계정 정보를 성공적으로 변경하였습니다."))
+    }
 
     /**
      * 계정이 있을 때 true를 리턴

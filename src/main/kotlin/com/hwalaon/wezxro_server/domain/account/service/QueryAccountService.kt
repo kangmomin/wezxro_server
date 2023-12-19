@@ -9,13 +9,13 @@ import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import org.springframework.security.crypto.password.PasswordEncoder
 
 @Service
-class LoginAccountService(
+class QueryAccountService(
     private val accountPersistenceAdapter: AccountPersistenceAdapter,
     private val passwordEncoder: PasswordEncoder,
     private val jwtGenerator: JwtGenerator
 ) {
 
-    fun execute(loginRequest: LoginRequest): TokenDto {
+    fun login(loginRequest: LoginRequest): TokenDto {
         val account = accountPersistenceAdapter.login(loginRequest)
 
         if (!passwordEncoder.matches(loginRequest.password, account.password) &&

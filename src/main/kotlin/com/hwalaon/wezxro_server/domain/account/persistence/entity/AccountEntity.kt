@@ -11,14 +11,14 @@ class AccountEntity(
     val userId: Int?,
 
     @Column(nullable = false)
-    val name: String?,
+    var name: String?,
 
     @Column(nullable = false)
-    val password: String?,
+    var password: String?,
 
     @Column(nullable = false,
         updatable = false)
-    val email: String?,
+    var email: String?,
 
     @Column(nullable = false)
     var random: String?,

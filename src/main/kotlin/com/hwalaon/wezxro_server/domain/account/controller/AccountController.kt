@@ -2,26 +2,28 @@ package com.hwalaon.wezxro_server.domain.account.controller
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
-import com.hwalaon.wezxro_server.domain.account.service.JoinAccountService
-import com.hwalaon.wezxro_server.domain.account.service.LoginAccountService
+import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateAccountRequest
+import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
+import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/u")
 class AccountController(
-    private val loginAccountService: LoginAccountService,
-    private val joinAccountService: JoinAccountService,
+    private val queryAccountService: QueryAccountService,
+    private val commandAccountService: CommandAccountService,
 ) {
 
     @PostMapping("/login")
     fun login(@RequestBody @Valid loginRequest: LoginRequest) =
-        loginAccountService.execute(loginRequest)
+        queryAccountService.login(loginRequest)
 
     @PostMapping("/join")
     fun join(@RequestBody @Valid joinRequest: JoinRequest) =
-        joinAccountService.execute(joinRequest)
+        commandAccountService.join(joinRequest)
+
+    @PatchMapping("/update/")
+    fun updateInfo(@RequestBody @Valid updateAccountRequest: UpdateAccountRequest) =
+        commandAccountService.updateAccountInfo(updateAccountRequest.toDomain())
 }
