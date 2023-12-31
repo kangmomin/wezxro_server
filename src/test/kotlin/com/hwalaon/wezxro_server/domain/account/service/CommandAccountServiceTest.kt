@@ -67,6 +67,8 @@ class CommandAccountServiceTest {
         verify(accountPersistenceAdapter).isExistName(account.name!!)
     }
 
+
+
     private fun <T> any(): T {
         Mockito.any<T>()
         return null as T

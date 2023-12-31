@@ -23,6 +23,15 @@ class JwtParser(
         return false
     }
 
+    fun getRefreshTokenBody(refreshToken: String): Boolean {
+        runCatching {
+            getTokenBody(refreshToken, jwtProperties.refreshKey).subject
+        }.onFailure {
+            return true
+        }
+        return false
+    }
+
     fun parseRefreshToken(refreshToken: String): String? =
             refreshToken.let {
                 if (it.startsWith(JwtProperties.jwtPrefix))
@@ -39,9 +48,16 @@ class JwtParser(
                 else null
             }
 
-    fun authentication(accessToken: String): Authentication =
-        principalDetailsService.loadUserByUsername(getTokenBody(accessToken, jwtProperties.accessKey).subject)
-            .let { UsernamePasswordAuthenticationToken(it, "", it.authorities) }
+    fun authentication(accessOrRefreshToken: String, isAccessToken: Boolean): Authentication =
+        isAccessToken.let {
+            val secret = if (isAccessToken == true) {
+                jwtProperties.accessKey
+            } else {
+                jwtProperties.accessKey
+            }
+            principalDetailsService.loadUserByUsername(getTokenBody(accessOrRefreshToken, secret).subject)
+                .let { UsernamePasswordAuthenticationToken(it, "", it.authorities) }
+        }
 
     private fun getTokenBody(token: String, secret: Key): Claims =
         Jwts.parserBuilder()
