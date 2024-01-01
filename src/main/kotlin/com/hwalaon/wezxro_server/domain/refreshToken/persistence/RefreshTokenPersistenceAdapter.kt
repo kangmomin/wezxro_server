@@ -1,13 +1,18 @@
 package com.hwalaon.wezxro_server.domain.refreshToken.persistence
 
-import com.hwalaon.wezxro_server.domain.refreshToken.exception.RefreshTokenNotFoundException
-import com.hwalaon.wezxro_server.domain.refreshToken.persistence.repository.RefreshTokenRepository
+import com.hwalaon.wezxro_server.domain.refreshToken.model.RefreshToken
+import com.hwalaon.wezxro_server.domain.refreshToken.persistence.repository.RedisRefreshTokenRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
 class RefreshTokenPersistenceAdapter(
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RedisRefreshTokenRepository
 ) {
 
-    fun isExistRefreshToken(refreshToken: String): Boolean = refreshTokenRepository.existsByRefreshToken(refreshToken)
+    fun isExistRefreshToken(refreshToken: String): Boolean = refreshTokenRepository.findByIdOrNull(refreshToken) != null
+    fun save(refreshToken: String) = refreshTokenRepository.save(
+        // id 자동 생성을 위한 null 처리
+        RefreshToken(id = refreshToken)
+    )
 }

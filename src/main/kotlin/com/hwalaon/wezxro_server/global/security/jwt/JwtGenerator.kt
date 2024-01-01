@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.global.security.jwt
 
+import com.hwalaon.wezxro_server.domain.refreshToken.persistence.RefreshTokenPersistenceAdapter
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -10,16 +11,15 @@ import java.util.*
 
 @Component
 class JwtGenerator(
-    private val jwtProperties: JwtProperties
+    private val jwtProperties: JwtProperties,
+    private val refreshTokenPersistenceAdapter: RefreshTokenPersistenceAdapter
 ) {
-    fun generate(userId: Int): TokenDto {
-        val accessToken = generateToken(userId, jwtProperties.accessKey, jwtProperties.accessExp)
-        val refreshToken = generateToken(userId, jwtProperties.refreshKey, jwtProperties.refreshExp)
+    fun generate(email: String): TokenDto {
+        val accessToken = generateToken(email, jwtProperties.accessKey, jwtProperties.accessExp)
+        val refreshToken = generateToken(email, jwtProperties.refreshKey, jwtProperties.refreshExp)
 
-        val accessExpiredAt = expiredAt(jwtProperties.accessExp)
-        val refreshExpiredAt = expiredAt(jwtProperties.refreshExp)
-
-        // Todo: refresh Token 저장 로직
+        // refresh Token 저장 로직
+        refreshTokenPersistenceAdapter.save(refreshToken)
 
         return TokenDto(
             accessToken = accessToken,
@@ -27,14 +27,14 @@ class JwtGenerator(
         )
     }
 
-    private fun generateToken(userId: Int, secret: Key, expiredAt: Int) =
+    fun generateOnlyAccessToken(email: String): String =
+        generateToken(email, jwtProperties.accessKey, jwtProperties.accessExp)
+
+    private fun generateToken(email: String, secret: Key, expiredAt: Int) =
         Jwts.builder()
             .signWith(secret, SignatureAlgorithm.HS512)
-            .setSubject(userId.toString())
+            .setSubject(email)
             .setIssuedAt(Date())
             .setExpiration(Date(System.currentTimeMillis() + expiredAt * 1000))
             .compact()
-
-    private fun expiredAt(expiredTime: Int): LocalDateTime =
-        LocalDateTime.now().plusSeconds(expiredTime.toLong())
 }

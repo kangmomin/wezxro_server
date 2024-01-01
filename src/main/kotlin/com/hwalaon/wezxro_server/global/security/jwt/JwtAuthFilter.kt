@@ -4,6 +4,7 @@ import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundExcepti
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 
@@ -18,10 +19,10 @@ class JwtAuthFilter(
         try {
             val accessToken = jwtParser.parseAccessToken(request)
             if (!accessToken.isNullOrBlank()) {
-                val authentication = jwtParser.authentication(accessToken)
+                val userEmail = jwtParser.authentication(accessToken, true)
                 SecurityContextHolder.clearContext()
                 val securityContext = SecurityContextHolder.getContext()
-                securityContext.authentication = authentication
+                securityContext.authentication = UsernamePasswordAuthenticationToken(userEmail, "")
             }
 
             filterChain.doFilter(request, response)

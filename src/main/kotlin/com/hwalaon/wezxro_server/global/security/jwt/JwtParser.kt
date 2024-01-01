@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.global.security.jwt
 
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetailsService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -14,22 +15,9 @@ class JwtParser(
     private val jwtProperties: JwtProperties,
     private val principalDetailsService: PrincipalDetailsService
 ) {
-    fun isRefreshTokenExpired(refreshToken: String): Boolean {
-        runCatching {
-            getTokenBody(refreshToken, jwtProperties.refreshKey).subject
-        }.onFailure {
-            return true
-        }
-        return false
-    }
 
-    fun getRefreshTokenBody(refreshToken: String): Boolean {
-        runCatching {
-            getTokenBody(refreshToken, jwtProperties.refreshKey).subject
-        }.onFailure {
-            return true
-        }
-        return false
+    fun getRefreshTokenBody(refreshToken: String) {
+        getTokenBody(refreshToken, jwtProperties.refreshKey).subject
     }
 
     fun parseRefreshToken(refreshToken: String): String? =
@@ -48,21 +36,23 @@ class JwtParser(
                 else null
             }
 
-    fun authentication(accessOrRefreshToken: String, isAccessToken: Boolean): Authentication =
+    // 유저 이메일 반환
+    fun authentication(accessOrRefreshToken: String, isAccessToken: Boolean) =
         isAccessToken.let {
-            val secret = if (isAccessToken == true) {
+            // 엑세스 토큰이 true 일 경우 accessKey 를 할당.
+            val secret = if (isAccessToken) {
                 jwtProperties.accessKey
             } else {
-                jwtProperties.accessKey
+                jwtProperties.refreshKey
             }
+
             principalDetailsService.loadUserByUsername(getTokenBody(accessOrRefreshToken, secret).subject)
-                .let { UsernamePasswordAuthenticationToken(it, "", it.authorities) }
         }
 
     private fun getTokenBody(token: String, secret: Key): Claims =
         Jwts.parserBuilder()
             .setSigningKey(secret)
             .build()
-            .parseClaimsJwt(token)
+            .parseClaimsJws(token)
             .body
 }

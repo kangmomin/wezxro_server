@@ -22,6 +22,6 @@ class QueryAccountService(
             account.userId == null)
             throw AccountNotFoundException()
 
-        return jwtGenerator.generate(account.userId!!)
+        return jwtGenerator.generate(account.email!!)
     }
 }

@@ -11,12 +11,12 @@ class JwtProperties(
     @Value("\${jwt.accessSecret}")
     private val accessSecret: String,
     @Value("\${jwt.refreshSecret}")
-    private val refreshSecret: String
+    private val refreshSecret: String,
+    @Value("\${jwt.accessExp}")
+    val accessExp: Int,
+    @Value("\${jwt.refreshExp}")
+    val refreshExp: Int
 ) {
-
-    val accessExp = 1800 // 30분
-    val refreshExp = 7200 // 30일
-
     val accessKey: Key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessSecret))
     val refreshKey: Key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshSecret))
 
