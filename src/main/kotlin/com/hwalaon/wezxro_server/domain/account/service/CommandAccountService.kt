@@ -10,10 +10,12 @@ import com.hwalaon.wezxro_server.global.annotation.Service
 import com.hwalaon.wezxro_server.global.exception.NotEnoughDataException
 import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Service
 class CommandAccountService(
     private val accountPersistenceAdapter: AccountPersistenceAdapter,
+    private val passwordEncoder: PasswordEncoder
 ) {
 
     fun join(joinRequest: JoinRequest) =
@@ -26,6 +28,8 @@ class CommandAccountService(
             account.money = 0.0
             account.status = AccountStatus.ACTIVE
             account.random = "\$a$"
+            // 비밀번호 암호화 설정
+            account.password = passwordEncoder.encode(account.password)
 
             accountPersistenceAdapter.join(account)
             BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
