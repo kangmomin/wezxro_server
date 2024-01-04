@@ -1,6 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.entity
 
-import com.hwalaon.wezxro_server.domain.account.model.constant.AccountStatus
+import com.hwalaon.wezxro_server.global.constant.BasicStatus
 import jakarta.persistence.*
 
 @Entity
@@ -28,5 +28,5 @@ class AccountEntity(
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    var status: AccountStatus?
+    var status: BasicStatus?
 )
