@@ -2,12 +2,12 @@ package com.hwalaon.wezxro_server.domain.category.service
 
 import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.domain.category.persistence.CategoryPersistenceAdapter
-import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
+import com.hwalaon.wezxro_server.global.annotation.Service
 
-@ReadOnlyService
-class QueryCategoryService(
+@Service
+class CommandCategoryService(
     private val categoryPersistenceAdapter: CategoryPersistenceAdapter
 ) {
 
-    fun categoryList() = categoryPersistenceAdapter.findAll()
+    fun addCategory(category: Category) = categoryPersistenceAdapter.save(category)
 }
