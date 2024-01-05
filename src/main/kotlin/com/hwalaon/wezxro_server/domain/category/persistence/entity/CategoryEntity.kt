@@ -15,5 +15,5 @@ class CategoryEntity (
     var sort: Int?,
 
     @Enumerated(EnumType.STRING)
-    var status: BasicStatus
+    var status: BasicStatus?
 )
