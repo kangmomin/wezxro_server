@@ -21,6 +21,6 @@ class CategoryController(
         queryCategoryService.categoryList()
 
     @PostMapping("/add")
-    fun categoryAdd(categoryRequest: SaveCategoryRequest) =
+    fun categoryAdd(@RequestBody @Valid categoryRequest: SaveCategoryRequest) =
         commandCategoryService.addCategory(categoryRequest.toDomain())
 }
