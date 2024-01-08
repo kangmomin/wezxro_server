@@ -4,8 +4,11 @@ import com.hwalaon.wezxro_server.domain.category.controller.request.SaveCategory
 import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.domain.category.service.CommandCategoryService
 import com.hwalaon.wezxro_server.domain.category.service.QueryCategoryService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -23,4 +26,9 @@ class CategoryController(
     @PostMapping("/add")
     fun categoryAdd(@RequestBody @Valid categoryRequest: SaveCategoryRequest) =
         commandCategoryService.addCategory(categoryRequest.toDomain())
+
+    @PostMapping("/update/{id}")
+    fun categoryUpdate(@RequestBody @Valid categoryRequest: SaveCategoryRequest,
+                       @PathVariable("id") categoryId: Long) =
+        commandCategoryService.updateCategory(categoryId, categoryRequest.toDomain())
 }

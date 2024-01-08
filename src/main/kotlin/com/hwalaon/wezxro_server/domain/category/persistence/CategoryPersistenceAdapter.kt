@@ -1,8 +1,10 @@
 package com.hwalaon.wezxro_server.domain.category.persistence
 
+import com.hwalaon.wezxro_server.domain.category.exception.CategoryNotFoundException
 import com.hwalaon.wezxro_server.domain.category.mapper.CategoryMapper
 import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.domain.category.persistence.repository.CategoryRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
@@ -19,4 +21,9 @@ class CategoryPersistenceAdapter(
               categoryMapper.toEntity(category)
           )
 
+    fun update(id: Long, category: Category) =
+        categoryRepository.findByIdOrNull(id).let {
+            if (it == null) throw CategoryNotFoundException()
+            it.update(category)
+        }
 }
