@@ -20,7 +20,7 @@ class CategoryController(
     fun categoryList() =
         queryCategoryService.categoryList()
 
-    @PostMapping("add")
+    @PostMapping("/add")
     fun categoryAdd(categoryRequest: SaveCategoryRequest) =
         commandCategoryService.addCategory(categoryRequest.toDomain())
 }
