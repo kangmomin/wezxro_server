@@ -1,7 +1,6 @@
 package com.hwalaon.wezxro_server.domain.category.controller
 
 import com.hwalaon.wezxro_server.domain.category.controller.request.SaveCategoryRequest
-import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.domain.category.service.CommandCategoryService
 import com.hwalaon.wezxro_server.domain.category.service.QueryCategoryService
 import jakarta.validation.Valid
@@ -27,8 +26,14 @@ class CategoryController(
     fun categoryAdd(@RequestBody @Valid categoryRequest: SaveCategoryRequest) =
         commandCategoryService.addCategory(categoryRequest.toDomain())
 
+    @PostMapping("/delete/{id}")
+    fun categoryDelete(@PathVariable("id") id: Long) =
+        commandCategoryService.delete(id)
+
     @PostMapping("/update/{id}")
     fun categoryUpdate(@RequestBody @Valid categoryRequest: SaveCategoryRequest,
                        @PathVariable("id") categoryId: Long) =
         commandCategoryService.updateCategory(categoryId, categoryRequest.toDomain())
+
+
 }
