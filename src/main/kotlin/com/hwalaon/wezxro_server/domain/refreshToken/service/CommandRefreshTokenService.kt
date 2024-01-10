@@ -6,7 +6,6 @@ import com.hwalaon.wezxro_server.domain.refreshToken.persistence.RefreshTokenPer
 import com.hwalaon.wezxro_server.global.annotation.Service
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.JwtParser
-import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 
 @Service
 class CommandRefreshTokenService(

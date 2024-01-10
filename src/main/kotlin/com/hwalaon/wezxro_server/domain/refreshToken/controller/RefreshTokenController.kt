@@ -1,7 +1,6 @@
 package com.hwalaon.wezxro_server.domain.refreshToken.controller
 
 import com.hwalaon.wezxro_server.domain.refreshToken.controller.request.RefreshTokenRequest
-import com.hwalaon.wezxro_server.domain.refreshToken.model.RefreshToken
 import com.hwalaon.wezxro_server.domain.refreshToken.service.CommandRefreshTokenService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping

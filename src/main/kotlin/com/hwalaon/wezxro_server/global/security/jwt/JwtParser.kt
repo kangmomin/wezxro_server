@@ -1,12 +1,9 @@
 package com.hwalaon.wezxro_server.global.security.jwt
 
-import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetailsService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import jakarta.servlet.http.HttpServletRequest
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.security.Key
 
