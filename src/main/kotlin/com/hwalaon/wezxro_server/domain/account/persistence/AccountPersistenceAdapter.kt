@@ -6,6 +6,7 @@ import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.ValidAccountRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
@@ -38,4 +39,6 @@ class AccountPersistenceAdapter(
             accountEntity.money = account.money
             accountEntity.status = account.status
         }
+
+    fun findById(id: Int) = accountEntityRepository.findByIdOrNull(id) ?: throw AccountNotFoundException()
 }

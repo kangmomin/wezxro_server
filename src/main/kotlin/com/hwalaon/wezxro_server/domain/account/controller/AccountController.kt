@@ -26,4 +26,8 @@ class AccountController(
     @PatchMapping("/update/")
     fun updateInfo(@RequestBody @Valid updateAccountRequest: UpdateAccountRequest) =
         commandAccountService.updateAccountInfo(updateAccountRequest.toDomain())
+
+    @PostMapping("/detail/{id}")
+    fun accountDetails(@PathVariable("id") id: Int) =
+        queryAccountService.detail(id)
 }

@@ -24,4 +24,7 @@ class QueryAccountService(
 
         return jwtGenerator.generate(account.email!!)
     }
+
+    fun detail(id: Int) =
+        accountPersistenceAdapter.findById(id)
 }
