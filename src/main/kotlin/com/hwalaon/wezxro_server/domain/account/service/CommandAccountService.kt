@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.domain.account.model.constant.AccountStatus
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
 import com.hwalaon.wezxro_server.global.BasicResponse
 import com.hwalaon.wezxro_server.global.annotation.Service
+import com.hwalaon.wezxro_server.global.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.exception.NotEnoughDataException
 import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
 import org.springframework.http.ResponseEntity
@@ -48,4 +49,9 @@ class CommandAccountService(
     fun validAccount(account: Account): Boolean =
         accountPersistenceAdapter.isExistAccount(account.email!!) ||
         accountPersistenceAdapter.isExistName(account.name!!)
+
+    fun deleteAccount(id: Int) {
+        val account = accountPersistenceAdapter.findById(id)
+        account.status = BasicStatus.DELETED
+    }
 }

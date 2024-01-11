@@ -27,6 +27,10 @@ class AccountController(
     fun updateInfo(@RequestBody @Valid updateAccountRequest: UpdateAccountRequest) =
         commandAccountService.updateAccountInfo(updateAccountRequest.toDomain())
 
+    @PostMapping("/delete/{id}")
+    fun delete(@PathVariable("id") id: Int) =
+        commandAccountService.deleteAccount(id)
+
     @PostMapping("/detail/{id}")
     fun accountDetails(@PathVariable("id") id: Int) =
         queryAccountService.detail(id)
