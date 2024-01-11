@@ -3,7 +3,6 @@ package com.hwalaon.wezxro_server.domain.account.service
 import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountAlreadyJoinedException
 import com.hwalaon.wezxro_server.domain.account.model.Account
-import com.hwalaon.wezxro_server.domain.account.model.constant.AccountStatus
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
 import com.hwalaon.wezxro_server.global.BasicResponse
 import com.hwalaon.wezxro_server.global.annotation.Service
@@ -27,7 +26,7 @@ class CommandAccountService(
             if (validAccount(account)) throw AccountAlreadyJoinedException()
 
             account.money = 0.0
-            account.status = AccountStatus.ACTIVE
+            account.status = BasicStatus.ACTIVE
             account.random = "\$a$"
             // 비밀번호 암호화 설정
             account.password = passwordEncoder.encode(account.password)
