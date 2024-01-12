@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.global.constant.BasicStatus
 import jakarta.persistence.*
 
 @Table(name="category")
+@Entity
 class CategoryEntity (
     @Id @Column(name = "category_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
