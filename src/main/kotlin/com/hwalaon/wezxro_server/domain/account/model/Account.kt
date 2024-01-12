@@ -1,6 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.model
 
-import com.hwalaon.wezxro_server.domain.account.model.constant.AccountStatus
+import com.hwalaon.wezxro_server.global.constant.BasicStatus
 
 data class Account(
     var userId: Int?,
@@ -9,5 +9,5 @@ data class Account(
     var email: String?,
     var random: String?,
     var money: Double?,
-    var status: AccountStatus?
+    var status: BasicStatus?
 )
