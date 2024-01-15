@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.global.security.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.hwalaon.wezxro_server.global.BasicResponse
+import com.hwalaon.wezxro_server.global.common.BasicResponse
 import com.hwalaon.wezxro_server.global.exception.BasicException
 import com.hwalaon.wezxro_server.global.exception.ErrorCode
 import jakarta.servlet.FilterChain

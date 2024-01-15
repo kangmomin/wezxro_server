@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.global
+package com.hwalaon.wezxro_server.global.common
 
 import com.hwalaon.wezxro_server.global.exception.ErrorCode
 import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse

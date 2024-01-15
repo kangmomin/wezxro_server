@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.category.persistence.entity
 
 import com.hwalaon.wezxro_server.domain.category.model.Category
+import com.hwalaon.wezxro_server.global.common.entity.BasicTimeEntity
 import com.hwalaon.wezxro_server.global.constant.BasicStatus
 import jakarta.persistence.*
 
@@ -18,7 +19,7 @@ class CategoryEntity (
 
     @Enumerated(EnumType.STRING)
     var status: BasicStatus?
-) {
+): BasicTimeEntity() {
     fun update(category: Category) = this.let {
         it.name = category.name
         it.sort = category.sort

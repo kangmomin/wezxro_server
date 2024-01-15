@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.entity
 
+import com.hwalaon.wezxro_server.global.common.entity.BasicTimeEntity
 import com.hwalaon.wezxro_server.global.constant.BasicStatus
 import jakarta.persistence.*
 
@@ -29,4 +30,4 @@ class AccountEntity(
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     var status: BasicStatus?
-)
+): BasicTimeEntity()

@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.service.model
 
+import com.hwalaon.wezxro_server.global.common.model.BasicTime
 import com.hwalaon.wezxro_server.global.constant.BasicStatus
 
 class Service (
@@ -15,4 +16,4 @@ class Service (
     var description: String?,
     var status: BasicStatus?,
     var originalRate: Float?
-)
+): BasicTime()
