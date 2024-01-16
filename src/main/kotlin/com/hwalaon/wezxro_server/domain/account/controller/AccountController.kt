@@ -23,7 +23,7 @@ class AccountController(
     fun join(@RequestBody @Valid joinRequest: JoinRequest) =
         commandAccountService.join(joinRequest)
 
-    @PatchMapping("/update/")
+    @PatchMapping("/update")
     fun updateInfo(@RequestBody @Valid updateAccountRequest: UpdateAccountRequest) =
         commandAccountService.updateAccountInfo(updateAccountRequest.toDomain())
 
