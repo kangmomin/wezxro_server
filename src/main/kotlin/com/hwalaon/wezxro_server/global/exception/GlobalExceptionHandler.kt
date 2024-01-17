@@ -15,9 +15,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun jsonExceptionHandler(e: HttpMessageNotReadableException) =
-        e.printStackTrace().let {
-            BasicResponse.error(ErrorCode.NON_BODY_ERROR)
-        }
+        BasicResponse.error(ErrorCode.NON_BODY_ERROR)
 
     @ExceptionHandler(Exception::class)
     fun unexpectedExceptionHandler(e: Exception): ResponseEntity<MsgResponse> {
