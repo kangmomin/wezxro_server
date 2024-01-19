@@ -20,7 +20,7 @@ class ExceptionFilter: OncePerRequestFilter() {
         } catch (e: BasicException) {
             exceptionToResponse(e.errorCode, response)
         } catch (e: Exception) {
-            e.stackTrace
+            e.printStackTrace()
             exceptionToResponse(ErrorCode.UNEXPECTED_ERROR, response)
         }
     }
