@@ -24,6 +24,10 @@ class JwtParser(
                 else null
             }
 
+    /**
+     * request에서 header 분리후 perfix까지 분리
+     * prefix 없으면 null 리턴
+     */
     fun parseAccessToken(request: HttpServletRequest): String? =
         request.getHeader("X-Auth-Token")
             .let { it ?: return null }
@@ -33,7 +37,9 @@ class JwtParser(
                 else null
             }
 
-    // 유저 이메일 반환
+    /**
+     * 유저 이메일 반환
+      */
     fun authentication(accessOrRefreshToken: String, isAccessToken: Boolean) =
         isAccessToken.let {
             // 엑세스 토큰이 true 일 경우 accessKey 를 할당.
