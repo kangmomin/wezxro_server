@@ -27,7 +27,7 @@ class JwtGenerator(
     }
 
     fun generateOnlyAccessToken(email: String): String =
-        generateToken(email, jwtProperties.accessKey, jwtProperties.accessExp)
+        "${jwtProperties.jwtPrefix} ${generateToken(email, jwtProperties.accessKey, jwtProperties.accessExp)}"
 
     private fun generateToken(email: String, secret: Key, expiredAt: Int) =
         Jwts.builder()
