@@ -19,8 +19,8 @@ class JwtParser(
 
     fun parseRefreshToken(refreshToken: String): String? =
             refreshToken.let {
-                if (it.startsWith(JwtProperties.jwtPrefix))
-                    it.replace(JwtProperties.jwtPrefix, "")
+                if (it.startsWith(jwtProperties.jwtPrefix))
+                    it.replace(jwtProperties.jwtPrefix, "")
                 else null
             }
 
@@ -32,8 +32,8 @@ class JwtParser(
         request.getHeader("X-Auth-Token")
             .let { it ?: return null }
             .let {
-                if (it.startsWith(JwtProperties.jwtPrefix))
-                    it.replace(JwtProperties.jwtPrefix, "")
+                if (it.startsWith(jwtProperties.jwtPrefix))
+                    it.replace(jwtProperties.jwtPrefix, "")
                 else null
             }
 

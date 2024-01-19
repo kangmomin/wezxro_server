@@ -17,10 +17,8 @@ class JwtProperties(
     @Value("\${jwt.refreshExp}")
     val refreshExp: Int
 ) {
+    val jwtPrefix: String = "Bearer "
+
     val accessKey: Key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessSecret))
     val refreshKey: Key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshSecret))
-
-    companion object {
-        const val jwtPrefix: String = "Bearer "
-    }
 }
