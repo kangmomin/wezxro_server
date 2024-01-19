@@ -1,9 +1,9 @@
 package com.hwalaon.wezxro_server.global.security.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.hwalaon.wezxro_server.global.common.BasicResponse
 import com.hwalaon.wezxro_server.global.exception.BasicException
 import com.hwalaon.wezxro_server.global.exception.ErrorCode
+import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -29,7 +29,7 @@ class ExceptionFilter: OncePerRequestFilter() {
         response.status = errorCode.code.value()
         response.contentType = "application/json"
         response.characterEncoding = "utf-8"
-        val errorResponse = BasicResponse.error(errorCode)
+        val errorResponse = MsgResponse(errorCode.msg)
         val errorResponseToJson = ObjectMapper().writeValueAsString(errorResponse)
         response.writer.write(errorResponseToJson)
     }
