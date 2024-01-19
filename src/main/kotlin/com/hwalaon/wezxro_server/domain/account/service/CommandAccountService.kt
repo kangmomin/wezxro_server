@@ -4,8 +4,8 @@ import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountAlreadyJoinedException
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
-import com.hwalaon.wezxro_server.global.common.BasicResponse
 import com.hwalaon.wezxro_server.global.annotation.Service
+import com.hwalaon.wezxro_server.global.common.BasicResponse
 import com.hwalaon.wezxro_server.global.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.exception.NotEnoughDataException
 import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
