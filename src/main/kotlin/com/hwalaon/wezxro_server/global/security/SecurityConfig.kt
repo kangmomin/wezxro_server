@@ -33,7 +33,7 @@ class SecurityConfig(
                     CorsUtils.isPreFlightRequest(req)
                 }).permitAll()
 
-                it.requestMatchers("/login", "/join").permitAll()
+                it.requestMatchers("/u/login", "/u/join").permitAll()
                     .anyRequest().authenticated()
             }
             .formLogin { it.disable() }
