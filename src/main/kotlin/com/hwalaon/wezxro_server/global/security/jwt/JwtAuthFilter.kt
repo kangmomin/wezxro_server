@@ -20,9 +20,8 @@ class JwtAuthFilter(
             val accessToken = jwtParser.parseAccessToken(request)
             if (!accessToken.isNullOrBlank()) {
                 val userEmail = jwtParser.authentication(accessToken, true)
-                SecurityContextHolder.clearContext()
                 val securityContext = SecurityContextHolder.getContext()
-                securityContext.authentication = UsernamePasswordAuthenticationToken(userEmail, "")
+                securityContext.authentication = UsernamePasswordAuthenticationToken(userEmail, "", ArrayList())
             }
 
             filterChain.doFilter(request, response)
