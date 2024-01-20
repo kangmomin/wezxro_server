@@ -1,12 +1,14 @@
 package com.hwalaon.wezxro_server.global.common.entity
 
 import jakarta.persistence.Column
+import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-open class BasicTimeEntity {
+@MappedSuperclass
+abstract class BasicTimeEntity {
 
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now()
