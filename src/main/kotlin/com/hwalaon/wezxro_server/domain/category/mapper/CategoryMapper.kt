@@ -8,22 +8,26 @@ import org.springframework.stereotype.Component
 @Component
 class CategoryMapper: BasicMapper<Category, CategoryEntity> {
     override fun toDomain(entity: CategoryEntity) =
-        entity.let {
-            Category(
-                name = it.name,
-                status = it.status,
-                id = it.id,
-                sort = it.sort
-            )
+        Category(
+            name = entity.name,
+            status = entity.status,
+            id = entity.id,
+            sort = entity.sort
+        ).let {
+            it.createdAt = entity.createdAt
+            it.updatedAt = entity.updatedAt
+            it
         }
 
     override fun toEntity(domain: Category) =
-        domain.let {
-            CategoryEntity(
-                name = it.name,
-                status = it.status,
-                id = it.id,
-                sort = it.sort
-            )
+        CategoryEntity(
+            id = domain.id,
+            name = domain.name,
+            status = domain.status,
+            sort = domain.sort
+        ).let {
+            it.createdAt = domain.createdAt
+            it.updatedAt = domain.updatedAt
+            it
         }
 }

@@ -8,29 +8,33 @@ import org.springframework.stereotype.Component
 @Component
 class AccountMapper: BasicMapper<Account, AccountEntity> {
     override fun toDomain(entity: AccountEntity): Account =
-        entity.let {
-            Account(
-                userId = it.userId,
-                name = it.name,
-                password = it.password,
-                random = it.random,
-                status = it.status,
-                email = it.email,
-                money = it.money
-            )
+        Account(
+            userId = entity.userId,
+            name = entity.name,
+            password = entity.password,
+            random = entity.random,
+            status = entity.status,
+            email = entity.email,
+            money = entity.money
+        ).let {
+            it.createdAt = entity.createdAt
+            it.updatedAt = entity.updatedAt
+            it
         }
 
     override fun toEntity(domain: Account): AccountEntity =
-        domain.let {
-            AccountEntity(
-                userId = it.userId,
-                name = it.name,
-                password = it.password,
-                random = it.random,
-                status = it.status,
-                email = it.email,
-                money = it.money
-            )
+        AccountEntity(
+            userId = domain.userId,
+            name = domain.name,
+            password = domain.password,
+            random = domain.random,
+            status = domain.status,
+            email = domain.email,
+            money = domain.money
+        ).let {
+            it.createdAt = domain.createdAt
+            it.updatedAt = domain.updatedAt
+            it
         }
 
 }
