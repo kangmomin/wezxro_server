@@ -1,7 +1,7 @@
-package com.hwalaon.wezxro_server.domain.refreshToken.persistence
+package com.hwalaon.wezxro_server.global.common.refreshToken.persistence
 
-import com.hwalaon.wezxro_server.domain.refreshToken.model.RefreshToken
-import com.hwalaon.wezxro_server.domain.refreshToken.persistence.repository.RedisRefreshTokenRepository
+import com.hwalaon.wezxro_server.global.common.refreshToken.model.RefreshToken
+import com.hwalaon.wezxro_server.global.common.refreshToken.persistence.repository.RedisRefreshTokenRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 

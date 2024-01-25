@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.domain.refreshToken.controller.request
+package com.hwalaon.wezxro_server.global.common.refreshToken.controller.request
 
 import jakarta.validation.constraints.NotEmpty
 

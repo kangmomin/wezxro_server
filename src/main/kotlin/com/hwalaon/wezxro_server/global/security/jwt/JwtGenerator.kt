@@ -1,6 +1,6 @@
 package com.hwalaon.wezxro_server.global.security.jwt
 
-import com.hwalaon.wezxro_server.domain.refreshToken.persistence.RefreshTokenPersistenceAdapter
+import com.hwalaon.wezxro_server.global.common.refreshToken.persistence.RefreshTokenPersistenceAdapter
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm

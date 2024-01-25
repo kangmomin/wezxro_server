@@ -1,8 +1,8 @@
-package com.hwalaon.wezxro_server.domain.refreshToken.service
+package com.hwalaon.wezxro_server.global.common.refreshToken.service
 
-import com.hwalaon.wezxro_server.domain.refreshToken.controller.response.OnlyAccessTokenResponse
-import com.hwalaon.wezxro_server.domain.refreshToken.exception.RefreshTokenNotFoundException
-import com.hwalaon.wezxro_server.domain.refreshToken.persistence.RefreshTokenPersistenceAdapter
+import com.hwalaon.wezxro_server.global.common.refreshToken.controller.response.OnlyAccessTokenResponse
+import com.hwalaon.wezxro_server.global.common.refreshToken.exception.RefreshTokenNotFoundException
+import com.hwalaon.wezxro_server.global.common.refreshToken.persistence.RefreshTokenPersistenceAdapter
 import com.hwalaon.wezxro_server.global.annotation.Service
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.JwtParser

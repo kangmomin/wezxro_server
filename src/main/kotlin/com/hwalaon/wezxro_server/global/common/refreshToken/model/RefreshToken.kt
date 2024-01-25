@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.domain.refreshToken.model
+package com.hwalaon.wezxro_server.global.common.refreshToken.model
 
 import jakarta.persistence.Id
 import org.springframework.data.redis.core.RedisHash
