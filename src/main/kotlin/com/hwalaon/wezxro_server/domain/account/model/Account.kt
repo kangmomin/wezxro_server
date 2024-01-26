@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.domain.account.model
 
-import com.hwalaon.wezxro_server.global.common.model.BasicTime
-import com.hwalaon.wezxro_server.global.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 
 data class Account(
     var userId: Int?,

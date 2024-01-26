@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.global.mapper
+package com.hwalaon.wezxro_server.global.common.basic.mapper
 
 interface BasicMapper<D, E> {
 

@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.global.common.model
+package com.hwalaon.wezxro_server.global.common.basic.model
 
 import java.time.LocalDateTime
 

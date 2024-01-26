@@ -4,7 +4,7 @@ import com.hwalaon.wezxro_server.domain.category.exception.CategoryNotFoundExcep
 import com.hwalaon.wezxro_server.domain.category.mapper.CategoryMapper
 import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.domain.category.persistence.repository.CategoryRepository
-import com.hwalaon.wezxro_server.global.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 

@@ -4,8 +4,8 @@ import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.model.constant.AccountStatus
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
-import com.hwalaon.wezxro_server.global.common.BasicResponse
-import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
+import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
+import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito

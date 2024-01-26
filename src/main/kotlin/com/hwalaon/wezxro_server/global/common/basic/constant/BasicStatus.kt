@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.global.constant
+package com.hwalaon.wezxro_server.global.common.basic.constant
 
 enum class BasicStatus (
     val code: Int

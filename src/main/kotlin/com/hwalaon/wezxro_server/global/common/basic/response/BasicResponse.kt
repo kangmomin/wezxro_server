@@ -1,7 +1,6 @@
-package com.hwalaon.wezxro_server.global.common
+package com.hwalaon.wezxro_server.global.common.basic.response
 
-import com.hwalaon.wezxro_server.global.exception.ErrorCode
-import com.hwalaon.wezxro_server.global.exception.dto.MsgResponse
+import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 

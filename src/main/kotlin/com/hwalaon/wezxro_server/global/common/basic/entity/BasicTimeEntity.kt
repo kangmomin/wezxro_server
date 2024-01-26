@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.global.common.entity
+package com.hwalaon.wezxro_server.global.common.basic.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass

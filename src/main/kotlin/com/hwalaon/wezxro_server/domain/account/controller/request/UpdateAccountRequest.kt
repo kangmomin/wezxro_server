@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.domain.account.controller.request
 
 import com.hwalaon.wezxro_server.domain.account.model.Account
-import com.hwalaon.wezxro_server.global.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull

@@ -2,7 +2,7 @@ package com.hwalaon.wezxro_server.domain.account.persistence.mapper
 
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.AccountEntity
-import com.hwalaon.wezxro_server.global.mapper.BasicMapper
+import com.hwalaon.wezxro_server.global.common.basic.mapper.BasicMapper
 import org.springframework.stereotype.Component
 
 @Component

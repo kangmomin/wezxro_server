@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.domain.service.controller
 
 import com.hwalaon.wezxro_server.domain.service.service.ServiceService
-import com.hwalaon.wezxro_server.global.common.BasicResponse
+import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

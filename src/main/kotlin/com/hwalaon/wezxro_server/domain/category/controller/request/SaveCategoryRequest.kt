@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.domain.category.controller.request
 
 import com.hwalaon.wezxro_server.domain.category.model.Category
-import com.hwalaon.wezxro_server.global.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 
