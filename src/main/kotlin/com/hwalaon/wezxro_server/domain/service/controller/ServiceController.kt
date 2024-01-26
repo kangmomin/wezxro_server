@@ -13,7 +13,7 @@ class ServiceController(
     private val serviceService: ServiceService
 ) {
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     fun serviceDetail(@PathVariable id: Int) =
         serviceService.serviceDetail(id).let {
             BasicResponse.ok(it)
