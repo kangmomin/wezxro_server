@@ -4,8 +4,12 @@ import com.hwalaon.wezxro_server.domain.account.model.Account
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
+import java.util.UUID
 
 data class JoinRequest (
+    @NotEmpty
+    val key: UUID,
+
     @NotEmpty
     val name: String?,
     @Size(min = 5) @NotEmpty
@@ -22,5 +26,6 @@ data class JoinRequest (
             status = null,
             userId = null,
             random = null,
+            clientId = key
         )
 }

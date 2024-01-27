@@ -22,7 +22,7 @@ class QueryAccountService(
             account.userId == null)
             throw AccountNotFoundException()
 
-        return jwtGenerator.generate(account.email!!)
+        return jwtGenerator.generate(account.userId!!)
     }
 
     fun detail(id: Int) =

@@ -15,7 +15,8 @@ class AccountMapper: BasicMapper<Account, AccountEntity> {
             random = entity.random,
             status = entity.status,
             email = entity.email,
-            money = entity.money
+            money = entity.money,
+            clientId = entity.clientId
         ).let {
             it.createdAt = entity.createdAt
             it.updatedAt = entity.updatedAt
@@ -30,7 +31,8 @@ class AccountMapper: BasicMapper<Account, AccountEntity> {
             random = domain.random,
             status = domain.status,
             email = domain.email,
-            money = domain.money
+            money = domain.money,
+            clientId = domain.clientId
         ).let {
             it.createdAt = domain.createdAt
             it.updatedAt = domain.updatedAt

@@ -1,8 +1,12 @@
 package com.hwalaon.wezxro_server.domain.account.controller.request
 
 import jakarta.validation.constraints.NotEmpty
+import java.util.UUID
 
 data class LoginRequest (
+    @NotEmpty
+    val key: UUID,
+
     @NotEmpty
     val email: String,
 

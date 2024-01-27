@@ -3,6 +3,7 @@ package com.hwalaon.wezxro_server.domain.account.persistence.entity
 import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import jakarta.persistence.*
+import java.util.*
 
 @Entity
 @Table(name="account")
@@ -29,5 +30,8 @@ class AccountEntity(
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    var status: BasicStatus?
+    var status: BasicStatus?,
+
+    @Column(nullable = false)
+    var clientId: UUID?
 ): BasicTimeEntity()
