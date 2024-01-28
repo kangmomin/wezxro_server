@@ -19,11 +19,11 @@ class CommandRefreshTokenService(
             throw RefreshTokenNotFoundException()
         }
 
-        // refreshToken에서 email 가져오기
-        val refreshTokenBody = jwtParser.authentication(refreshToken, isAccessToken = false)
+        // refreshToken에서 userId 가져오기
+        val userId = jwtParser.authentication(refreshToken, isAccessToken = false).toInt()
 
         return OnlyAccessTokenResponse(
-            jwtGenerator.generateOnlyAccessToken(refreshTokenBody.username)
+            jwtGenerator.generateOnlyAccessToken(userId)
         )
     }
 }
