@@ -38,7 +38,7 @@ class JwtParser(
             }
 
     /**
-     * 유저 이메일 반환
+     * 유저 아이디 반환
       */
     fun authentication(accessOrRefreshToken: String, isAccessToken: Boolean) =
         isAccessToken.let {
@@ -49,7 +49,7 @@ class JwtParser(
                 jwtProperties.refreshKey
             }
 
-            principalDetailsService.loadUserByUsername(getTokenBody(accessOrRefreshToken, secret).subject)
+            getTokenBody(accessOrRefreshToken, secret).subject
         }
 
     private fun getTokenBody(token: String, secret: Key): Claims =
