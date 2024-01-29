@@ -8,6 +8,7 @@ import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEn
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.ValidAccountRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class AccountPersistenceAdapter(
@@ -29,8 +30,8 @@ class AccountPersistenceAdapter(
             accountEntityRepository.save(it)
         }
 
-    fun isExistAccount(email: String) = validAccountRepository.isExistEmail(email)
-    fun isExistName(name: String) = validAccountRepository.isExistName(name)
+    fun isExistAccount(email: String, clientId: UUID) = validAccountRepository.isExistEmail(email, clientId)
+    fun isExistName(name: String, clientId: UUID) = validAccountRepository.isExistName(name, clientId)
     fun updateInfo(account: Account) =
         accountEntityRepository.findById(account.userId!!).let {
             if (it.isEmpty) throw AccountNotFoundException()
