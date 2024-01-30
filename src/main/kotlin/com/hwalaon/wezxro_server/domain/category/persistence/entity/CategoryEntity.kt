@@ -1,8 +1,8 @@
 package com.hwalaon.wezxro_server.domain.category.persistence.entity
 
 import com.hwalaon.wezxro_server.domain.category.model.Category
-import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
 
 @Table(name="category")

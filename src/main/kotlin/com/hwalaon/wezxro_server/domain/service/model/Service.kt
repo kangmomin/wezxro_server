@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.domain.service.model
 
-import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
 
 class Service (
     var id: Int?,

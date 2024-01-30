@@ -3,7 +3,7 @@ package com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQu
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QAccountEntity.accountEntity
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class ValidAccountRepository(

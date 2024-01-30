@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.service.controller
 
+import com.hwalaon.wezxro_server.domain.service.controller.response.ServiceDetailResponse
 import com.hwalaon.wezxro_server.domain.service.service.ServiceService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,6 +17,7 @@ class ServiceController(
     @GetMapping("/{id}")
     fun serviceDetail(@PathVariable id: Int) =
         serviceService.serviceDetail(id).let {
-            BasicResponse.ok(it)
+            BasicResponse.ok(
+                ServiceDetailResponse.fromDomain(it))
         }
 }

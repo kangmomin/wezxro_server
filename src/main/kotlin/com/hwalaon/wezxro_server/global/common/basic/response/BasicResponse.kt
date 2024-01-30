@@ -22,6 +22,10 @@ data class BasicResponse<T> (
             .status(200)
             .body(data)
 
+        fun okMsg(msg: String) = ResponseEntity
+            .status(200)
+            .body(MsgResponse(msg))
+
         fun created(data: Any?) = ResponseEntity
             .status(201)
             .body(data)

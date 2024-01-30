@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.entity
 
-import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
 import java.util.*
 

@@ -18,9 +18,10 @@ class CategoryPersistenceAdapter(
     fun findAll() = categoryRepository.findAllByOrderBySort()
 
     fun save(category: Category) =
-          categoryRepository.save(
-              categoryMapper.toEntity(category)
-          )
+          categoryMapper.toDomain(
+              categoryRepository.save(
+                  categoryMapper.toEntity(category)
+              ))
 
     fun update(id: Long, category: Category) =
         categoryRepository.findByIdOrNull(id).let {

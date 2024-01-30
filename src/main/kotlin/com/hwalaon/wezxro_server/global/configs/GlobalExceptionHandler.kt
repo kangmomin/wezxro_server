@@ -1,8 +1,8 @@
 package com.hwalaon.wezxro_server.global.configs
 
-import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
 import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
+import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
