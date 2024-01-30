@@ -46,8 +46,8 @@ class CommandAccountService(
      * 계정이 있을 때 true를 리턴
      */
     fun validAccount(account: Account): Boolean =
-        accountPersistenceAdapter.isExistAccount(account.email!!) ||
-        accountPersistenceAdapter.isExistName(account.name!!)
+        accountPersistenceAdapter.isExistAccount(account.email!!, account.clientId!!) ||
+        accountPersistenceAdapter.isExistName(account.name!!, account.clientId!!)
 
     fun deleteAccount(id: Int) {
         val account = accountPersistenceAdapter.findById(id)
