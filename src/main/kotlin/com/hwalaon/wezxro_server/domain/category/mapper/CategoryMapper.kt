@@ -12,7 +12,8 @@ class CategoryMapper: BasicMapper<Category, CategoryEntity> {
             name = entity.name,
             status = entity.status,
             id = entity.id,
-            sort = entity.sort
+            sort = entity.sort,
+            clientId = entity.clientId
         ).let {
             it.createdAt = entity.createdAt
             it.updatedAt = entity.updatedAt
@@ -24,7 +25,8 @@ class CategoryMapper: BasicMapper<Category, CategoryEntity> {
             id = domain.id,
             name = domain.name,
             status = domain.status,
-            sort = domain.sort
+            sort = domain.sort,
+            clientId = domain.clientId
         ).let {
             it.createdAt = domain.createdAt
             it.updatedAt = domain.updatedAt

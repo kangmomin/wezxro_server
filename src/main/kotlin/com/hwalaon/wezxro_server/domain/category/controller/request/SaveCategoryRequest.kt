@@ -4,6 +4,7 @@ import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
+import java.util.*
 
 data class SaveCategoryRequest (
     @NotEmpty
@@ -14,6 +15,9 @@ data class SaveCategoryRequest (
 
     @NotNull
     val sort: Int,
+
+    @NotNull
+    val clientId: UUID
 ) {
     fun toDomain() =
         this.let {
@@ -21,7 +25,8 @@ data class SaveCategoryRequest (
                 name = it.name,
                 status = it.status,
                 id = null,
-                sort = it.sort
+                sort = it.sort,
+                clientId = it.clientId
             )
         }
 }

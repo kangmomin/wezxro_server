@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.domain.category.persistence.repository.Category
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class CategoryPersistenceAdapter(
@@ -15,7 +16,8 @@ class CategoryPersistenceAdapter(
 ) {
 
     /** sort로 정렬한 카테고리들 반환 */
-    fun findAll() = categoryRepository.findAllByOrderBySort()
+    fun findAll(clientId: UUID) =
+        categoryRepository.findAllByClientIdOrderBySort(clientId)
 
     fun save(category: Category) =
           categoryMapper.toDomain(
@@ -30,7 +32,12 @@ class CategoryPersistenceAdapter(
         }
 
     fun delete(id: Long) {
-        val category = categoryRepository.findByIdOrNull(id) ?: throw CategoryNotFoundException()
+        val category = categoryRepository.findByIdOrNull(id)
+            ?: throw CategoryNotFoundException()
         category.status = BasicStatus.DELETED
     }
+
+    fun validCategory(category: Category) =
+        categoryRepository.existsByNameAndSortAndClientId(
+            category.name!!, category.sort!!, category.clientId!!)
 }

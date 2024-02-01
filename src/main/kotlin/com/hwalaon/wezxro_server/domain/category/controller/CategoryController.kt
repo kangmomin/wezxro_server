@@ -6,6 +6,7 @@ import com.hwalaon.wezxro_server.domain.category.service.QueryCategoryService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RequestMapping("/c")
 @RestController
@@ -14,9 +15,9 @@ class CategoryController(
     private val commandCategoryService: CommandCategoryService
 ) {
 
-    @GetMapping("/list")
-    fun categoryList() =
-        queryCategoryService.categoryList()
+    @GetMapping("/list/{clientId}")
+    fun categoryList(@PathVariable clientId: UUID) =
+        queryCategoryService.categoryList(clientId)
 
     @PostMapping("/add")
     fun categoryAdd(@RequestBody @Valid categoryRequest: SaveCategoryRequest) =

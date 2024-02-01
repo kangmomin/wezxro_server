@@ -10,7 +10,9 @@ class CommandCategoryService(
 ) {
 
     fun addCategory(category: Category) =
-        categoryPersistenceAdapter.save(category)
+        categoryPersistenceAdapter.validCategory(category).let {
+            categoryPersistenceAdapter.save(category)
+        }
 
     fun updateCategory(categoryId: Long, category: Category) =
         categoryPersistenceAdapter.update(categoryId, category)
