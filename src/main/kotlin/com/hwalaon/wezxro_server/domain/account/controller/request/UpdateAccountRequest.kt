@@ -32,6 +32,7 @@ data class UpdateAccountRequest (
             money = money,
             password = password,
             status = status,
-            random = null
+            random = null,
+            clientId = null
         )
 }
