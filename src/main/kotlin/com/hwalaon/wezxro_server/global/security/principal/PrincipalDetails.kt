@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class PrincipalDetails (
-    private val account: Account
+    val account: Account
 ): UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = ArrayList()
 

@@ -1,9 +1,11 @@
 package com.hwalaon.wezxro_server.domain.service.persistence
 
 import com.hwalaon.wezxro_server.domain.service.mapper.ServiceMapper
+import com.hwalaon.wezxro_server.domain.service.model.Service
 import com.hwalaon.wezxro_server.domain.service.persistence.repository.ServiceRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import java.util.*
 import javax.management.ServiceNotFoundException
 
 @Component
@@ -18,4 +20,13 @@ class ServicePersistenceAdapter(
             serviceMapper.toDomain(it)
         }
 
+
+    fun serviceList(clientId: UUID, categoryId: Int): List<Service> {
+        val services = if (categoryId == 0) serviceRepository.findAllByClientIdOrderById(clientId)
+            else serviceRepository.findAllByClientIdAndCategoryIdOrderById(clientId, categoryId)
+
+        return services.map { serviceEntity ->
+            serviceMapper.toDomain(serviceEntity)
+        }
+    }
 }
