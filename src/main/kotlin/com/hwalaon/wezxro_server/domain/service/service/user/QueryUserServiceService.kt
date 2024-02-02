@@ -1,13 +1,12 @@
-package com.hwalaon.wezxro_server.domain.service.service
+package com.hwalaon.wezxro_server.domain.service.service.user
 
 import com.hwalaon.wezxro_server.domain.service.persistence.ServicePersistenceAdapter
-import org.springframework.stereotype.Service
+import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 
-@Service
-class ServiceService(
+@ReadOnlyService
+class QueryUserServiceService(
     private val servicePersistenceAdapter: ServicePersistenceAdapter
 ) {
-
     fun serviceDetail(serviceId: Int) =
         servicePersistenceAdapter.serviceDetail(serviceId)
 
