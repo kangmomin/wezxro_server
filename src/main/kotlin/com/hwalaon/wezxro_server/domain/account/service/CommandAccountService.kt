@@ -7,9 +7,6 @@ import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAd
 import com.hwalaon.wezxro_server.global.annotation.Service
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.exception.NotEnoughDataException
-import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
-import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
-import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 
 @Service
@@ -32,14 +29,11 @@ class CommandAccountService(
             account.password = passwordEncoder.encode(account.password)
 
             accountPersistenceAdapter.join(account)
-            BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
         }
 
 
-    fun updateAccountInfo(account: Account): ResponseEntity<Any> {
+    fun updateAccountInfo(account: Account) {
         accountPersistenceAdapter.updateInfo(account)
-
-        return BasicResponse.ok(MsgResponse("${account.name}님의 계정 정보를 성공적으로 변경하였습니다."))
     }
 
     /**

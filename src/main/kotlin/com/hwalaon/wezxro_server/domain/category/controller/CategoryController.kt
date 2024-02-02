@@ -17,7 +17,8 @@ class CategoryController(
 
     @GetMapping("/list/{clientId}")
     fun categoryList(@PathVariable clientId: UUID) =
-        queryCategoryService.categoryList(clientId)
+        BasicResponse.ok(
+            queryCategoryService.categoryList(clientId))
 
     @PostMapping("/add")
     fun categoryAdd(@RequestBody @Valid categoryRequest: SaveCategoryRequest) =

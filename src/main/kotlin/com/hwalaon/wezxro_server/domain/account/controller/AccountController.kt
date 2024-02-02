@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetai
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
+import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
@@ -19,15 +20,19 @@ class AccountController(
 
     @PostMapping("/login")
     fun login(@RequestBody @Valid loginRequest: LoginRequest) =
-        queryAccountService.login(loginRequest)
+        BasicResponse.ok(queryAccountService.login(loginRequest))
 
     @PostMapping("/join")
     fun join(@RequestBody @Valid joinRequest: JoinRequest) =
-        commandAccountService.join(joinRequest)
+        commandAccountService.join(joinRequest).run {
+            BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
+        }
 
     @PatchMapping("/update")
     fun updateInfo(@RequestBody @Valid updateAccountRequest: UpdateAccountRequest) =
-        commandAccountService.updateAccountInfo(updateAccountRequest.toDomain())
+        commandAccountService.updateAccountInfo(updateAccountRequest.toDomain()).run {
+            BasicResponse.okMsg("계정 정보를 성공적으로 변경하였습니다.")
+        }
 
     @PostMapping("/delete/{id}")
     fun delete(@PathVariable("id") id: Int) =
