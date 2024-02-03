@@ -1,12 +1,12 @@
 package com.hwalaon.wezxro_server.global.common.refreshToken.service
 
-import com.hwalaon.wezxro_server.global.annotation.Service
+import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.common.refreshToken.exception.RefreshTokenNotFoundException
 import com.hwalaon.wezxro_server.global.common.refreshToken.persistence.RefreshTokenPersistenceAdapter
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.JwtParser
 
-@Service
+@CommandService
 class CommandRefreshTokenService(
     private val refreshTokenPersistenceAdapter: RefreshTokenPersistenceAdapter,
     private val jwtGenerator: JwtGenerator,

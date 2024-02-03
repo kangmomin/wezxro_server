@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 
-class CommandAccountServiceTest {
+class CommandAccountCommandServiceTest {
 
     // Joining a new account with valid data should return a success message
     @Test

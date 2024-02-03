@@ -2,9 +2,9 @@ package com.hwalaon.wezxro_server.domain.category.service
 
 import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.domain.category.persistence.CategoryPersistenceAdapter
-import com.hwalaon.wezxro_server.global.annotation.Service
+import com.hwalaon.wezxro_server.global.annotation.CommandService
 
-@Service
+@CommandService
 class CommandCategoryService(
     private val categoryPersistenceAdapter: CategoryPersistenceAdapter
 ) {

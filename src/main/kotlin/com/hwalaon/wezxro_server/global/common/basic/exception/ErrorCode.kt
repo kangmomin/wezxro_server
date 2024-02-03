@@ -15,4 +15,5 @@ enum class ErrorCode(
     ACCOUNT_ALREADY_JOINED_ERROR("해당 이메일은 이미 가입이 완료되었습니다.", HttpStatus.CONFLICT),
     REFRESH_TOKEN_NOT_FOUND("로그인 정보를 찾을 수 없습니다.", HttpStatus.NO_CONTENT),
     CATEGORY_NOT_FOUND_ERROR("카테고리를 찾을 수 없습니다.", HttpStatus.NO_CONTENT),
+    SERVICE_CONFLICT_ERROR("이미 존재하는 서비스 입니다", HttpStatus.CONFLICT),
 }

@@ -29,4 +29,13 @@ class ServicePersistenceAdapter(
             serviceMapper.toDomain(serviceEntity)
         }
     }
+
+    fun save(service: Service) =
+        serviceMapper.toEntity(service).let {
+            serviceRepository.save(it)
+        }
+
+    fun valid(service: Service) =
+        serviceRepository.existsByApiServiceIdAndProviderIdOrName(
+            service.apiServiceId!!, service.providerId!!, service.name!!)
 }

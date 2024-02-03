@@ -8,4 +8,5 @@ interface ServiceRepository: JpaRepository<ServiceEntity, Int> {
 
     fun findAllByClientIdAndCategoryIdOrderById(clientId: UUID, categoryId: Int): List<ServiceEntity>
     fun findAllByClientIdOrderById(clientId: UUID): List<ServiceEntity>
+    fun existsByApiServiceIdAndProviderIdOrName(apiServiceId: Int, providerId: Int, name: String): Boolean
 }

@@ -7,4 +7,4 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = false)
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Service
+annotation class CommandService

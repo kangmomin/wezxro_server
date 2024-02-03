@@ -3,12 +3,12 @@ package com.hwalaon.wezxro_server.domain.account.service
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
-import com.hwalaon.wezxro_server.global.annotation.Service
+import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import org.springframework.security.crypto.password.PasswordEncoder
 
-@Service
+@CommandService
 class QueryAccountService(
     private val accountPersistenceAdapter: AccountPersistenceAdapter,
     private val passwordEncoder: PasswordEncoder,
