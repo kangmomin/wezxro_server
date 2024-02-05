@@ -4,9 +4,10 @@ import com.hwalaon.wezxro_server.domain.category.controller.request.SaveCategory
 import com.hwalaon.wezxro_server.domain.category.service.CommandCategoryService
 import com.hwalaon.wezxro_server.domain.category.service.QueryCategoryService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RequestMapping("/c")
 @RestController
@@ -15,10 +16,11 @@ class CategoryController(
     private val commandCategoryService: CommandCategoryService
 ) {
 
-    @GetMapping("/list/{clientId}")
-    fun categoryList(@PathVariable clientId: UUID) =
+    @GetMapping("/list")
+    fun categoryList(
+        @AuthenticationPrincipal userInfo: PrincipalDetails) =
         BasicResponse.ok(
-            queryCategoryService.categoryList(clientId))
+            queryCategoryService.categoryList(userInfo.account.clientId!!))
 
     @PostMapping("/add")
     fun categoryAdd(@RequestBody @Valid categoryRequest: SaveCategoryRequest) =
