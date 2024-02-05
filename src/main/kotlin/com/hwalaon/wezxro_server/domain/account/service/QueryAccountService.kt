@@ -4,8 +4,10 @@ import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
 import com.hwalaon.wezxro_server.global.annotation.Service
+import com.hwalaon.wezxro_server.global.security.exception.ForbiddenException
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 
 @Service
@@ -25,6 +27,13 @@ class QueryAccountService(
         return jwtGenerator.generate(account.userId!!)
     }
 
-    fun detail(id: Int) =
+    fun detail(id: Int, userInfo: PrincipalDetails) =
+        userInfo.let {
+            if (userInfo.account.userId == id)
+                accountPersistenceAdapter.findById(id)
+            else throw ForbiddenException()
+        }
+
+    fun adminDetail(id: Int) =
         accountPersistenceAdapter.findById(id)
 }

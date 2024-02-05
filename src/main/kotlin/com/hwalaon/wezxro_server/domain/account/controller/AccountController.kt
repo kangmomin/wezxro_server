@@ -7,7 +7,9 @@ import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -28,8 +30,10 @@ class AccountController(
         }
 
     @PostMapping("/detail/{id}")
-    fun accountDetails(@PathVariable("id") id: Int) =
+    fun accountDetails(
+        @PathVariable("id") id: Int,
+        @AuthenticationPrincipal userInfo: PrincipalDetails) =
         BasicResponse.ok(
             AccountDetailResponse.fromDomain(
-                queryAccountService.detail(id)))
+                queryAccountService.detail(id, userInfo)))
 }

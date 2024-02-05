@@ -27,10 +27,9 @@ class AccountAdminController(
             BasicResponse.okMsg("삭제되었습니다.")
         }
 
-
     @PostMapping("/detail/{id}")
     fun accountDetails(@PathVariable("id") id: Int) =
         BasicResponse.ok(
             AccountDetailResponse.fromDomain(
-                queryAccountService.detail(id)))
+                queryAccountService.adminDetail(id)))
 }
