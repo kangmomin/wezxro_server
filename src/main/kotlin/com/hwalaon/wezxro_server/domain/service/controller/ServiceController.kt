@@ -22,6 +22,4 @@ class ServiceController(
             BasicResponse.ok(
                 ServiceDetailResponse.fromDomain(it))
         }
-
-
 }

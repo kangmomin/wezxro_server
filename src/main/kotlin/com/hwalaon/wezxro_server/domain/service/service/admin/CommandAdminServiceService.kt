@@ -14,4 +14,7 @@ class CommandAdminServiceService(
             throw ServiceConflictException()
         servicePersistenceAdapter.save(service)
     }
+
+    fun delete(id: Int) =
+        servicePersistenceAdapter.delete(id)
 }

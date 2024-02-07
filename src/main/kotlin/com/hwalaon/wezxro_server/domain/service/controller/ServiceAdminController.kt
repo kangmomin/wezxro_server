@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -36,4 +37,11 @@ class ServiceAdminController(
         commandAdminServiceService.add(addServiceRequest.toDomain()).let {
             BasicResponse.created(MsgResponse(""))
         }
+
+    @DeleteMapping("/delete/{id}")
+    fun deleteService(
+        @RequestParam("id") id: Int
+    ) = commandAdminServiceService.delete(id).run {
+        BasicResponse.okMsg("서비스를 삭제하였습니다.")
+    }
 }
