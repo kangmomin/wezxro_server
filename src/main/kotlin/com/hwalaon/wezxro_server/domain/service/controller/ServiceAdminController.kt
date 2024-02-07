@@ -7,13 +7,7 @@ import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/s/admin")
@@ -40,7 +34,7 @@ class ServiceAdminController(
 
     @DeleteMapping("/delete/{id}")
     fun deleteService(
-        @RequestParam("id") id: Int
+        @PathVariable id: Int
     ) = commandAdminServiceService.delete(id).run {
         BasicResponse.ok("서비스를 삭제하였습니다.")
     }
