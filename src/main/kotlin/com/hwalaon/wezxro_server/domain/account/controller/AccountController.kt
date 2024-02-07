@@ -2,13 +2,14 @@ package com.hwalaon.wezxro_server.domain.account.controller
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
-import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateAccountRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -28,21 +29,11 @@ class AccountController(
             BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
         }
 
-    @PatchMapping("/update")
-    fun updateInfo(@RequestBody @Valid updateAccountRequest: UpdateAccountRequest) =
-        commandAccountService.updateAccountInfo(updateAccountRequest.toDomain()).run {
-            BasicResponse.okMsg("계정 정보를 성공적으로 변경하였습니다.")
-        }
-
-    @PostMapping("/delete/{id}")
-    fun delete(@PathVariable("id") id: Int) =
-        commandAccountService.deleteAccount(id).run {
-            BasicResponse.okMsg("삭제되었습니다.")
-        }
-
     @PostMapping("/detail/{id}")
-    fun accountDetails(@PathVariable("id") id: Int) =
+    fun accountDetails(
+        @PathVariable("id") id: Int,
+        @AuthenticationPrincipal userInfo: PrincipalDetails) =
         BasicResponse.ok(
             AccountDetailResponse.fromDomain(
-                queryAccountService.detail(id)))
+                queryAccountService.detail(id, userInfo)))
 }
