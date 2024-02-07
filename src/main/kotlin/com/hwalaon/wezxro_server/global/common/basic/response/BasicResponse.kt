@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.global.common.basic.response
 
 import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
 data class BasicResponse<T> (
@@ -21,6 +22,14 @@ data class BasicResponse<T> (
         fun ok(data: Any) = ResponseEntity
             .status(200)
             .body(data)
+
+        fun customStatus(data: Any?, status: HttpStatus) = ResponseEntity
+            .status(status)
+            .body(data)
+
+        fun customStatus(data: String, status: HttpStatus) = ResponseEntity
+            .status(status)
+            .body(MsgResponse(data))
 
         fun okMsg(msg: String) = ResponseEntity
             .status(200)
