@@ -24,7 +24,7 @@ class CategoryAdminController(
     @PostMapping("/delete/{id}")
     fun categoryDelete(@PathVariable("id") id: Long) =
         commandCategoryService.delete(id).run {
-            BasicResponse.okMsg("서비스를 삭제하였습니다.")
+            BasicResponse.ok("서비스를 삭제하였습니다.")
         }
 
     @PostMapping("/update/{id}")
@@ -33,6 +33,6 @@ class CategoryAdminController(
         commandCategoryService.updateCategory(
             categoryId,
             categoryRequest.toDomain()).run {
-            BasicResponse.okMsg("서비스를 수정하였습니다.")
+            BasicResponse.ok("서비스를 수정하였습니다.")
         }
 }

@@ -18,13 +18,13 @@ class AccountAdminController(
     @PatchMapping("/update")
     fun updateInfo(@RequestBody @Valid updateAccountRequest: UpdateAccountRequest) =
         commandAccountService.updateAccountInfo(updateAccountRequest.toDomain()).run {
-            BasicResponse.okMsg("계정 정보를 성공적으로 변경하였습니다.")
+            BasicResponse.ok("계정 정보를 성공적으로 변경하였습니다.")
         }
 
     @DeleteMapping("/delete/{id}")
     fun delete(@PathVariable("id") id: Int) =
         commandAccountService.deleteAccount(id).run {
-            BasicResponse.okMsg("삭제되었습니다.")
+            BasicResponse.ok("삭제되었습니다.")
         }
 
     @PostMapping("/detail/{id}")

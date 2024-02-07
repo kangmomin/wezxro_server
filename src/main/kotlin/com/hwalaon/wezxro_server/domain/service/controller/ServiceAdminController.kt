@@ -42,6 +42,6 @@ class ServiceAdminController(
     fun deleteService(
         @RequestParam("id") id: Int
     ) = commandAdminServiceService.delete(id).run {
-        BasicResponse.okMsg("서비스를 삭제하였습니다.")
+        BasicResponse.ok("서비스를 삭제하였습니다.")
     }
 }

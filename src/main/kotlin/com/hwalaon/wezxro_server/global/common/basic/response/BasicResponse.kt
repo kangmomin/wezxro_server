@@ -23,6 +23,10 @@ data class BasicResponse<T> (
             .status(200)
             .body(data)
 
+        fun ok(msg: String) = ResponseEntity
+            .status(200)
+            .body(MsgResponse(msg))
+
         fun customStatus(data: Any?, status: HttpStatus) = ResponseEntity
             .status(status)
             .body(data)
@@ -31,9 +35,6 @@ data class BasicResponse<T> (
             .status(status)
             .body(MsgResponse(data))
 
-        fun okMsg(msg: String) = ResponseEntity
-            .status(200)
-            .body(MsgResponse(msg))
 
         fun created(data: Any?) = ResponseEntity
             .status(201)
