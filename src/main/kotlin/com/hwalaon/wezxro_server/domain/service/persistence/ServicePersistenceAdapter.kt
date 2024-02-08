@@ -2,7 +2,6 @@ package com.hwalaon.wezxro_server.domain.service.persistence
 
 import com.hwalaon.wezxro_server.domain.service.mapper.ServiceMapper
 import com.hwalaon.wezxro_server.domain.service.model.Service
-import com.hwalaon.wezxro_server.domain.service.persistence.entity.ServiceEntity
 import com.hwalaon.wezxro_server.domain.service.persistence.repository.ServiceRepository
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.repository.findByIdOrNull
