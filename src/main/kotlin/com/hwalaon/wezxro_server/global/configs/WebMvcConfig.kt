@@ -10,14 +10,9 @@ class WebMvcConfig : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost")
+            .allowedOriginPatterns("*")
             .allowCredentials(true)
             .exposedHeaders("X-Auth-Token", "X-Refresh-Token")
-            .allowedMethods(*ALLOWED_METHOD_NAMES.split(",".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray())
-    }
-
-    companion object {
-        const val ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH"
+            .allowedMethods("*")
     }
 }
