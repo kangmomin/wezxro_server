@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.global.security.handler.CustomAccessDeniedHandl
 import com.hwalaon.wezxro_server.global.security.handler.CustomAuthenticationEntryPoint
 import com.hwalaon.wezxro_server.global.security.jwt.JwtAuthFilter
 import com.hwalaon.wezxro_server.global.security.jwt.JwtParser
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -20,7 +21,8 @@ import org.springframework.web.cors.CorsUtils
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val jwtParser: JwtParser
+    private val jwtParser: JwtParser,
+    private val principalDetailsService: PrincipalDetailsService
 ) {
 
     @Bean
@@ -42,7 +44,7 @@ class SecurityConfig(
                     .accessDeniedHandler(CustomAccessDeniedHandler())
             }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-            .addFilterBefore(JwtAuthFilter(jwtParser), UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(JwtAuthFilter(jwtParser, principalDetailsService), UsernamePasswordAuthenticationFilter::class.java)
             .addFilterBefore(ExceptionFilter(), JwtAuthFilter::class.java)
 
         return http.build()

@@ -26,7 +26,7 @@ class ExceptionFilter: OncePerRequestFilter() {
     }
 
     private fun exceptionToResponse(errorCode: ErrorCode, response: HttpServletResponse) {
-        response.status = errorCode.code.value()
+        response.status = errorCode.status.value()
         response.contentType = "application/json"
         response.characterEncoding = "utf-8"
         val errorResponse = MsgResponse(errorCode.msg)

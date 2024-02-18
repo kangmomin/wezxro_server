@@ -30,7 +30,7 @@ class JwtAuthFilter(
 
             filterChain.doFilter(request, response)
         } catch (e: AccountNotFoundException) {
-            response.sendError(e.code.code.value(), e.code.msg)
+            response.sendError(e.code.status.value(), e.code.msg)
         }
     }
 }

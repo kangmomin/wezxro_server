@@ -12,32 +12,74 @@ data class BasicResponse<T> (
 
     companion object {
         fun error(errorInfo: ErrorCode) = ResponseEntity
-            .status(errorInfo.code)
-            .body(MsgResponse(errorInfo.msg))
+            .status(errorInfo.status)
+            .body(
+                BaseResponse(
+                    status = BaseStatus.ERROR,
+                    data = BaseErrorResponse(
+                        message = errorInfo.msg,
+                        code = errorInfo.code
+                    )
+                ))
 
-        fun ok(data: Any, headers: HttpHeaders?) = ResponseEntity
-            .status(200)
-            .headers(headers)
-            .body(data)
-        fun ok(data: Any) = ResponseEntity
-            .status(200)
-            .body(data)
+        fun ok(data: Any, headers: HttpHeaders?) =
+            ResponseEntity
+                .status(200)
+                .headers(headers)
+                .body(BaseResponse(
+                    status = BaseStatus.SUCCESS,
+                    data = data
+                ))
+        fun ok(data: Any) =
+            ResponseEntity
+                .status(200)
+                .body(
+                    BaseResponse(
+                        status = BaseStatus.SUCCESS,
+                        data = data
+                    ))
 
         fun ok(msg: String) = ResponseEntity
             .status(200)
-            .body(MsgResponse(msg))
+            .body(BaseResponse(
+                status = BaseStatus.SUCCESS,
+                data = MsgResponse(msg)
+            ))
 
-        fun customStatus(data: Any?, status: HttpStatus) = ResponseEntity
-            .status(status)
-            .body(data)
+        fun customStatus(data: Any, httpStatus: HttpStatus, baseStatus: BaseStatus) = ResponseEntity
+            .status(httpStatus)
+            .body(BaseResponse(
+                status = baseStatus,
+                data = data
+            ))
 
-        fun customStatus(data: String, status: HttpStatus) = ResponseEntity
-            .status(status)
-            .body(MsgResponse(data))
+        fun customStatus(data: String, httpStatus: HttpStatus, baseStatus: BaseStatus) = ResponseEntity
+            .status(httpStatus)
+            .body(BaseResponse(
+                status = baseStatus,
+                data = MsgResponse(data)
+            ))
 
 
-        fun created(data: Any?) = ResponseEntity
+        fun created(data: Any) = ResponseEntity
             .status(201)
-            .body(data)
+            .body(BaseResponse(
+                status = BaseStatus.SUCCESS,
+                data = data
+            ))
+    }
+
+    class BaseResponse (
+        val status: BaseStatus,
+        val data: Any,
+    )
+
+    class BaseErrorResponse (
+        val message: String,
+        val code: String
+    )
+
+    enum class BaseStatus {
+        SUCCESS, ERROR
     }
 }
