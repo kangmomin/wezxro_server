@@ -10,6 +10,7 @@ enum class ErrorCode(
     FORBIDDEN_ERROR("접근 권한이 없습니다.", HttpStatus.FORBIDDEN, "0002"),
     UNAUTHORIZED_ERROR("로그인이 필요한 작업입니다.", HttpStatus.UNAUTHORIZED, "0001"),
     UNEXPECTED_ERROR("서버에서 오류가 발생하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR, "500"),
+    PAGE_NOT_FOUND("엔드포인트를 찾지 못했습니다.", HttpStatus.NOT_FOUND, "404"),
 
     NOT_ENOUGH_DATA_ERROR("필수 요청 데이터가 정상적으로 입력되지 않았습니다.", HttpStatus.BAD_REQUEST, "4001"),
     NON_BODY_ERROR("데이터가 정상적으로 들어오지 않았습니다.", HttpStatus.BAD_REQUEST, "4002"),
@@ -25,4 +26,7 @@ enum class ErrorCode(
 
     // MC - Master Client(Master 단의 C이기에)
     CLIENT_CONFLICT_ERROR("이미 존재하는 클라이언트입니다.", HttpStatus.CONFLICT, "MC209"),
+
+    // TK - ToKen
+    TOKEN_NOT_VALID_ERROR("토큰 값이 정상적이지 않습니다.", HttpStatus.BAD_REQUEST, "TK400"),
 }
