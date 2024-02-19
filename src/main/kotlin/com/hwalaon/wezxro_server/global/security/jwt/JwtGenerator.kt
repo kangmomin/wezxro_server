@@ -27,13 +27,14 @@ class JwtGenerator(
     }
 
     fun generateOnlyAccessToken(userId: Int): String =
-        "${jwtProperties.jwtPrefix} ${generateToken(userId, jwtProperties.accessKey, jwtProperties.accessExp)}"
+        "${jwtProperties.jwtPrefix}${generateToken(userId, jwtProperties.accessKey, jwtProperties.accessExp)}"
 
     private fun generateToken(userId: Int, secret: Key, expiredAt: Int) =
-        Jwts.builder()
-            .signWith(secret, SignatureAlgorithm.HS512)
-            .setSubject(userId.toString())
-            .setIssuedAt(Date())
-            .setExpiration(Date(System.currentTimeMillis() + expiredAt * 1000))
-            .compact()
+        "${jwtProperties.jwtPrefix}${
+            Jwts.builder()
+                .signWith(secret, SignatureAlgorithm.HS512)
+                .setSubject(userId.toString())
+                .setIssuedAt(Date())
+                .setExpiration(Date(System.currentTimeMillis() + expiredAt * 1000))
+                .compact()}"
 }
