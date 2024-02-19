@@ -4,7 +4,9 @@ import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.client.controller.request.AddClientRequest
 import com.hwalaon.wezxro_server.global.common.client.controller.response.AddClientResponse
 import com.hwalaon.wezxro_server.global.common.client.service.ClientService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -15,7 +17,7 @@ class ClientController(
 ) {
 
     @PostMapping("/add")
-    fun addClient(addClientRequest: AddClientRequest) =
+    fun addClient(@RequestBody @Valid addClientRequest: AddClientRequest) =
         clientService.addClient(addClientRequest.domain).let {
             BasicResponse.created(
                 AddClientResponse(it!!))
