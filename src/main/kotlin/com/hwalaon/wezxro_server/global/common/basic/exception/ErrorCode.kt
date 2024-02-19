@@ -16,9 +16,13 @@ enum class ErrorCode(
 
     ACCOUNT_ALREADY_JOINED_ERROR("해당 이메일은 이미 가입이 완료되었습니다.", HttpStatus.CONFLICT, "A209"),
     ACCOUNT_NOT_FOUND_ERROR("계정을 찾을 수 없습니다.", HttpStatus.NO_CONTENT, "A204"),
+    // Account Login - 계정 관련이라 A
     REFRESH_TOKEN_NOT_FOUND("로그인 정보를 찾을 수 없습니다.", HttpStatus.NO_CONTENT, "AL204"),
 
     CATEGORY_NOT_FOUND_ERROR("카테고리를 찾을 수 없습니다.", HttpStatus.NO_CONTENT, "C204"),
     
     SERVICE_CONFLICT_ERROR("이미 존재하는 서비스 입니다", HttpStatus.CONFLICT, "S209"),
+
+    // MC - Master Client(Master 단의 C이기에)
+    CLIENT_CONFLICT_ERROR("이미 존재하는 클라이언트입니다.", HttpStatus.CONFLICT, "MC209"),
 }
