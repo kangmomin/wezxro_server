@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.global.security.jwt
 
+import com.hwalaon.wezxro_server.global.security.exception.TokenNotValidException
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetailsService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -33,8 +34,8 @@ class JwtParser(
             .let { it ?: return null }
             .let {
                 if (it.startsWith(jwtProperties.jwtPrefix))
-                    it.replace(jwtProperties.jwtPrefix, "")
-                else null
+                    it.replace(jwtProperties.jwtPrefix, "").trim()
+                else throw TokenNotValidException()
             }
 
     /**
