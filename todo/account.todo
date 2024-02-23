@@ -10,7 +10,7 @@ user info(logined) x
 update x
 delete x
 login to that user(view user)
-static rate(전체 감가액)
+static rate(전체 감가액) x
 custom rate(개별 감가액)
 userList x
 userCustomRate with userInfoById

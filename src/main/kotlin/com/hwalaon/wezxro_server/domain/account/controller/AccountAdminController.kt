@@ -2,13 +2,11 @@ package com.hwalaon.wezxro_server.domain.account.controller
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateAccountRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
-import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
-import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -26,8 +24,11 @@ class AccountAdminController(
         }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable("id") id: Int) =
-        commandAccountService.deleteAccount(id).run {
+    fun delete(
+        @PathVariable("id") id: Int,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ) =
+        commandAccountService.deleteAccount(id, principalDetails.account.clientId!!).run {
             BasicResponse.ok("삭제되었습니다.")
         }
 
@@ -44,4 +45,10 @@ class AccountAdminController(
     fun accountList(
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ) = BasicResponse.ok(queryAccountService.list(principalDetails.account.clientId))
+
+    @GetMapping("/static-rate/{userId}")
+    fun staticRate(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable userId: Int
+    ) = BasicResponse.ok(queryAccountService.getStaticRate(principalDetails.account.clientId, userId))
 }

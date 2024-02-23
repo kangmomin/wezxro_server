@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.domain.account.service
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
+import com.hwalaon.wezxro_server.domain.account.controller.response.StaticRateResponse
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
@@ -62,4 +63,9 @@ class QueryAccountService(
             totalCnt = activateCnt + deactivateCnt
         )
     }
+
+    fun getStaticRate(clientId: UUID?, userId: Int) =
+        accountPersistenceAdapter.findById(userId, clientId!!).let {
+            StaticRateResponse.fromDomain(it)
+        }
 }
