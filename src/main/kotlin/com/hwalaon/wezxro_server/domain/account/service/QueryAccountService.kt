@@ -23,7 +23,7 @@ class QueryAccountService(
     fun login(loginRequest: LoginRequest): TokenDto {
         val account = accountPersistenceAdapter.login(loginRequest)
 
-        if (!passwordEncoder.matches(loginRequest.password, account.password) &&
+        if (passwordEncoder.matches(loginRequest.password, account.password).not() ||
             account.userId == null)
             throw AccountNotFoundException()
 
