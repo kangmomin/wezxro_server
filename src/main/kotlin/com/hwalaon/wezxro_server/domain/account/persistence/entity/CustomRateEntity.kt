@@ -1,7 +1,5 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.entity
 
-import com.hwalaon.wezxro_server.domain.account.model.Account
-import com.hwalaon.wezxro_server.domain.account.persistence.entity.AccountEntity
 import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
 

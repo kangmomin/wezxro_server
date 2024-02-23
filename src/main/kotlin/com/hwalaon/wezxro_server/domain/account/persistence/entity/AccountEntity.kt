@@ -5,7 +5,6 @@ import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Entity
 @Table(name="account")
