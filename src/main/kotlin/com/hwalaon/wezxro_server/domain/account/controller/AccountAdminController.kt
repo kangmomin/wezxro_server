@@ -21,7 +21,7 @@ class AccountAdminController(
             BasicResponse.ok("계정 정보를 성공적으로 변경하였습니다.")
         }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     fun delete(@PathVariable("id") id: Int) =
         commandAccountService.deleteAccount(id).run {
             BasicResponse.ok("삭제되었습니다.")
