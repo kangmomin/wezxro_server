@@ -1,0 +1,16 @@
+--------- account ---------
+login x
+join x
+demo-login 
+logout
+user info(logined) x
+
+--------admin account---------
+update x
+delete x
+login to that user(view user)
+static rate(전체 감가액)
+custom rate(개별 감가액)
+userList
+userCustomRate with userInfoById
+user detail x
