@@ -8,6 +8,7 @@ import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.exception.NotEnoughDataException
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.util.*
 
 @CommandService
 class CommandAccountService(
@@ -43,8 +44,8 @@ class CommandAccountService(
         accountPersistenceAdapter.isExistAccount(account.email!!, account.clientId!!) ||
         accountPersistenceAdapter.isExistName(account.name!!, account.clientId!!)
 
-    fun deleteAccount(id: Int) {
-        val account = accountPersistenceAdapter.findById(id)
+    fun deleteAccount(id: Int, clientId: UUID) {
+        val account = accountPersistenceAdapter.findById(id, clientId)
         account.status = BasicStatus.DELETED
     }
 }
