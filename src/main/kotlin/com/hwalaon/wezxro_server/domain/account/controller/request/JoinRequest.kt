@@ -26,6 +26,7 @@ data class JoinRequest (
             status = null,
             userId = null,
             random = null,
-            clientId = key
+            clientId = key,
+            staticRate = 0
         )
 }

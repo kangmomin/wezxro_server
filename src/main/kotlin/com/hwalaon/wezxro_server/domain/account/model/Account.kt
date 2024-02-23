@@ -12,5 +12,6 @@ data class Account(
     var random: String?,
     var money: Double?,
     var status: BasicStatus?,
-    var clientId: UUID?
+    var clientId: UUID?,
+    var staticRate: Long?,
 ): BasicTime()

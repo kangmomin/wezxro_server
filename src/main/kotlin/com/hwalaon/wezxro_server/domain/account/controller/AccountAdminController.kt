@@ -2,10 +2,14 @@ package com.hwalaon.wezxro_server.domain.account.controller
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateAccountRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
+import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -32,4 +36,9 @@ class AccountAdminController(
         BasicResponse.ok(
             AccountDetailResponse.fromDomain(
                 queryAccountService.adminDetail(id)))
+
+    @GetMapping("/list")
+    fun accountList(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ) = BasicResponse.ok(queryAccountService.list(principalDetails.account.clientId))
 }

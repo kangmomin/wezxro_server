@@ -33,5 +33,8 @@ class AccountEntity(
     var status: BasicStatus?,
 
     @Column(nullable = false)
-    var clientId: UUID?
+    var clientId: UUID?,
+
+    @Column(nullable = false)
+    var staticRate: Long?,
 ): BasicTimeEntity()

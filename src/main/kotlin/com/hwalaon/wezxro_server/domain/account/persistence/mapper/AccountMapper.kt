@@ -16,7 +16,8 @@ class AccountMapper: BasicMapper<Account, AccountEntity> {
             status = entity.status,
             email = entity.email,
             money = entity.money,
-            clientId = entity.clientId
+            clientId = entity.clientId,
+            staticRate = entity.staticRate
         ).let {
             it.createdAt = entity.createdAt
             it.updatedAt = entity.updatedAt
@@ -32,7 +33,8 @@ class AccountMapper: BasicMapper<Account, AccountEntity> {
             status = domain.status,
             email = domain.email,
             money = domain.money,
-            clientId = domain.clientId
+            clientId = domain.clientId,
+            staticRate = domain.staticRate
         ).let {
             it.createdAt = domain.createdAt
             it.updatedAt = domain.updatedAt

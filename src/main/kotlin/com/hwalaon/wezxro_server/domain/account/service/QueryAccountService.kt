@@ -1,14 +1,16 @@
 package com.hwalaon.wezxro_server.domain.account.service
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
+import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
-import com.hwalaon.wezxro_server.global.security.exception.ForbiddenException
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.util.*
 
 @ReadOnlyService
 class QueryAccountService(
@@ -32,4 +34,32 @@ class QueryAccountService(
 
     fun adminDetail(id: Int) =
         accountPersistenceAdapter.findById(id)
+
+    fun list(clientId: UUID?): AccountListResponse {
+        val accountList = accountPersistenceAdapter.list(clientId!!).map {
+            AccountListResponse.AccountDto(
+                userId = it.userId!!,
+                name = it.name!!,
+                email = it.email!!,
+                status = it.status!!,
+                role = "user",
+                createdAt = it.createdAt!!,
+                staticRate = it.staticRate!!,
+                balance = it.money!!,
+            )
+        }
+        var activateCnt: Long = 0
+        var deactivateCnt: Long = 0
+
+        accountList.forEach {
+            if (it.status == BasicStatus.ACTIVE) ++activateCnt else ++deactivateCnt
+        }
+
+        return AccountListResponse(
+            accountList = accountList,
+            activateCnt = activateCnt,
+            deactivateCnt = deactivateCnt,
+            totalCnt = activateCnt + deactivateCnt
+        )
+    }
 }

@@ -35,4 +35,5 @@ class AccountController(
         BasicResponse.ok(
             AccountDetailResponse.fromDomain(
                 queryAccountService.detail(userInfo)))
+
 }

@@ -6,6 +6,7 @@ import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.ValidAccountRepository
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
@@ -17,7 +18,7 @@ class AccountPersistenceAdapter(
     private val validAccountRepository: ValidAccountRepository
 ) {
     fun login(loginRequest: LoginRequest) =
-        accountEntityRepository.findOneByEmailAndAndClientId(
+        accountEntityRepository.findOneByEmailAndClientId(
             loginRequest.email,
             loginRequest.key
         ).let {
@@ -48,4 +49,10 @@ class AccountPersistenceAdapter(
         accountMapper.toDomain(
         accountEntityRepository.findByIdOrNull(id)
             ?: throw AccountNotFoundException())
+
+    fun list(clientId: UUID) =
+        accountEntityRepository
+            .findAllByClientIdAndStatusNot(clientId, BasicStatus.DELETED).map {
+                accountMapper.toDomain(it)
+            }
 }
