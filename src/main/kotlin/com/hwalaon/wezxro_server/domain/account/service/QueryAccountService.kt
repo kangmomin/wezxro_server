@@ -30,10 +30,10 @@ class QueryAccountService(
     }
 
     fun detail(userInfo: PrincipalDetails) =
-        accountPersistenceAdapter.findById(userInfo.account.userId ?: 0)
+        accountPersistenceAdapter.findById(userInfo.account.userId ?: 0, userInfo.account.clientId!!)
 
-    fun adminDetail(id: Int) =
-        accountPersistenceAdapter.findById(id)
+    fun adminDetail(id: Int, clientId: UUID) =
+        accountPersistenceAdapter.findById(id, clientId)
 
     fun list(clientId: UUID?): AccountListResponse {
         val accountList = accountPersistenceAdapter.list(clientId!!).map {

@@ -32,10 +32,13 @@ class AccountAdminController(
         }
 
     @PostMapping("/detail/{id}")
-    fun accountDetails(@PathVariable("id") id: Int) =
+    fun accountDetails(
+        @PathVariable("id") id: Int,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ) =
         BasicResponse.ok(
             AccountDetailResponse.fromDomain(
-                queryAccountService.adminDetail(id)))
+                queryAccountService.adminDetail(id, principalDetails.account.clientId!!)))
 
     @GetMapping("/list")
     fun accountList(
