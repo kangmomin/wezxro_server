@@ -47,7 +47,7 @@ class AccountPersistenceAdapter(
 
     fun findById(id: Int, clientId: UUID) =
         accountMapper.toDomain(
-        accountEntityRepository.findByIdOrNull(id)
+        accountEntityRepository.findByUserIdAndClientId(id, clientId)
             ?: throw AccountNotFoundException())
 
     fun list(clientId: UUID) =
