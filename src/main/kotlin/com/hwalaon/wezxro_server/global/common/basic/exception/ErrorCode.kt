@@ -29,4 +29,5 @@ enum class ErrorCode(
 
     // TK - ToKen
     TOKEN_NOT_VALID_ERROR("토큰 값이 정상적이지 않습니다.", HttpStatus.BAD_REQUEST, "TK400"),
+    JWT_EXPIRED_ERROR("토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED, "TK401"),
 }

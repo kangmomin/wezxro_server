@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
 import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
+import io.jsonwebtoken.ExpiredJwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -19,6 +20,8 @@ class ExceptionFilter: OncePerRequestFilter() {
             filterChain.doFilter(request, response)
         } catch (e: BasicException) {
             exceptionToResponse(e.errorCode, response)
+        } catch (e: ExpiredJwtException) {
+            exceptionToResponse(ErrorCode.JWT_EXPIRED_ERROR, response)
         } catch (e: Exception) {
             e.printStackTrace()
             exceptionToResponse(ErrorCode.UNEXPECTED_ERROR, response)
