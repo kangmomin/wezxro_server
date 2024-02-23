@@ -66,11 +66,8 @@ class AccountPersistenceAdapter(
             account.customRate?.removeIf { cr -> cr.id !in ids }
 
             addCustomRateRequest.customRates.forEach {addCustomRate ->
-                var processed = false
-
                 if (addCustomRate.crId == null) {
                     account.addCustomRate(addCustomRate)
-                    processed = true
                     return@forEach
                 }
 
@@ -79,7 +76,6 @@ class AccountPersistenceAdapter(
                 account.customRate = account.customRate?.map { cr ->
                     if (cr.id != addCustomRate.crId) return@map cr
                     cr.rate = addCustomRate.rate ?: 0F
-                    processed = true
 
                     return@map cr
                 }?.toMutableList()
