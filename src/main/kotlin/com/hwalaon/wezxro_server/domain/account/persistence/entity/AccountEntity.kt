@@ -1,9 +1,11 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.entity
 
+import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Entity
 @Table(name="account")
@@ -37,4 +39,24 @@ class AccountEntity(
 
     @Column(nullable = false)
     var staticRate: Long?,
-): BasicTimeEntity()
+
+    @OneToMany(
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.ALL],
+        mappedBy = "user",
+        orphanRemoval = true)
+    var customRate: MutableList<CustomRateEntity>?,
+): BasicTimeEntity() {
+    fun addCustomRate(addCustomRateList: AddCustomRateRequest.Companion.AddCustomRateList) {
+        val customRateEntity = CustomRateEntity(
+            id = null,
+            serviceId = addCustomRateList.serviceId,
+            rate = addCustomRateList.rate ?: 0F,
+            user = this
+        )
+
+        if (this.customRate == null) this.customRate = mutableListOf()
+
+        this.customRate?.add(customRateEntity)
+    }
+}

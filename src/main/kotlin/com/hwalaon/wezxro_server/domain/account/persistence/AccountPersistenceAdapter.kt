@@ -1,13 +1,14 @@
 package com.hwalaon.wezxro_server.domain.account.persistence
 
+import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
+import com.hwalaon.wezxro_server.domain.account.persistence.repository.CustomRateRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.ValidAccountRepository
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -15,7 +16,8 @@ import java.util.*
 class AccountPersistenceAdapter(
     private val accountEntityRepository: AccountEntityRepository,
     private val accountMapper: AccountMapper,
-    private val validAccountRepository: ValidAccountRepository
+    private val validAccountRepository: ValidAccountRepository,
+    private val customRateRepository: CustomRateRepository,
 ) {
     fun login(loginRequest: LoginRequest) =
         accountEntityRepository.findOneByEmailAndClientId(
@@ -55,4 +57,32 @@ class AccountPersistenceAdapter(
             .findAllByClientIdAndStatusNot(clientId, BasicStatus.DELETED).map {
                 accountMapper.toDomain(it)
             }
+
+    fun storeCustomRate(userId: Int, clientId: UUID, addCustomRateRequest: AddCustomRateRequest) =
+        accountEntityRepository.findByUserIdAndClientId(userId, clientId).let { account ->
+            account ?: throw AccountNotFoundException()
+
+            val ids = addCustomRateRequest.customRates.map { it.crId }
+            account.customRate?.removeIf { cr -> cr.id !in ids }
+
+            addCustomRateRequest.customRates.forEach {addCustomRate ->
+                var processed = false
+
+                if (addCustomRate.crId == null) {
+                    account.addCustomRate(addCustomRate)
+                    processed = true
+                    return@forEach
+                }
+
+                if (account.customRate == null) account.customRate = mutableListOf()
+
+                account.customRate = account.customRate?.map { cr ->
+                    if (cr.id != addCustomRate.crId) return@map cr
+                    cr.rate = addCustomRate.rate ?: 0F
+                    processed = true
+
+                    return@map cr
+                }?.toMutableList()
+            }
+        }
 }

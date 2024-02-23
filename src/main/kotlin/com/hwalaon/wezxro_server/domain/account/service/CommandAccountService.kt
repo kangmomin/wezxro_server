@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.service
 
+import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountAlreadyJoinedException
 import com.hwalaon.wezxro_server.domain.account.model.Account
@@ -47,5 +48,9 @@ class CommandAccountService(
     fun deleteAccount(id: Int, clientId: UUID) {
         val account = accountPersistenceAdapter.findById(id, clientId)
         account.status = BasicStatus.DELETED
+    }
+
+    fun storeCustomRate(clientId: UUID, addCustomRateRequest: AddCustomRateRequest) {
+        accountPersistenceAdapter.storeCustomRate(addCustomRateRequest.userId, clientId, addCustomRateRequest)
     }
 }

@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.controller
 
+import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateAccountRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
@@ -51,4 +52,12 @@ class AccountAdminController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @PathVariable userId: Int
     ) = BasicResponse.ok(queryAccountService.getStaticRate(principalDetails.account.clientId, userId))
+
+    @PostMapping("/custom-rate")
+    fun addCustomRate(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody addCustomRateRequest: AddCustomRateRequest
+    ) = commandAccountService.storeCustomRate(principalDetails.account.clientId!!, addCustomRateRequest).run {
+        BasicResponse.ok("개별 감가액의 업데이트가 정상적으로 처리 되었습니다.")
+    }
 }

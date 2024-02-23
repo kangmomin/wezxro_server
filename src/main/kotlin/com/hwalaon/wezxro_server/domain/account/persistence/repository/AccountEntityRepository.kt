@@ -11,4 +11,6 @@ interface AccountEntityRepository: JpaRepository<AccountEntity, Int> {
 
     fun findOneByEmailAndClientId(email: String, clientId: UUID): AccountEntity?
     fun findAllByClientIdAndStatusNot(clientId: UUID, status: BasicStatus): List<AccountEntity>
+
+    fun findByUserIdAndClientId(userId: Int, clientId: UUID): AccountEntity?
 }

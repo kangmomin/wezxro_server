@@ -34,7 +34,8 @@ class AccountMapper: BasicMapper<Account, AccountEntity> {
             email = domain.email,
             money = domain.money,
             clientId = domain.clientId,
-            staticRate = domain.staticRate
+            staticRate = domain.staticRate,
+            customRate = null
         ).let {
             it.createdAt = domain.createdAt
             it.updatedAt = domain.updatedAt
