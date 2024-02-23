@@ -27,12 +27,8 @@ class QueryAccountService(
         return jwtGenerator.generate(account.userId!!)
     }
 
-    fun detail(id: Int, userInfo: PrincipalDetails) =
-        userInfo.let {
-            if (userInfo.account.userId == id)
-                accountPersistenceAdapter.findById(id)
-            else throw ForbiddenException()
-        }
+    fun detail(userInfo: PrincipalDetails) =
+        accountPersistenceAdapter.findById(userInfo.account.userId ?: 0)
 
     fun adminDetail(id: Int) =
         accountPersistenceAdapter.findById(id)

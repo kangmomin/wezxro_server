@@ -29,11 +29,10 @@ class AccountController(
             BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
         }
 
-    @PostMapping("/detail/{id}")
+    @PostMapping("/detail")
     fun accountDetails(
-        @PathVariable("id") id: Int,
         @AuthenticationPrincipal userInfo: PrincipalDetails) =
         BasicResponse.ok(
             AccountDetailResponse.fromDomain(
-                queryAccountService.detail(id, userInfo)))
+                queryAccountService.detail(userInfo)))
 }
