@@ -17,8 +17,8 @@ class ServicePersistenceAdapter(
     private val serviceMapper: ServiceMapper
 ) {
 
-    fun userServiceDetail(serviceId: Long, userId: Int) =
-        customServiceRepository.serviceDetail(userId, serviceId)
+    fun userServiceDetail(serviceId: Long, userId: Int, clientId: UUID) =
+        customServiceRepository.serviceDetail(userId, serviceId, clientId)
 
 
     fun serviceList(clientId: UUID, categoryId: Int): List<Service> {
@@ -44,4 +44,7 @@ class ServicePersistenceAdapter(
             if (it == null) throw ServiceNotFoundException()
             it.status = BasicStatus.DELETED
         }
+
+    fun userServiceDetailList(userId: Int?, clientId: UUID?) =
+        customServiceRepository.serviceDetailList(userId, clientId)
 }

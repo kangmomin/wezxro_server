@@ -18,7 +18,7 @@ class ServiceController(
     private val queryUserServiceService: QueryUserServiceService
 ) {
 
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     fun serviceDetail(
         @PathVariable id: Long,
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
@@ -27,5 +27,13 @@ class ServiceController(
                 ServiceDetailResponse.fromDomain(it))
         }
 
-
+    @GetMapping("/list")
+    fun serviceDetailList(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+    ) = queryUserServiceService.serviceDetailList(principalDetails.account).let {
+            BasicResponse.ok(
+                it.map { service ->
+                    ServiceDetailResponse.fromDomain(service)
+                })
+        }
 }

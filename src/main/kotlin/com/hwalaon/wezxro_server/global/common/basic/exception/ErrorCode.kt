@@ -22,7 +22,8 @@ enum class ErrorCode(
 
     CATEGORY_NOT_FOUND_ERROR("카테고리를 찾을 수 없습니다.", HttpStatus.OK, "C204"),
     
-    SERVICE_CONFLICT_ERROR("이미 존재하는 서비스 입니다", HttpStatus.CONFLICT, "S209"),
+    SERVICE_CONFLICT_ERROR("이미 존재하는 서비스 입니다.", HttpStatus.CONFLICT, "S209"),
+    SERVICE_NOT_FOUND_ERROR("서비스를 찾을 수 없습니다.", HttpStatus.OK, "S204"),
 
     // MC - Master Client(Master 단의 C이기에)
     CLIENT_CONFLICT_ERROR("이미 존재하는 클라이언트입니다.", HttpStatus.CONFLICT, "MC209"),

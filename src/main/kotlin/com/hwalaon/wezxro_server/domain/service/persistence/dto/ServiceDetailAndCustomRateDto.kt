@@ -4,6 +4,7 @@ import com.querydsl.core.annotations.QueryProjection
 
 data class ServiceDetailAndCustomRateDto
 @QueryProjection constructor(
+    val serviceId: Long,
     val name: String,
     val rate: Float,
     val min: Int,

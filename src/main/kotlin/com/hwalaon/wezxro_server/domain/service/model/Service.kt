@@ -18,4 +18,23 @@ class Service (
     var description: String?,
     var status: BasicStatus?,
     var originalRate: Float?
-): BasicTime()
+): BasicTime() {
+    companion object {
+        fun serviceDetail(serviceId: Long, rate: Float, name: String, description: String, min: Int, max: Int) =
+            Service(
+                id = serviceId,
+                rate = rate,
+                name = name,
+                description = description,
+                max = max,
+                min = min,
+                status = null,
+                type = null,
+                originalRate = null,
+                clientId = null,
+                categoryId = null,
+                providerId = null,
+                apiServiceId = null,
+            )
+    }
+}
