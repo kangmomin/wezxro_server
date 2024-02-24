@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.category.persistence.repository
 
 import com.hwalaon.wezxro_server.domain.category.persistence.entity.CategoryEntity
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -8,6 +9,6 @@ import java.util.*
 @Repository
 interface CategoryRepository: JpaRepository<CategoryEntity, Long> {
 
-    fun findAllByClientIdOrderBySort(clientId: UUID): List<CategoryEntity>
-    fun existsByNameAndSortAndClientId(name: String, sort: Int, clientId: UUID): Boolean
+    fun findAllByClientIdAndStatusNotOrderBySort(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<CategoryEntity>
+    fun existsByNameAndSortAndClientIdAndStatusNot(name: String, sort: Int, clientId: UUID, status: BasicStatus = BasicStatus.DELETED): Boolean
 }

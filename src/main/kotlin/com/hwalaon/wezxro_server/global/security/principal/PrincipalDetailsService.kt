@@ -15,7 +15,7 @@ class PrincipalDetailsService(
 ): UserDetailsService {
     override fun loadUserByUsername(username: String?): UserDetails =
         if (!username.isNullOrBlank()) PrincipalDetails(
-            accountEntityRepository.findByIdOrNull(username.toInt()).let {
+            accountEntityRepository.findAllByUserIdAndStatusNot(username.toInt()).let {
                 if (it == null) throw AccountNotFoundException()
                 accountMapper.toDomain(it)
             }

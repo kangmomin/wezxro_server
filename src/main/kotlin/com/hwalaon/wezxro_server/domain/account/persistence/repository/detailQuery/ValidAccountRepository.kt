@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery
 
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QAccountEntity.accountEntity
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
 import java.util.*
@@ -13,7 +14,8 @@ class ValidAccountRepository(
         query.select(accountEntity.count())
             .from(accountEntity)
             .where(accountEntity.email.eq(email)
-                .and(accountEntity.clientId.eq(clientId)))
+                .and(accountEntity.clientId.eq(clientId))
+                .and(accountEntity.status.ne(BasicStatus.DELETED)))
             .limit(1)
             .fetchFirst() > 0
 
@@ -21,7 +23,8 @@ class ValidAccountRepository(
         query.select(accountEntity.count())
             .from(accountEntity)
             .where(accountEntity.name.eq(name)
-                .and(accountEntity.clientId.eq(clientId)))
+                .and(accountEntity.clientId.eq(clientId))
+                .and(accountEntity.status.ne(BasicStatus.DELETED)))
             .limit(1)
             .fetchFirst() > 0
 }

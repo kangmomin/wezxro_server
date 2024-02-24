@@ -11,7 +11,7 @@ class QueryUserServiceService(
     private val servicePersistenceAdapter: ServicePersistenceAdapter
 ) {
     fun serviceDetail(serviceId: Long, user: Account) =
-        servicePersistenceAdapter.serviceDetail(serviceId, user.userId!!).let {
+        servicePersistenceAdapter.userServiceDetail(serviceId, user.userId!!).let {
             if (it == null) throw ServiceNotFoundException()
 
             // 감가액 적용

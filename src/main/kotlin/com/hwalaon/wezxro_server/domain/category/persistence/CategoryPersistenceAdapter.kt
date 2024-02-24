@@ -17,7 +17,7 @@ class CategoryPersistenceAdapter(
 
     /** sort로 정렬한 카테고리들 반환 */
     fun findAll(clientId: UUID) =
-        categoryRepository.findAllByClientIdOrderBySort(clientId)
+        categoryRepository.findAllByClientIdAndStatusNotOrderBySort(clientId)
 
     fun save(category: Category) =
           categoryMapper.toDomain(
@@ -38,6 +38,6 @@ class CategoryPersistenceAdapter(
     }
 
     fun validCategory(category: Category) =
-        categoryRepository.existsByNameAndSortAndClientId(
+        categoryRepository.existsByNameAndSortAndClientIdAndStatusNot(
             category.name!!, category.sort!!, category.clientId!!)
 }

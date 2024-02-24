@@ -8,7 +8,6 @@ import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.CustomRateRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.ValidAccountRepository
-import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -20,7 +19,7 @@ class AccountPersistenceAdapter(
     private val customRateRepository: CustomRateRepository,
 ) {
     fun login(loginRequest: LoginRequest) =
-        accountEntityRepository.findOneByEmailAndClientId(
+        accountEntityRepository.findOneByEmailAndClientIdAndStatusNot(
             loginRequest.email,
             loginRequest.key
         ).let {
@@ -49,17 +48,17 @@ class AccountPersistenceAdapter(
 
     fun findById(id: Int, clientId: UUID) =
         accountMapper.toDomain(
-        accountEntityRepository.findByUserIdAndClientId(id, clientId)
+        accountEntityRepository.findByUserIdAndClientIdAndStatusNot(id, clientId)
             ?: throw AccountNotFoundException())
 
     fun list(clientId: UUID) =
         accountEntityRepository
-            .findAllByClientIdAndStatusNot(clientId, BasicStatus.DELETED).map {
+            .findAllByClientIdAndStatusNot(clientId).map {
                 accountMapper.toDomain(it)
             }
 
     fun storeCustomRate(userId: Int, clientId: UUID, addCustomRateRequest: AddCustomRateRequest) =
-        accountEntityRepository.findByUserIdAndClientId(userId, clientId).let { account ->
+        accountEntityRepository.findByUserIdAndClientIdAndStatusNot(userId, clientId).let { account ->
             account ?: throw AccountNotFoundException()
 
             val ids = addCustomRateRequest.customRates.map { it.crId }

@@ -17,7 +17,7 @@ class ServicePersistenceAdapter(
     private val serviceMapper: ServiceMapper
 ) {
 
-    fun serviceDetail(serviceId: Long, userId: Int) =
+    fun userServiceDetail(serviceId: Long, userId: Int) =
         customServiceRepository.serviceDetail(userId, serviceId)
 
 
