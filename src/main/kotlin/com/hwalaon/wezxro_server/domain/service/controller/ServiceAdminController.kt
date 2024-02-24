@@ -19,7 +19,7 @@ class ServiceAdminController(
     @GetMapping("/list")
     fun getServices(
         @AuthenticationPrincipal userInfo: PrincipalDetails,
-        @RequestParam(name = "category", defaultValue = "0") categoryId: Int) =
+        @RequestParam(name = "category", defaultValue = "0") categoryId: Long) =
         queryAdminServiceService.serviceList(userInfo.account.clientId, categoryId).let {
             BasicResponse.ok(it)
         }

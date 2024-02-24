@@ -8,7 +8,7 @@ import java.util.*
 class QueryAdminServiceService(
     private val servicePersistenceAdapter: ServicePersistenceAdapter
 ) {
-    fun serviceList(clientId: UUID?, categoryId: Int) =
+    fun serviceList(clientId: UUID?, categoryId: Long) =
         servicePersistenceAdapter.serviceList(clientId!!, categoryId)
 
 

@@ -7,6 +7,6 @@ import java.util.*
 
 interface ServiceRepository: JpaRepository<ServiceEntity, Int> {
 
-    fun findAllByClientIdAndCategoryIdAndStatusNotOrderById(clientId: UUID, categoryId: Int, status: BasicStatus = BasicStatus.DELETED): List<ServiceEntity>
+    fun findAllByClientIdAndCategoryIdAndStatusNotOrderById(clientId: UUID, categoryId: Long, status: BasicStatus = BasicStatus.DELETED): List<ServiceEntity>
     fun findAllByClientIdAndStatusNotOrderById(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<ServiceEntity>
 }
