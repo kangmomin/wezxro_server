@@ -1,9 +1,9 @@
 --------- service ---------
 detail x
-list - category search
+list - category search x
 
 --------- admin service ---------
-list - status 상관 없이
-add
+list - status 상관 없이 x
+add x
 update
-delete
+delete x
