@@ -26,10 +26,13 @@ class ServiceAdminController(
 
     @PostMapping("/add")
     fun addService(
-        @RequestBody addServiceRequest: AddServiceRequest
+        @RequestBody addServiceRequest: AddServiceRequest,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
     ) =
-        commandAdminServiceService.add(addServiceRequest.toDomain()).let {
-            BasicResponse.created(MsgResponse(""))
+        commandAdminServiceService.add(
+            addServiceRequest.toDomain(principalDetails.account.clientId!!)
+        ).let {
+            BasicResponse.created(MsgResponse("서비스를 생성하였습니다."))
         }
 
     @DeleteMapping("/delete/{id}")

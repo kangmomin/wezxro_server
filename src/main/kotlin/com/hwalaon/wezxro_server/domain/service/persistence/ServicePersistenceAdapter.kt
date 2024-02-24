@@ -37,8 +37,8 @@ class ServicePersistenceAdapter(
         }
 
     fun valid(service: Service) =
-        serviceRepository.existsByApiServiceIdAndProviderIdOrName(
-            service.apiServiceId!!, service.providerId!!, service.name!!)
+        customServiceRepository.validService(
+            service.apiServiceId!!, service.providerId!!, service.name!!)!! == 0L
 
     fun delete(id: Int) =
         serviceRepository.findByIdOrNull(id).let {
