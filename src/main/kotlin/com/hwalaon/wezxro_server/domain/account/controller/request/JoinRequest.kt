@@ -7,14 +7,18 @@ import jakarta.validation.constraints.Size
 import java.util.*
 
 data class JoinRequest (
-    @NotEmpty
+    @field:NotEmpty(message = "key 값은 필수 값 입니다.")
     val key: UUID,
 
-    @NotEmpty
+    @field:NotEmpty(message = "이름은 필수 값 입니다.")
     val name: String?,
-    @Size(min = 5) @NotEmpty
+
+    @field:Size(min = 8, message = "비밀번호는 8자 이상이어야 합니다.")
+    @field:NotEmpty(message = "비밀번호는 필수 입력 값 입니다.")
     val password: String?,
-    @Email @NotEmpty
+
+    @field:Email(message = "이메일 서식이 맞지 않습니다.")
+    @field:NotEmpty(message = "이메일은 필수 입력 값 입니다.")
     val email: String?,
 ) {
     fun toDomain() =

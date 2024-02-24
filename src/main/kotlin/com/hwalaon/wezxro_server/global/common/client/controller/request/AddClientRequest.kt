@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotEmpty
 
 data class AddClientRequest (
 
-    @NotEmpty
+    @field:NotEmpty(message = "도메인은 필수 입력 값 입니다.")
     val domain: String
 )

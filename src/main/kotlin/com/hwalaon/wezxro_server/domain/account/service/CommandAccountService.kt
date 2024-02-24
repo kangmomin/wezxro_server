@@ -35,15 +35,23 @@ class CommandAccountService(
 
 
     fun updateAccountInfo(account: Account) {
+        if (validAccountUpdate(account)) throw AccountAlreadyJoinedException()
         accountPersistenceAdapter.updateInfo(account)
     }
 
     /**
      * 계정이 있을 때 true를 리턴
      */
-    fun validAccount(account: Account): Boolean =
+    private fun validAccount(account: Account): Boolean =
         accountPersistenceAdapter.isExistAccount(account.email!!, account.clientId!!) ||
         accountPersistenceAdapter.isExistName(account.name!!, account.clientId!!)
+
+    private fun validAccountUpdate(account: Account): Boolean =
+        accountPersistenceAdapter.isExistAccount(
+            email = account.email!!,
+            clientId = account.clientId!!,
+            name = account.name!!,
+            userId = account.userId!!)
 
     fun deleteAccount(id: Int, clientId: UUID) {
         val account = accountPersistenceAdapter.findById(id, clientId)

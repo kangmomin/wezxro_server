@@ -27,4 +27,13 @@ class ValidAccountRepository(
                 .and(accountEntity.status.ne(BasicStatus.DELETED)))
             .limit(1)
             .fetchFirst() > 0
+
+    fun isExistAccountForUpdate(email: String, name: String, clientId: UUID, userId: Int): Boolean =
+        query.select(accountEntity.count())
+            .from(accountEntity)
+            .where(
+                accountEntity.userId.ne(userId),
+                accountEntity.name.eq(name).or(
+                    accountEntity.email.eq(email)))
+            .fetchFirst() > 0
 }

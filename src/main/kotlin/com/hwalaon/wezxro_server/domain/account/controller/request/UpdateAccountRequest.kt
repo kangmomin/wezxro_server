@@ -8,20 +8,25 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 data class UpdateAccountRequest (
-    @NotNull
+    @field:NotNull
     val userId : Int,
 
-    @Email @Size(min = 6)
-    @NotEmpty
+    @field:Email(message = "이메일 서식이 맞지 않습니다.")
+    @field:Size(min = 6, message = "이메일은 6자 이상이어야 합니다.")
+    @field:NotEmpty(message = "이메일은 필수 값입니다.")
     val email: String,
 
-    @Size(min = 8)
-    @NotEmpty
+    @field:Size(min = 8, message = "비밀번호는 8자 이상이어야 합니다.")
+    @field:NotEmpty(message = "비밀번호는 필수 값입니다.")
     val password: String,
 
-    @NotEmpty
+    @field:NotEmpty(message = "이름은 필수 값입니다.")
     val name: String,
+
+    @field:NotNull(message = "보유액은 필수 값입니다.")
     val money: Double,
+
+    @field:NotNull(message = "상태 값은 필수 값입니다.")
     val status: BasicStatus,
 ) {
     fun toDomain(): Account =

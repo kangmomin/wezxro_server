@@ -8,6 +8,7 @@ import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -19,10 +20,18 @@ class AccountAdminController(
 ) {
 
     @PatchMapping("/update")
-    fun updateInfo(@RequestBody @Valid updateAccountRequest: UpdateAccountRequest) =
-        commandAccountService.updateAccountInfo(updateAccountRequest.toDomain()).run {
-            BasicResponse.ok("계정 정보를 성공적으로 변경하였습니다.")
+    fun updateInfo(
+        @RequestBody @Valid updateAccountRequest: UpdateAccountRequest,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val account = updateAccountRequest.toDomain()
+        account.clientId = principalDetails.account.clientId
+        account.userId = principalDetails.account.userId
+
+        commandAccountService.updateAccountInfo(account).run {
+            return BasicResponse.ok("계정 정보를 성공적으로 변경하였습니다.")
         }
+    }
 
     @DeleteMapping("/{id}")
     fun delete(
