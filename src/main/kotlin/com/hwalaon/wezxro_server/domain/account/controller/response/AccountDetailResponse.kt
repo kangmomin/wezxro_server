@@ -9,7 +9,7 @@ data class AccountDetailResponse (
     val email: String,
     val money: Double,
     val status: BasicStatus,
-    val staticRate: Long,
+    val staticRate: Float,
 ) {
     companion object {
         fun fromDomain(domain: Account) =
