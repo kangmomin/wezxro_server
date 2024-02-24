@@ -10,7 +10,7 @@ import java.util.*
 class ServiceEntity (
     @Id @Column(name = "service_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int?,
+    var id: Long?,
 
     @Column(nullable = false)
     var clientId: UUID?,
@@ -26,7 +26,7 @@ class ServiceEntity (
     @Column(nullable = false)
     var name: String?,
     @Column(nullable = false)
-    var type: String,
+    var type: String?,
 
     @Column(nullable = false)
     var rate: Float?,

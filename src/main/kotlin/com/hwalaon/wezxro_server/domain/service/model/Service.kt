@@ -5,13 +5,13 @@ import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
 import java.util.*
 
 class Service (
-    var id: Int?,
+    var id: Long?,
     var clientId: UUID?,
     var providerId: Int?,
     var categoryId: Int?,
     var apiServiceId: Int?,
     var name: String?,
-    var type: String,
+    var type: String?,
     var rate: Float?,
     var min: Int?,
     var max: Int?,

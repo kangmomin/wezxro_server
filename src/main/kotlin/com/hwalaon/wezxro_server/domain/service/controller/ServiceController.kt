@@ -4,6 +4,8 @@ import com.hwalaon.wezxro_server.domain.service.controller.response.ServiceDetai
 import com.hwalaon.wezxro_server.domain.service.service.user.CommandUserServiceService
 import com.hwalaon.wezxro_server.domain.service.service.user.QueryUserServiceService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,9 +19,13 @@ class ServiceController(
 ) {
 
     @GetMapping("/{id}")
-    fun serviceDetail(@PathVariable id: Int) =
-        queryUserServiceService.serviceDetail(id).let {
+    fun serviceDetail(
+        @PathVariable id: Long,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+    ) = queryUserServiceService.serviceDetail(id, principalDetails.account).let {
             BasicResponse.ok(
                 ServiceDetailResponse.fromDomain(it))
         }
+
+
 }

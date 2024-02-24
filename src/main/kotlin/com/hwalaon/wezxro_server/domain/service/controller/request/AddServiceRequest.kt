@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotNull
 import java.util.*
 
 data class AddServiceRequest (
-    @NotNull
-    val clientId: UUID,
 
     @NotNull
     val providerId: Int,
@@ -42,10 +40,10 @@ data class AddServiceRequest (
     @NotNull
     val originalRate: Float
 ) {
-    fun toDomain() =
+    fun toDomain(clientId: UUID) =
         Service(
             id = null,
-            clientId = this.clientId,
+            clientId = clientId,
             providerId = this.providerId,
             categoryId = this.categoryId,
             apiServiceId = this.apiServiceId,
