@@ -1,12 +1,12 @@
 package com.hwalaon.wezxro_server.domain.service.persistence.repository
 
 import com.hwalaon.wezxro_server.domain.service.persistence.entity.ServiceEntity
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface ServiceRepository: JpaRepository<ServiceEntity, Int> {
 
-    fun findAllByClientIdAndCategoryIdOrderById(clientId: UUID, categoryId: Int): List<ServiceEntity>
-    fun findAllByClientIdOrderById(clientId: UUID): List<ServiceEntity>
-    fun existsByApiServiceIdAndProviderIdOrName(apiServiceId: Int, providerId: Int, name: String): Boolean
+    fun findAllByClientIdAndCategoryIdAndStatusNotOrderById(clientId: UUID, categoryId: Int, status: BasicStatus = BasicStatus.DELETED): List<ServiceEntity>
+    fun findAllByClientIdAndStatusNotOrderById(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<ServiceEntity>
 }

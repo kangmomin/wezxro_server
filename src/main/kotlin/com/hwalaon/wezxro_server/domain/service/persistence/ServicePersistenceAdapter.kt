@@ -22,8 +22,8 @@ class ServicePersistenceAdapter(
 
 
     fun serviceList(clientId: UUID, categoryId: Int): List<Service> {
-        val services = if (categoryId == 0) serviceRepository.findAllByClientIdOrderById(clientId)
-            else serviceRepository.findAllByClientIdAndCategoryIdOrderById(clientId, categoryId)
+        val services = if (categoryId == 0) serviceRepository.findAllByClientIdAndStatusNotOrderById(clientId)
+            else serviceRepository.findAllByClientIdAndCategoryIdAndStatusNotOrderById(clientId, categoryId)
 
         return services.map { serviceEntity ->
             serviceMapper.toDomain(serviceEntity)
