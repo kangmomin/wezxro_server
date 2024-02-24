@@ -16,12 +16,12 @@ class ServiceEntity (
     var clientId: UUID?,
 
     @Column(nullable = false)
-    var providerId: Int?,
+    var providerId: Long?,
     @Column(nullable = false)
-    var categoryId: Int?,
+    var categoryId: Long?,
 
     @Column(nullable = false)
-    var apiServiceId: Int?,
+    var apiServiceId: Long?,
 
     @Column(nullable = false)
     var name: String?,

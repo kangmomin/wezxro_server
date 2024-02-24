@@ -29,8 +29,8 @@ class QueryUserServiceService(
                 min = it.min)
         }
 
-    fun serviceDetailList(account: Account) =
-        servicePersistenceAdapter.userServiceDetailList(account.userId, account.clientId).map {
+    fun serviceDetailList(account: Account, category: String?) =
+        servicePersistenceAdapter.userServiceDetailList(account.userId, account.clientId, category).map {
             Service.serviceDetail(
                 serviceId = it.serviceId,
                 name = it.name,

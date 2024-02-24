@@ -45,6 +45,6 @@ class ServicePersistenceAdapter(
             it.status = BasicStatus.DELETED
         }
 
-    fun userServiceDetailList(userId: Int?, clientId: UUID?) =
-        customServiceRepository.serviceDetailList(userId, clientId)
+    fun userServiceDetailList(userId: Int?, clientId: UUID?, category: String?) =
+        customServiceRepository.serviceDetailList(userId, clientId, category)
 }

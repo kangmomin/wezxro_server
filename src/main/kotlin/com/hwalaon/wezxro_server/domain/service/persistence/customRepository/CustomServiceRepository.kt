@@ -1,6 +1,8 @@
 package com.hwalaon.wezxro_server.domain.service.persistence.customRepository
 
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QCustomRateEntity.customRateEntity
+import com.hwalaon.wezxro_server.domain.category.persistence.entity.QCategoryEntity
+import com.hwalaon.wezxro_server.domain.category.persistence.entity.QCategoryEntity.categoryEntity
 import com.hwalaon.wezxro_server.domain.service.persistence.dto.QServiceDetailAndCustomRateDto
 import com.hwalaon.wezxro_server.domain.service.persistence.dto.ServiceDetailAndCustomRateDto
 import com.hwalaon.wezxro_server.domain.service.persistence.entity.QServiceEntity.serviceEntity
@@ -35,7 +37,7 @@ class CustomServiceRepository(
                     .and(serviceEntity.clientId.eq(clientId)))
             .fetchOne()
 
-    fun validService(apiServiceId: Int, providerId: Int, serviceName: String) =
+    fun validService(apiServiceId: Long, providerId: Long, serviceName: String) =
         query.select(serviceEntity.count())
             .from(serviceEntity)
             .where(
@@ -46,24 +48,36 @@ class CustomServiceRepository(
                     ))
             .fetchOne()
 
-    fun serviceDetailList(userId: Int?, clientId: UUID?, isAdmin: Boolean = false): MutableList<ServiceDetailAndCustomRateDto> =
-        query.select(QServiceDetailAndCustomRateDto(
-            serviceEntity.id,
-            serviceEntity.name,
-            serviceEntity.rate,
-            serviceEntity.min,
-            serviceEntity.max,
-            serviceEntity.description,
-            customRateEntity.rate,
-        )).from(serviceEntity)
+    fun serviceDetailList(userId: Int?, clientId: UUID?, category: String?, isAdmin: Boolean = false): MutableList<ServiceDetailAndCustomRateDto> {
+        val sql = query.select(
+            QServiceDetailAndCustomRateDto(
+                serviceEntity.id,
+                serviceEntity.name,
+                serviceEntity.rate,
+                serviceEntity.min,
+                serviceEntity.max,
+                serviceEntity.description,
+                customRateEntity.rate,
+            )
+        ).from(serviceEntity)
             .leftJoin(customRateEntity)
-            .on(customRateEntity.user.userId.eq(userId).and(
-                customRateEntity.serviceId.eq(serviceEntity.id)
-            ))
-            .where(
-                if (isAdmin) serviceEntity.status.ne(BasicStatus.DELETED)
-                else serviceEntity.status.eq(BasicStatus.ACTIVE),
-                serviceEntity.clientId.eq(clientId))
-            .fetch()
+            .on(
+                customRateEntity.user.userId.eq(userId).and(
+                    customRateEntity.serviceId.eq(serviceEntity.id)
+                )
+            )
+
+        if (category != null) {
+            sql.leftJoin(categoryEntity)
+                .on(categoryEntity.name.eq(category))
+                .where(serviceEntity.categoryId.eq(categoryEntity.id))
+        }
+
+        sql.where(
+            if (isAdmin) serviceEntity.status.ne(BasicStatus.DELETED)
+            else serviceEntity.status.eq(BasicStatus.ACTIVE),
+            serviceEntity.clientId.eq(clientId))
+        return sql.fetch()
+    }
 
 }

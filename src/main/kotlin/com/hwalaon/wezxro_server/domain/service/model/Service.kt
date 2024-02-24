@@ -7,9 +7,9 @@ import java.util.*
 class Service (
     var id: Long?,
     var clientId: UUID?,
-    var providerId: Int?,
-    var categoryId: Int?,
-    var apiServiceId: Int?,
+    var providerId: Long?,
+    var categoryId: Long?,
+    var apiServiceId: Long?,
     var name: String?,
     var type: String?,
     var rate: Float?,

@@ -8,13 +8,13 @@ import java.util.*
 data class AddServiceRequest (
 
     @NotNull
-    val providerId: Int,
+    val providerId: Long,
 
     @NotNull
-    val categoryId: Int,
+    val categoryId: Long,
 
     @NotNull
-    val apiServiceId: Int,
+    val apiServiceId: Long,
 
     @NotNull
     val name: String,
