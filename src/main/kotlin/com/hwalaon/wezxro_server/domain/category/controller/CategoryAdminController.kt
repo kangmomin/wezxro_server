@@ -4,7 +4,9 @@ import com.hwalaon.wezxro_server.domain.category.controller.request.SaveCategory
 import com.hwalaon.wezxro_server.domain.category.service.CommandCategoryService
 import com.hwalaon.wezxro_server.domain.category.service.QueryCategoryService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
+import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -35,4 +37,14 @@ class CategoryAdminController(
             categoryRequest.toDomain()).run {
             BasicResponse.ok("서비스를 수정하였습니다.")
         }
+
+    @GetMapping("/detail/{categoryId}")
+    fun categoryDetail(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable categoryId: Long,
+    ) =
+        BasicResponse.ok(
+            queryCategoryService.detail(
+                principalDetails.account.clientId,
+                categoryId, true))
 }
