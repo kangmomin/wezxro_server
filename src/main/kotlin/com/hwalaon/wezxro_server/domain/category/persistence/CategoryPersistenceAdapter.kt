@@ -40,4 +40,16 @@ class CategoryPersistenceAdapter(
     fun validCategory(category: Category) =
         categoryRepository.existsByNameAndSortAndClientIdAndStatusNot(
             category.name!!, category.sort!!, category.clientId!!)
+
+    fun detail(categoryId: Long, clientId: UUID?): Category? =
+        categoryRepository.findByIdAndClientIdAndStatusNot(categoryId, clientId).let {
+            if (it == null) return null
+            categoryMapper.toDomain(it)
+        }
+
+    fun detailAdmin(categoryId: Long, clientId: UUID?): Category? =
+        categoryRepository.findByIdAndClientIdAndStatus(categoryId, clientId).let {
+            if (it == null) return null
+            categoryMapper.toDomain(it)
+        }
 }
