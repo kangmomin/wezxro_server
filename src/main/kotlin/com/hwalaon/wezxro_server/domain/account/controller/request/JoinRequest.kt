@@ -3,11 +3,12 @@ package com.hwalaon.wezxro_server.domain.account.controller.request
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import java.util.*
 
 data class JoinRequest (
-    @field:NotEmpty(message = "key 값은 필수 값 입니다.")
+    @field:NotNull(message = "key 값은 필수 값 입니다.")
     val key: UUID,
 
     @field:NotEmpty(message = "이름은 필수 값 입니다.")
