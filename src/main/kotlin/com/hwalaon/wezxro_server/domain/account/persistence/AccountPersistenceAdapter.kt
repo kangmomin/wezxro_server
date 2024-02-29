@@ -20,8 +20,8 @@ class AccountPersistenceAdapter(
 ) {
     fun login(loginRequest: LoginRequest) =
         accountEntityRepository.findOneByEmailAndClientIdAndStatusNot(
-            loginRequest.email,
-            loginRequest.key
+            loginRequest.email!!,
+            loginRequest.key!!
         ).let {
             if (it == null) throw AccountNotFoundException()
             accountMapper.toDomain(it)
