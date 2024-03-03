@@ -6,4 +6,4 @@ add x
 delete x
 update x
 categoryList x
-categoryDetails
+categoryDetails x
