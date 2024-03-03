@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.domain.order.persistence.entity
 
 import com.hwalaon.wezxro_server.domain.order.model.constant.OrderStatus
-import com.hwalaon.wezxro_server.domain.order.model.constant.OrderType
+import com.hwalaon.wezxro_server.domain.service.model.constant.ServiceType
 import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
 
@@ -58,5 +58,5 @@ class OrderEntity (
         nullable = false,
         updatable = false)
     @Enumerated(EnumType.STRING)
-    var type: OrderType?
+    var type: ServiceType?
 ): BasicTimeEntity()

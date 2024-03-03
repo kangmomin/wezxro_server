@@ -1,7 +1,6 @@
 package com.hwalaon.wezxro_server.domain.service.persistence.customRepository
 
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QCustomRateEntity.customRateEntity
-import com.hwalaon.wezxro_server.domain.category.persistence.entity.QCategoryEntity
 import com.hwalaon.wezxro_server.domain.category.persistence.entity.QCategoryEntity.categoryEntity
 import com.hwalaon.wezxro_server.domain.service.persistence.dto.QServiceDetailAndCustomRateDto
 import com.hwalaon.wezxro_server.domain.service.persistence.dto.ServiceDetailAndCustomRateDto
@@ -9,7 +8,7 @@ import com.hwalaon.wezxro_server.domain.service.persistence.entity.QServiceEntit
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class CustomServiceRepository(

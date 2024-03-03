@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.service.persistence.entity
 
+import com.hwalaon.wezxro_server.domain.service.model.constant.ServiceType
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
@@ -26,7 +27,7 @@ class ServiceEntity (
     @Column(nullable = false)
     var name: String?,
     @Column(nullable = false)
-    var type: String?,
+    var type: ServiceType?,
 
     @Column(nullable = false)
     var rate: Float?,

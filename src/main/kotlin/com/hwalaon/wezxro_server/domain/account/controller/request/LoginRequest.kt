@@ -1,6 +1,5 @@
 package com.hwalaon.wezxro_server.domain.account.controller.request
 
-import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull

@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.service.model
 
+import com.hwalaon.wezxro_server.domain.service.model.constant.ServiceType
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
 import java.util.*
@@ -11,7 +12,7 @@ class Service (
     var categoryId: Long?,
     var apiServiceId: Long?,
     var name: String?,
-    var type: String?,
+    var type: ServiceType?,
     var rate: Float?,
     var min: Int?,
     var max: Int?,

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface OrderRepository: JpaRepository<OrderEntity, Long> {
+    fun existsByApiOrderId(apiOrderId: Long): Boolean
 }

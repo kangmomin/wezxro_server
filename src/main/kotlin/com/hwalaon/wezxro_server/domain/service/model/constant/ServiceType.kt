@@ -1,6 +1,6 @@
-package com.hwalaon.wezxro_server.domain.order.model.constant
+package com.hwalaon.wezxro_server.domain.service.model.constant
 
-enum class OrderType(str: String) {
+enum class ServiceType(str: String) {
     DEFAULT("Default"),
     SUBSCRIPTION("Subscriptions"),
     CUSTOM_COMMENTS("Custom Comments"),

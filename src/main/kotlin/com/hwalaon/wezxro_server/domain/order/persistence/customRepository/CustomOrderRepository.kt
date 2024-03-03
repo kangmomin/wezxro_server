@@ -2,13 +2,11 @@ package com.hwalaon.wezxro_server.domain.order.persistence.customRepository
 
 import com.hwalaon.wezxro_server.domain.order.controller.response.OrderList
 import com.hwalaon.wezxro_server.domain.order.controller.response.QOrderList
-import com.hwalaon.wezxro_server.domain.order.persistence.entity.QOrderEntity
 import com.hwalaon.wezxro_server.domain.order.persistence.entity.QOrderEntity.orderEntity
-import com.hwalaon.wezxro_server.domain.service.persistence.entity.QServiceEntity
 import com.hwalaon.wezxro_server.domain.service.persistence.entity.QServiceEntity.serviceEntity
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
-import java.util.UUID
+import java.util.*
 
 @Repository
 class CustomOrderRepository(
@@ -35,4 +33,5 @@ class CustomOrderRepository(
             .where(orderEntity.userId.eq(userId))
             .orderBy(orderEntity.createdAt.desc())
             .fetch()
+
 }

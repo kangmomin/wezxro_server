@@ -7,5 +7,6 @@ enum class OrderStatus(
     CANCELED("canceled"),
     PROCESSING("processing"),
     INPROGRESS("inprogress"),
-    PARTIALS("partials")
+    PARTIALS("partials"),
+    PENDING("pending")
 }

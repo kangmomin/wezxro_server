@@ -41,6 +41,8 @@ dependencies {
 	implementation("org.postgresql:postgresql")
 	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") // Coroutines
+	implementation("com.squareup.okhttp3:okhttp") // OkHttp
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
