@@ -4,7 +4,7 @@ import com.hwalaon.wezxro_server.domain.account.model.Account
 
 class StaticRateResponse(
     val email: String,
-    val userId: Int,
+    val userId: Long,
     val staticRate: Float
 ) {
     companion object {

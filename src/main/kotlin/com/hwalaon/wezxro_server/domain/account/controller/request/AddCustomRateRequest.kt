@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull
 
 data class AddCustomRateRequest (
     @field:NotNull("유저 아이디는 필수 입력 값 입니다.")
-    val userId: Int,
+    val userId: Long,
 
     @field:NotNull("개별 감가액은 빈 배열이라도 들어가있어야 합니다.")
     val customRates: MutableList<AddCustomRateList>

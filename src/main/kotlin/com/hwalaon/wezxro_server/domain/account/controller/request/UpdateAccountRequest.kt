@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size
 
 data class UpdateAccountRequest (
     @field:NotNull
-    val userId : Int,
+    val userId: Long,
 
     @field:Email(message = "이메일 서식이 맞지 않습니다.")
     @field:Size(min = 6, message = "이메일은 6자 이상이어야 합니다.")

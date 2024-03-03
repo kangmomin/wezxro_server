@@ -13,7 +13,7 @@ class JwtGenerator(
     private val jwtProperties: JwtProperties,
     private val refreshTokenPersistenceAdapter: RefreshTokenPersistenceAdapter
 ) {
-    fun generate(userId: Int): TokenDto {
+    fun generate(userId: Long): TokenDto {
         val accessToken = generateToken(userId, jwtProperties.accessKey, jwtProperties.accessExp)
         val refreshToken = generateToken(userId, jwtProperties.refreshKey, jwtProperties.refreshExp)
 
@@ -26,10 +26,10 @@ class JwtGenerator(
         )
     }
 
-    fun generateOnlyAccessToken(userId: Int): String =
+    fun generateOnlyAccessToken(userId: Long): String =
         "${jwtProperties.jwtPrefix}${generateToken(userId, jwtProperties.accessKey, jwtProperties.accessExp)}"
 
-    private fun generateToken(userId: Int, secret: Key, expiredAt: Int) =
+    private fun generateToken(userId: Long, secret: Key, expiredAt: Int) =
         "${jwtProperties.jwtPrefix}${
             Jwts.builder()
                 .signWith(secret, SignatureAlgorithm.HS512)

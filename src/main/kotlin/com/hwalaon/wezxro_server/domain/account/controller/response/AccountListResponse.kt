@@ -10,7 +10,7 @@ data class AccountListResponse (
     val totalCnt: Long,
 ) {
     class AccountDto(
-        val userId: Int,
+        val userId: Long,
         val name: String,
         val email: String,
         val balance: Double,

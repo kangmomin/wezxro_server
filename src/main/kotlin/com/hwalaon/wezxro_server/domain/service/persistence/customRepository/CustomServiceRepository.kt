@@ -16,7 +16,7 @@ class CustomServiceRepository(
     private val query: JPAQueryFactory
 ) {
 
-    fun serviceDetail(userId: Int, serviceId: Long, clientId: UUID, isAdmin: Boolean = false) =
+    fun serviceDetail(userId: Long, serviceId: Long, clientId: UUID, isAdmin: Boolean = false) =
         query.select(QServiceDetailAndCustomRateDto(
             serviceEntity.id,
             serviceEntity.name,
@@ -48,7 +48,7 @@ class CustomServiceRepository(
                     ))
             .fetchOne()
 
-    fun serviceDetailList(userId: Int?, clientId: UUID?, category: String?, isAdmin: Boolean = false): MutableList<ServiceDetailAndCustomRateDto> {
+    fun serviceDetailList(userId: Long?, clientId: UUID?, category: String?, isAdmin: Boolean = false): MutableList<ServiceDetailAndCustomRateDto> {
         val sql = query.select(
             QServiceDetailAndCustomRateDto(
                 serviceEntity.id,

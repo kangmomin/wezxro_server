@@ -11,7 +11,7 @@ import java.util.*
 class AccountEntity(
     @Id @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val userId: Int?,
+    val userId: Long?,
 
     @Column(nullable = false)
     var name: String?,

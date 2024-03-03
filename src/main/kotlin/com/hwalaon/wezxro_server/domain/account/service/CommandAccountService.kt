@@ -53,7 +53,7 @@ class CommandAccountService(
             name = account.name!!,
             userId = account.userId!!)
 
-    fun deleteAccount(id: Int, clientId: UUID) {
+    fun deleteAccount(id: Long, clientId: UUID) {
         val account = accountPersistenceAdapter.findById(id, clientId)
         account.status = BasicStatus.DELETED
     }

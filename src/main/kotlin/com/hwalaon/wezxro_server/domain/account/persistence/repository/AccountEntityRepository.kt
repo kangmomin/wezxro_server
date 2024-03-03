@@ -7,11 +7,11 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface AccountEntityRepository: JpaRepository<AccountEntity, Int> {
+interface AccountEntityRepository: JpaRepository<AccountEntity, Long> {
 
     fun findOneByEmailAndClientIdAndStatusNot(email: String, clientId: UUID, status: BasicStatus = BasicStatus.DELETED): AccountEntity?
     fun findAllByClientIdAndStatusNot(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<AccountEntity>
-    fun findAllByUserIdAndStatusNot(userId: Int, status: BasicStatus = BasicStatus.DELETED): AccountEntity?
+    fun findAllByUserIdAndStatusNot(userId: Long, status: BasicStatus = BasicStatus.DELETED): AccountEntity?
 
-    fun findByUserIdAndClientIdAndStatusNot(userId: Int, clientId: UUID, status: BasicStatus = BasicStatus.DELETED): AccountEntity?
+    fun findByUserIdAndClientIdAndStatusNot(userId: Long, clientId: UUID, status: BasicStatus = BasicStatus.DELETED): AccountEntity?
 }

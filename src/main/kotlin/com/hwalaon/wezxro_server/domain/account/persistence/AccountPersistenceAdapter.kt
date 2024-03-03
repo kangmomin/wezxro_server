@@ -35,7 +35,7 @@ class AccountPersistenceAdapter(
     fun isExistAccount(email: String, clientId: UUID) = validAccountRepository.isExistEmail(email, clientId)
     fun isExistName(name: String, clientId: UUID) = validAccountRepository.isExistName(name, clientId)
 
-    fun isExistAccount(email: String, name: String, clientId: UUID, userId: Int) =
+    fun isExistAccount(email: String, name: String, clientId: UUID, userId: Long) =
         validAccountRepository.isExistAccountForUpdate(email, name, clientId, userId)
 
     fun updateInfo(account: Account) =
@@ -50,7 +50,7 @@ class AccountPersistenceAdapter(
             accountEntity.status = account.status
         }
 
-    fun findById(id: Int, clientId: UUID) =
+    fun findById(id: Long, clientId: UUID) =
         accountMapper.toDomain(
         accountEntityRepository.findByUserIdAndClientIdAndStatusNot(id, clientId)
             ?: throw AccountNotFoundException())
@@ -61,7 +61,7 @@ class AccountPersistenceAdapter(
                 accountMapper.toDomain(it)
             }
 
-    fun storeCustomRate(userId: Int, clientId: UUID, addCustomRateRequest: AddCustomRateRequest) =
+    fun storeCustomRate(userId: Long, clientId: UUID, addCustomRateRequest: AddCustomRateRequest) =
         accountEntityRepository.findByUserIdAndClientIdAndStatusNot(userId, clientId).let { account ->
             account ?: throw AccountNotFoundException()
 

@@ -35,7 +35,7 @@ class AccountAdminController(
 
     @DeleteMapping("/{id}")
     fun delete(
-        @PathVariable("id") id: Int,
+        @PathVariable("id") id: Long,
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ) =
         commandAccountService.deleteAccount(id, principalDetails.account.clientId!!).run {
@@ -44,7 +44,7 @@ class AccountAdminController(
 
     @PostMapping("/detail/{id}")
     fun accountDetails(
-        @PathVariable("id") id: Int,
+        @PathVariable("id") id: Long,
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ) =
         BasicResponse.ok(
@@ -59,7 +59,7 @@ class AccountAdminController(
     @GetMapping("/static-rate/{userId}")
     fun staticRate(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
-        @PathVariable userId: Int
+        @PathVariable userId: Long
     ) = BasicResponse.ok(queryAccountService.getStaticRate(principalDetails.account.clientId, userId))
 
     @PostMapping("/custom-rate")

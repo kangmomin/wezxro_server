@@ -5,7 +5,7 @@ import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
 import java.util.*
 
 data class Account(
-    var userId: Int?,
+    var userId: Long?,
     var name: String?,
     var password: String?,
     var email: String?,

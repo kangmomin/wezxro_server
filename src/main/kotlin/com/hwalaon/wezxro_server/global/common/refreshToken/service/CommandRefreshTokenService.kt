@@ -19,7 +19,7 @@ class CommandRefreshTokenService(
         }
 
         // refreshToken에서 userId 가져오기
-        val userId = jwtParser.authentication(refreshToken, isAccessToken = false).toInt()
+        val userId = jwtParser.authentication(refreshToken, isAccessToken = false).toLong()
 
         return jwtGenerator.generateOnlyAccessToken(userId)
     }

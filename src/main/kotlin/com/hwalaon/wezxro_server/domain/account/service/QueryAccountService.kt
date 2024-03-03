@@ -33,7 +33,7 @@ class QueryAccountService(
     fun detail(userInfo: PrincipalDetails) =
         accountPersistenceAdapter.findById(userInfo.account.userId ?: 0, userInfo.account.clientId!!)
 
-    fun adminDetail(id: Int, clientId: UUID) =
+    fun adminDetail(id: Long, clientId: UUID) =
         accountPersistenceAdapter.findById(id, clientId)
 
     fun list(clientId: UUID?): AccountListResponse {
@@ -64,7 +64,7 @@ class QueryAccountService(
         )
     }
 
-    fun getStaticRate(clientId: UUID?, userId: Int) =
+    fun getStaticRate(clientId: UUID?, userId: Long) =
         accountPersistenceAdapter.findById(userId, clientId!!).let {
             StaticRateResponse.fromDomain(it)
         }

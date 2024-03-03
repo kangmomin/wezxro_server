@@ -4,7 +4,7 @@ import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 
 data class AccountDetailResponse (
-    val userId: Int,
+    val userId: Long,
     val name: String,
     val email: String,
     val money: Double,
