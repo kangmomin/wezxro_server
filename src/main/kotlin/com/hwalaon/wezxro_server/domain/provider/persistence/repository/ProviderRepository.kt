@@ -8,4 +8,5 @@ import java.util.*
 @Repository
 interface ProviderRepository: JpaRepository<ProviderEntity, Long> {
     fun existsByClientIdIsAndNameOrApiUrlIsAndApiKeyIs(clientId: UUID, name: String, apiUrl: String, apiKey: String): Boolean
+    fun findAllByClientId(clientId: UUID): List<ProviderEntity>
 }

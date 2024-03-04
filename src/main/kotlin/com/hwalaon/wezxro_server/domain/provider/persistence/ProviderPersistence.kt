@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.domain.provider.persistence.repository.Provider
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class ProviderPersistence(
@@ -30,4 +31,9 @@ class ProviderPersistence(
         val api = ApiProvider(apiUrl = provider.apiUrl!!, apiKey = provider.apiKey!!)
         return api.getUserBalance()
     }
+
+    fun list(clientId: UUID) =
+        providerRepository.findAllByClientId(clientId).map {
+            providerMapper.toDomain(it)
+        }
 }
