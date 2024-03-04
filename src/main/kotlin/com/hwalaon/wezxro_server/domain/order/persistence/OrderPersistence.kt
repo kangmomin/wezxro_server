@@ -8,9 +8,6 @@ import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
 import com.hwalaon.wezxro_server.domain.order.persistence.repository.OrderRepository
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -23,8 +20,6 @@ class OrderPersistence(
     private val orderMapper: OrderMapper,
 ) {
 
-    private val scope = CoroutineScope(Dispatchers.IO)
-
     fun orderList(userId: Long, clientId: UUID) =
         customOrderRepository.orderList(userId, clientId)
 
@@ -32,8 +27,7 @@ class OrderPersistence(
         servicePort.serviceAddOrderInfo(serviceId)
 
 
-    suspend fun add(order: Order, providerInfo: ProviderApiDto, apiServiceId: Long) = scope.async {
-
+    fun add(order: Order, providerInfo: ProviderApiDto, apiServiceId: Long): Long {
         val apiOrderId = ApiProvider(
             apiUrl = providerInfo.apiUrl,
             apiKey = providerInfo.apiKey
@@ -44,7 +38,7 @@ class OrderPersistence(
         val orderEntity = orderMapper.toEntity(order)
         val orderId = orderRepository.save(orderEntity).id
 
-        orderId!!
+        return orderId!!
     }
 
     private fun valid(apiOrderId: Long) =

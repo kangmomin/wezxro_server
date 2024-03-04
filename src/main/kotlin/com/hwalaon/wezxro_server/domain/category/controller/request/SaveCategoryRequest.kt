@@ -4,7 +4,6 @@ import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
-import java.util.*
 
 data class SaveCategoryRequest (
     @field: NotEmpty

@@ -4,10 +4,7 @@ import com.hwalaon.wezxro_server.domain.order.controller.request.AddOrderRequest
 import com.hwalaon.wezxro_server.domain.order.exception.NotEnoughMoneyException
 import com.hwalaon.wezxro_server.domain.order.exception.OrderCountNotValidCountException
 import com.hwalaon.wezxro_server.domain.order.persistence.OrderPersistence
-import com.hwalaon.wezxro_server.domain.service.exception.ServiceNotFoundException
 import com.hwalaon.wezxro_server.global.annotation.CommandService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import java.util.*
 
 @CommandService
@@ -15,9 +12,7 @@ class CommandOrderService(
     private val orderPersistence: OrderPersistence
 ) {
 
-    private val scope = CoroutineScope(Dispatchers.IO)
-
-    suspend fun addOrder(addOrderRequest: AddOrderRequest, clientId: UUID, money: Double, userId: Long): Long {
+    fun addOrder(addOrderRequest: AddOrderRequest, clientId: UUID, money: Double, userId: Long): Long {
         if (addOrderRequest.totalCharge!! > money) throw NotEnoughMoneyException()
         val serviceInfo = orderPersistence.serviceAddOrderInfo(addOrderRequest.serviceId!!)
 
@@ -30,6 +25,6 @@ class CommandOrderService(
         order.type = serviceInfo.type
         order.userId = userId
 
-        return orderPersistence.add(order, providerInfo, serviceInfo.apiServiceId).await()
+        return orderPersistence.add(order, providerInfo, serviceInfo.apiServiceId)
     }
 }

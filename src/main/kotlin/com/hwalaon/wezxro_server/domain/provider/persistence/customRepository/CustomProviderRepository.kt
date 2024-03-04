@@ -1,7 +1,6 @@
 package com.hwalaon.wezxro_server.domain.provider.persistence.customRepository
 
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.QProviderApiDto
-import com.hwalaon.wezxro_server.domain.provider.persistence.entity.QProviderEntity
 import com.hwalaon.wezxro_server.domain.provider.persistence.entity.QProviderEntity.providerEntity
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository

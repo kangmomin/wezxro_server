@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.domain.provider.persistence.entity
 
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import jakarta.persistence.*
+import java.util.*
 
 
 @Entity
@@ -37,4 +38,7 @@ data class ProviderEntity(
 
     @Column(nullable = false)
     val balance: Double?,
+
+    @Column(nullable = false)
+    val clientId: UUID?
 )

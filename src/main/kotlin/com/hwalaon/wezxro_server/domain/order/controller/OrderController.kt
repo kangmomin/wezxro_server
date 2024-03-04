@@ -32,7 +32,7 @@ class OrderController(
         )
 
     @PostMapping("/add")
-    suspend fun addOrder(
+    fun addOrder(
         @RequestBody @Valid addOrderRequest: AddOrderRequest,
         @AuthenticationPrincipal principal: PrincipalDetails,
     ) = BasicResponse.ok(
