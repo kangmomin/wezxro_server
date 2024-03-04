@@ -14,14 +14,14 @@ class Service (
     var name: String?,
     var type: ServiceType?,
     var rate: Float?,
-    var min: Int?,
-    var max: Int?,
+    var min: Long?,
+    var max: Long?,
     var description: String?,
     var status: BasicStatus?,
     var originalRate: Float?
 ): BasicTime() {
     companion object {
-        fun serviceDetail(serviceId: Long, rate: Float, name: String, description: String, min: Int, max: Int) =
+        fun serviceDetail(serviceId: Long, rate: Float, name: String, description: String, min: Long, max: Long) =
             Service(
                 id = serviceId,
                 rate = rate,

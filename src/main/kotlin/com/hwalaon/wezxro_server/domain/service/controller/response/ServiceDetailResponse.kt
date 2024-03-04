@@ -2,10 +2,10 @@ package com.hwalaon.wezxro_server.domain.service.controller.response
 
 import com.hwalaon.wezxro_server.domain.service.model.Service
 
-data class ServiceDetailResponse (
+data class ServiceDetailResponse(
     val name: String,
-    val min: Int,
-    val max: Int,
+    val min: Long,
+    val max: Long,
     val rate: Float,
     val description: String
 ) {

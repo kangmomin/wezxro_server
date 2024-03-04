@@ -10,37 +10,37 @@ import java.util.*
 data class AddServiceRequest (
 
     @field:NotNull(message = "도매처 아이디는 필수 입력 값 입니다.")
-    val providerId: Long,
+    val providerId: Long?,
 
     @field:NotNull(message = "카테고리 아이디는 필수 입력 값 입니다.")
-    val categoryId: Long,
+    val categoryId: Long?,
 
     @field:NotNull(message = "도매처의 서비스 아이디는 필수 입력 값 입니다.")
-    val apiServiceId: Long,
+    val apiServiceId: Long?,
 
     @field:NotEmpty(message = "이름은 필수 입력 값 입니다.")
-    val name: String,
+    val name: String?,
 
     @field:NotEmpty(message = "서비스 타입은 필수 입력 값 입니다.")
     val type: ServiceType?,
 
     @field:NotNull(message = "서비스 가격은 필수 입력 값 입니다.")
-    val rate: Float,
+    val rate: Float?,
 
     @field:NotNull(message = "Status는 필수 입력 값 입니다.")
-    val status: BasicStatus,
+    val status: BasicStatus?,
 
     @field:NotNull(message = "최소 주문 양은 필수 입력 값 입니다.")
-    val min: Int,
+    val min: Long?,
 
     @field:NotNull(message = "최대 주문 양은 필수 입력 값 입니다.")
-    val max: Int,
+    val max: Long?,
 
     @field:NotEmpty(message = "서비스 설명 글은 필수 입력 값 입니다.")
-    val description: String,
+    val description: String?,
 
     @field:NotNull(message = "도매처 서비스의 비용은 필수 입력 값 입니다.")
-    val originalRate: Float
+    val originalRate: Float?
 ) {
     fun toDomain(clientId: UUID) =
         Service(

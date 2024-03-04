@@ -33,10 +33,10 @@ class ServiceEntity (
     var rate: Float?,
 
     @Column(nullable = false)
-    var min: Int?,
+    var min: Long?,
 
     @Column(nullable = false)
-    var max: Int?,
+    var max: Long?,
 
     @Column(nullable = false)
     var description: String?,

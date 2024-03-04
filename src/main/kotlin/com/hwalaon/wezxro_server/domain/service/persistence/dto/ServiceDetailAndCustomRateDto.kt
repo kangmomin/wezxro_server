@@ -7,8 +7,8 @@ data class ServiceDetailAndCustomRateDto
     val serviceId: Long,
     val name: String,
     val rate: Float,
-    val min: Int,
-    val max: Int,
+    val min: Long,
+    val max: Long,
     val description: String,
     val customRate: Float?,
 )
