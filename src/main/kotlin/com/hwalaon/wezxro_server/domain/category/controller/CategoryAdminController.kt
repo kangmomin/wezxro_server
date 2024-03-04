@@ -18,10 +18,12 @@ class CategoryAdminController(
 
     @PostMapping("/add")
     fun categoryAdd(
-        @RequestBody @Valid categoryRequest: SaveCategoryRequest) =
+        @RequestBody @Valid categoryRequest: SaveCategoryRequest,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ) =
         BasicResponse.ok(
             commandCategoryService.addCategory(
-                categoryRequest.toDomain()))
+                categoryRequest.toDomain(), principalDetails.account.clientId!!))
 
     @PostMapping("/delete/{id}")
     fun categoryDelete(@PathVariable("id") id: Long) =

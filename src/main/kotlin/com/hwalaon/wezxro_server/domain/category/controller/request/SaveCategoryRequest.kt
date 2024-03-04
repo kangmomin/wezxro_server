@@ -7,17 +7,14 @@ import jakarta.validation.constraints.NotNull
 import java.util.*
 
 data class SaveCategoryRequest (
-    @NotEmpty
-    val name: String,
+    @field: NotEmpty
+    val name: String?,
 
-    @NotEmpty
-    val status: BasicStatus,
+    @field: NotNull
+    val status: BasicStatus?,
 
-    @NotNull
-    val sort: Int,
-
-    @NotNull
-    val clientId: UUID
+    @field: NotNull
+    val sort: Int?,
 ) {
     fun toDomain() =
         this.let {
@@ -26,7 +23,7 @@ data class SaveCategoryRequest (
                 status = it.status,
                 id = null,
                 sort = it.sort,
-                clientId = it.clientId
+                clientId = null
             )
         }
 }

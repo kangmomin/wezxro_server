@@ -37,9 +37,9 @@ class CategoryPersistenceAdapter(
         category.status = BasicStatus.DELETED
     }
 
-    fun validCategory(category: Category) =
+    fun validCategory(category: Category, clientId: UUID) =
         categoryRepository.existsByNameAndSortAndClientIdAndStatusNot(
-            category.name!!, category.sort!!, category.clientId!!)
+            category.name!!, category.sort!!, clientId)
 
     fun detail(categoryId: Long, clientId: UUID?): Category? =
         categoryRepository.findByIdAndClientIdAndStatusNot(categoryId, clientId).let {
