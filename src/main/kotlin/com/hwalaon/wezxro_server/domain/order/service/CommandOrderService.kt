@@ -4,6 +4,7 @@ import com.hwalaon.wezxro_server.domain.order.controller.request.AddOrderRequest
 import com.hwalaon.wezxro_server.domain.order.exception.NotEnoughMoneyException
 import com.hwalaon.wezxro_server.domain.order.exception.OrderCountNotValidCountException
 import com.hwalaon.wezxro_server.domain.order.persistence.OrderPersistence
+import com.hwalaon.wezxro_server.domain.service.exception.ServiceNotFoundException
 import com.hwalaon.wezxro_server.global.annotation.CommandService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +24,7 @@ class CommandOrderService(
         if (serviceInfo.max < addOrderRequest.count!! ||
             serviceInfo.min < addOrderRequest.count) throw OrderCountNotValidCountException()
 
-        val providerInfo = orderPersistence.providerApiInfo(addOrderRequest.serviceId)
+        val providerInfo = orderPersistence.providerApiInfo(serviceInfo.providerId)
 
         val order = addOrderRequest.toDomain()
         order.type = serviceInfo.type

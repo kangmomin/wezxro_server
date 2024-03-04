@@ -8,4 +8,5 @@ class ServiceAddOrderInfoDto @QueryProjection constructor (
     val max: Long,
     val type: ServiceType,
     val apiServiceId: Long,
+    val providerId: Long,
 )

@@ -41,4 +41,5 @@ enum class ErrorCode(
 
     // provider(api)
     API_REQUEST_FAILED_ERROR("도매처와의 연결을 실패하였습니다.", HttpStatus.BAD_REQUEST, "P500"),
+    PROVIDER_NOT_FOUND_ERROR("도매처를 찾을 수 없습니다.", HttpStatus.OK, "P204"),
 }

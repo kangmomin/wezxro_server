@@ -5,7 +5,7 @@ import com.hwalaon.wezxro_server.domain.order.model.Order
 import com.hwalaon.wezxro_server.domain.order.persistence.customRepository.CustomOrderRepository
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
-import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProvideApiDto
+import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
 import com.hwalaon.wezxro_server.domain.order.persistence.repository.OrderRepository
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +32,7 @@ class OrderPersistence(
         servicePort.serviceAddOrderInfo(serviceId)
 
 
-    suspend fun add(order: Order, providerInfo: ProvideApiDto, apiServiceId: Long) = scope.async {
+    suspend fun add(order: Order, providerInfo: ProviderApiDto, apiServiceId: Long) = scope.async {
 
         val apiOrderId = ApiProvider(
             apiUrl = providerInfo.apiUrl,
@@ -50,6 +50,6 @@ class OrderPersistence(
     private fun valid(apiOrderId: Long) =
         orderRepository.existsByApiOrderId(apiOrderId)
 
-    fun providerApiInfo(serviceId: Long) =
-        providerPort.providerApiInfo(serviceId)
+    fun providerApiInfo(providerId: Long) =
+        providerPort.providerApiInfo(providerId)
 }

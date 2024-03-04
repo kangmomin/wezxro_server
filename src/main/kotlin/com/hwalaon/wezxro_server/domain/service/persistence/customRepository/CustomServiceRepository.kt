@@ -3,6 +3,7 @@ package com.hwalaon.wezxro_server.domain.service.persistence.customRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QCustomRateEntity.customRateEntity
 import com.hwalaon.wezxro_server.domain.category.persistence.entity.QCategoryEntity.categoryEntity
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.QServiceAddOrderInfoDto
+import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ServiceAddOrderInfoDto
 import com.hwalaon.wezxro_server.domain.service.persistence.dto.QServiceDetailAndCustomRateDto
 import com.hwalaon.wezxro_server.domain.service.persistence.dto.ServiceDetailAndCustomRateDto
 import com.hwalaon.wezxro_server.domain.service.persistence.entity.QServiceEntity.serviceEntity
@@ -80,12 +81,13 @@ class CustomServiceRepository(
         return sql.fetch()
     }
 
-    fun addOrderServiceInfo(serviceId: Long) {
-        query.select(QServiceAddOrderInfoDto(
+    fun addOrderServiceInfo(serviceId: Long): ServiceAddOrderInfoDto? {
+        return query.select(QServiceAddOrderInfoDto(
             serviceEntity.min,
             serviceEntity.max,
             serviceEntity.type,
             serviceEntity.apiServiceId,
+            serviceEntity.providerId
         ))
             .from(serviceEntity)
             .where(serviceEntity.id.eq(serviceId))
