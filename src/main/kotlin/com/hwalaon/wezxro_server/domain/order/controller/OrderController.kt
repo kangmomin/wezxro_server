@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.order.controller
 
 import com.hwalaon.wezxro_server.domain.order.controller.request.AddOrderRequest
+import com.hwalaon.wezxro_server.domain.order.controller.response.AddOrderResponse
 import com.hwalaon.wezxro_server.domain.order.service.CommandOrderService
 import com.hwalaon.wezxro_server.domain.order.service.QueryOrderService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
@@ -39,7 +40,9 @@ class OrderController(
             addOrderRequest,
             principal.account.clientId!!,
             principal.account.money!!,
-            principal.account.userId!!)
+            principal.account.userId!!).let {
+                AddOrderResponse(it)
+        }
     )
 
 }

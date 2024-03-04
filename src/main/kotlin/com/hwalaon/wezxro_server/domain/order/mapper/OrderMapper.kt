@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class OrderMapper: BasicMapper<Order, OrderEntity> {
+    private val prefix = "!!$//$!!"
+
     override fun toDomain(entity: OrderEntity) =
         Order(
             id = entity.id,
@@ -20,6 +22,15 @@ class OrderMapper: BasicMapper<Order, OrderEntity> {
             count = entity.count,
             remain = entity.remain,
             startCnt = entity.startCnt,
+            answerNumber = entity.answerNumber,
+            comments = entity.comments!!.split(prefix),
+            groups = entity.groups,
+            hashtag = entity.hashtag,
+            hashtags = entity.hashtags!!.split(prefix),
+            mediaUrl = entity.mediaUrl,
+            commentsCustomPackage = entity.commentsCustomPackage,
+            username = entity.username,
+            usernames = entity.usernames!!.split(prefix),
         )
 
     override fun toEntity(domain: Order) =
@@ -35,6 +46,14 @@ class OrderMapper: BasicMapper<Order, OrderEntity> {
             count = domain.count,
             remain = domain.remain,
             startCnt = domain.startCnt,
+            answerNumber = domain.answerNumber,
+            comments = domain.comments!!.joinToString(prefix = prefix),
+            groups = domain.groups,
+            hashtag = domain.hashtag,
+            hashtags = domain.hashtags!!.joinToString(prefix = prefix),
+            mediaUrl = domain.mediaUrl,
+            commentsCustomPackage = domain.commentsCustomPackage,
+            username = domain.username,
+            usernames = domain.usernames!!.joinToString(prefix = prefix),
         )
-
 }

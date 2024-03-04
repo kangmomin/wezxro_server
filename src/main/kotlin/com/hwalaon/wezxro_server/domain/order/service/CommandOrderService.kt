@@ -16,7 +16,7 @@ class CommandOrderService(
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    suspend fun addOrder(addOrderRequest: AddOrderRequest, clientId: UUID, money: Double, userId: Long) {
+    suspend fun addOrder(addOrderRequest: AddOrderRequest, clientId: UUID, money: Double, userId: Long): Long {
         if (addOrderRequest.totalCharge!! > money) throw NotEnoughMoneyException()
         val serviceInfo = orderPersistence.serviceAddOrderInfo(addOrderRequest.serviceId!!)
 
@@ -29,6 +29,6 @@ class CommandOrderService(
         order.type = serviceInfo.type
         order.userId = userId
 
-        orderPersistence.add(order, providerInfo, serviceInfo.apiServiceId).await()
+        return orderPersistence.add(order, providerInfo, serviceInfo.apiServiceId).await()
     }
 }

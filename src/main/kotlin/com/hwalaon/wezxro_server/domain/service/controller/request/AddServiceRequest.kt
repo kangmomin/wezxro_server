@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.service.controller.request
 
 import com.hwalaon.wezxro_server.domain.service.model.Service
+import com.hwalaon.wezxro_server.domain.service.model.constant.ServiceType
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
@@ -21,7 +22,7 @@ data class AddServiceRequest (
     val name: String,
 
     @field:NotEmpty(message = "서비스 타입은 필수 입력 값 입니다.")
-    val type: String,
+    val type: ServiceType?,
 
     @field:NotNull(message = "서비스 가격은 필수 입력 값 입니다.")
     val rate: Float,

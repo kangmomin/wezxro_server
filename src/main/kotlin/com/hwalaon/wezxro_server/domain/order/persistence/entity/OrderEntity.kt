@@ -37,8 +37,35 @@ class OrderEntity (
     @Column(nullable = false)
     var count: Long?,
 
+    @Column(columnDefinition = "TEXT")
+    var comments: String?,
+    @Column(columnDefinition = "TEXT")
+    var commentsCustomPackage: String?,
+    /** 구분자 \r\n or \n */
+    @Column(columnDefinition = "TEXT")
+    var hashtags: String?,
+    @Column(columnDefinition = "TEXT")
+    var hashtag: String?,
+    /** 좋아요 누른 사람을 스크랩 해올 미디어의 URL */
+    @Column(columnDefinition = "TEXT")
+    var mediaUrl: String?,
+    /**
+     * 멘션할 유저의 닉네임. 구분자 \r\n or \n
+     *  팔로워일 시 스크랩할 팔로워의 프로필 링크
+     *  댓글 좋아요 일 시 타겟 댓글 작성자 이름
+     *  대댓글일 시 작성자 이름
+     *
+     */
+    @Column(columnDefinition = "TEXT")
+    var usernames: String?,
+    @Column(columnDefinition = "TEXT")
+    var username: String?,
+    /** 투표 정답 번호? */
+    var answerNumber: Long?,
+    @Column(columnDefinition = "TEXT")
+    var groups: String?,
+
     // 주문 들어갈 타겟 링크
-    @Column(nullable = false)
     var link: String?,
 
     // 남은 주문 갯수
