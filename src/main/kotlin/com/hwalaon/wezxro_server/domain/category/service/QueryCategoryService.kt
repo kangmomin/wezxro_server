@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.category.service
 
+import com.hwalaon.wezxro_server.domain.category.controller.response.CategoryListResponse
 import com.hwalaon.wezxro_server.domain.category.exception.CategoryNotFoundException
 import com.hwalaon.wezxro_server.domain.category.model.Category
 import com.hwalaon.wezxro_server.domain.category.persistence.CategoryPersistenceAdapter
@@ -12,7 +13,9 @@ class QueryCategoryService(
 ) {
 
     fun categoryList(clientId: UUID) =
-        categoryPersistenceAdapter.findAll(clientId)
+        categoryPersistenceAdapter.findAll(clientId).map {
+            CategoryListResponse(it.id!!, it.name!!)
+        }
 
     fun detail(clientId: UUID?, categoryId: Long, isAdmin: Boolean = false): Category {
         val category = if (isAdmin) categoryPersistenceAdapter.detailAdmin(categoryId, clientId)
