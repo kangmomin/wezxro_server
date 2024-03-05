@@ -29,22 +29,16 @@ class ExceptionFilter: OncePerRequestFilter() {
     }
 
     private fun exceptionToResponse(errorCode: ErrorCode, response: HttpServletResponse) {
-        val errorResponse = BasicResponse.error(errorCode)
+        val baseResponse = BasicResponse.BaseResponse(
+            data = BasicResponse.BaseErrorResponse(errorCode.msg, errorCode.code),
+            status = BasicResponse.BaseStatus.ERROR
+        )
 
         // 상태 코드 설정
-        response.status = errorResponse.statusCode.value()
+        response.status = errorCode.status.value()
         response.contentType = "application/json;charset=UTF-8"
 
-        // 헤더 설정
-        errorResponse.headers.forEach { name, values ->
-            values.forEach { value ->
-                response.addHeader(name, value)
-            }
-        }
-
         // 본문 설정
-        errorResponse.body?.let {
-            response.writer.write(ObjectMapper().writeValueAsString(it))
-        }
+        response.writer.write(ObjectMapper().writeValueAsString(baseResponse))
     }
 }
