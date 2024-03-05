@@ -6,7 +6,7 @@ import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "order")
+@Table(name = "\"order\"")
 class OrderEntity (
     @Id
     @Column(name = "order_id")
