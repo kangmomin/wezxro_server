@@ -8,14 +8,10 @@ import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
-@Controller
-@RequestMapping(name = "/o")
+@RestController
+@RequestMapping("/o")
 class OrderController(
     private val queryOrderService: QueryOrderService,
     private val commandOrderService: CommandOrderService,
