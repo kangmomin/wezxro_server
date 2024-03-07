@@ -19,3 +19,5 @@ ALTER TABLE service ALTER COLUMN client_id DROP DEFAULT;
 
 create table "order" (order_id bigserial not null, created_at timestamp(6) not null, updated_at timestamp(6) not null, answer_number bigint, api_order_id bigint not null, comments TEXT, comments_custom_package TEXT, count bigint not null, groups TEXT, hashtag TEXT, hashtags TEXT, link varchar(255), media_url TEXT, remain bigint not null, service_id bigint not null, start_cnt bigint not null, status varchar(255) not null check (status in ('COMPLETED','CANCELED','PROCESSING','INPROGRESS','PARTIALS','PENDING')), total_charge float(53) not null, type varchar(255) not null check (type in ('DEFAULT','SUBSCRIPTION','CUSTOM_COMMENTS','CUSTOM_COMMENTS_PACKAGE','MENTIONS_WITH_HASHTAGS','MENTIONS_CUSTOM_LIST','MENTIONS_HASHTAG','MENTIONS_USER_FOLLOWER','MENTIONS_MEDIEA_LIKERS','PACKAGE','COMMENT_LIKES','POLL','COMMENTS_REPLIES','INVITES_FROM_GROUPS')), user_id bigint not null, username TEXT, usernames TEXT, primary key (order_id));
 
+alter table if exists providers add column created_at timestamp(6) not null default now();
+alter table if exists providers add column updated_at timestamp(6) not null default now();

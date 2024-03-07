@@ -11,14 +11,14 @@ import java.util.*
 @Component
 class JwtGenerator(
     private val jwtProperties: JwtProperties,
-    private val refreshTokenPersistenceAdapter: RefreshTokenPersistenceAdapter
+//    private val refreshTokenPersistenceAdapter: RefreshTokenPersistenceAdapter
 ) {
     fun generate(userId: Long): TokenDto {
         val accessToken = generateToken(userId, jwtProperties.accessKey, jwtProperties.accessExp)
         val refreshToken = generateToken(userId, jwtProperties.refreshKey, jwtProperties.refreshExp)
 
         // refresh Token 저장 로직
-        refreshTokenPersistenceAdapter.save(refreshToken)
+//        refreshTokenPersistenceAdapter.save(refreshToken)
 
         return TokenDto(
             accessToken = accessToken,

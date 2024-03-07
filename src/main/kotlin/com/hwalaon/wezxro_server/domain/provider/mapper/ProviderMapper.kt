@@ -19,7 +19,11 @@ class ProviderMapper: BasicMapper<Provider, ProviderEntity> {
             description = entity.description,
             status = entity.status,
             userId = entity.userId,
-        )
+        ).let {
+            it.createdAt = entity.createdAt
+            it.updatedAt = entity.updatedAt
+            it
+        }
 
     override fun toEntity(domain: Provider) =
         ProviderEntity(
@@ -33,5 +37,9 @@ class ProviderMapper: BasicMapper<Provider, ProviderEntity> {
             description = domain.description,
             status = domain.status,
             userId = domain.userId,
-        )
+        ).let {
+            it.createdAt = domain.createdAt
+            it.updatedAt = domain.updatedAt
+            it
+        }
 }

@@ -15,7 +15,11 @@ class CustomRateMapper(
             rate = entity.rate,
             user = null,
             serviceId = entity.serviceId
-        )
+        ).let {
+            it.createdAt = entity.createdAt
+            it.updatedAt = entity.updatedAt
+            it
+        }
 
     override fun toEntity(domain: CustomRate) =
         CustomRateEntity(
@@ -23,7 +27,11 @@ class CustomRateMapper(
             rate = domain.rate,
             user = null,
             serviceId = domain.serviceId
-        )
+        ).let {
+            it.createdAt = domain.createdAt
+            it.updatedAt = domain.updatedAt
+            it
+        }
 
     fun toEntityWithUser(domain: CustomRate) =
         CustomRateEntity(

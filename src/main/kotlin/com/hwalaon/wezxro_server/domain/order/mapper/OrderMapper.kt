@@ -31,7 +31,11 @@ class OrderMapper: BasicMapper<Order, OrderEntity> {
             commentsCustomPackage = entity.commentsCustomPackage,
             username = entity.username,
             usernames = entity.usernames!!.split(prefix),
-        )
+        ).let {
+            it.createdAt = entity.createdAt
+            it.updatedAt = entity.updatedAt
+            it
+        }
 
     override fun toEntity(domain: Order) =
         OrderEntity(
@@ -55,5 +59,9 @@ class OrderMapper: BasicMapper<Order, OrderEntity> {
             commentsCustomPackage = domain.commentsCustomPackage,
             username = domain.username,
             usernames = domain.usernames!!.joinToString(prefix = prefix),
-        )
+        ).let {
+            it.createdAt = domain.createdAt
+            it.updatedAt = domain.updatedAt
+            it
+        }
 }

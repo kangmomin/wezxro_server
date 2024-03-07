@@ -11,8 +11,8 @@ class RefreshTokenPersistenceAdapter(
 ) {
 
     fun isExistRefreshToken(refreshToken: String): Boolean = refreshTokenRepository.findByIdOrNull(refreshToken) != null
-    fun save(refreshToken: String) = refreshTokenRepository.save(
-        // id 자동 생성을 위한 null 처리
-        RefreshToken(id = refreshToken)
-    )
+    fun save(refreshToken: String) =
+        refreshTokenRepository.save(
+            // id 자동 생성을 위한 null 처리
+            RefreshToken(token = refreshToken, id = null))
 }

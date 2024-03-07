@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.provider.model
 
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
 import java.util.*
 
 data class Provider(
@@ -14,4 +15,4 @@ data class Provider(
     val type: Boolean?,
     var balance: Double?,
     var clientId: UUID?
-)
+): BasicTime()

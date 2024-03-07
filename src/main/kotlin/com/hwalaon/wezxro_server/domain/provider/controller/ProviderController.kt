@@ -23,4 +23,5 @@ class ProviderController(
         BasicResponse.ok(
             queryProviderService.list(principalDetails.account.clientId!!)
         )
+
 }
