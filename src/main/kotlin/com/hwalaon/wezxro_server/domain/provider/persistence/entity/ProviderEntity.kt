@@ -21,7 +21,7 @@ data class ProviderEntity(
     @Column(length = 50, unique = true, nullable = false)
     val name: String?,
 
-    @Column(length = 200, nullable = false)
+    @Column(length = 200)
     val description: String?,
 
     @Column(name = "api_key", nullable = false)
@@ -32,7 +32,7 @@ data class ProviderEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val status: BasicStatus?,
+    var status: BasicStatus?,
 
     @Column(nullable = false)
     val type: Boolean?,

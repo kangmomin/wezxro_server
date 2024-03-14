@@ -1,9 +1,11 @@
 package com.hwalaon.wezxro_server.domain.provider.persistence
 
+import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderMapper
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto
 import org.springframework.stereotype.Component
@@ -36,4 +38,11 @@ class ProviderPersistence(
         providerRepository.findAllByClientId(clientId).map {
             providerMapper.toDomain(it)
         }
+
+    fun changeStatus(providerId: Long, clientId: UUID) {
+        val provider = providerRepository.findByClientIdAndId(clientId, providerId) ?: throw ProviderNotFoundException()
+
+        if (provider.status!! == BasicStatus.ACTIVE) provider.status = BasicStatus.DEACTIVE
+        if (provider.status!! == BasicStatus.DEACTIVE) provider.status = BasicStatus.ACTIVE
+    }
 }
