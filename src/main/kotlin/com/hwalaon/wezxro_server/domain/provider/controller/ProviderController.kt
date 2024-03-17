@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.provider.controller
 
+import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderListResponse
 import com.hwalaon.wezxro_server.domain.provider.service.CommandProviderService
 import com.hwalaon.wezxro_server.domain.provider.service.QueryProviderService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
@@ -21,7 +22,16 @@ class ProviderController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ) =
         BasicResponse.ok(
-            queryProviderService.list(principalDetails.account.clientId!!)
+            queryProviderService.list(principalDetails.account.clientId!!).map {
+                ProviderListResponse(
+                    id = it.id,
+                    status = it.status!!,
+                    name = it.name,
+                    description = it.description,
+                    balance = it.balance!!,
+                    apiUrl = it.apiUrl!!
+                )
+            }
         )
 
 }

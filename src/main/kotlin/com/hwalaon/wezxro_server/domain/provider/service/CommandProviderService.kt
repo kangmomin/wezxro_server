@@ -4,6 +4,7 @@ import com.hwalaon.wezxro_server.domain.provider.exception.ProviderConflictExcep
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.ProviderPersistence
 import com.hwalaon.wezxro_server.global.annotation.CommandService
+import java.util.*
 
 @CommandService
 class CommandProviderService(
@@ -15,5 +16,9 @@ class CommandProviderService(
         provider.balance = balance
 
         return providerPersistence.save(provider)!!
+    }
+
+    fun updateStatus(providerId: Long, clientId: UUID) {
+        providerPersistence.changeStatus(providerId, clientId)
     }
 }

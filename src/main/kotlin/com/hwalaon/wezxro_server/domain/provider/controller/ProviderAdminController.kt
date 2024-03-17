@@ -9,6 +9,7 @@ import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -32,5 +33,15 @@ class ProviderAdminController(
 
         val providerId = commandProviderService.addProvider(provider)
         return BasicResponse.ok(AddProviderResponse(providerId))
+    }
+
+    @PostMapping("/status/{providerId}")
+    fun changeStatus(
+        @PathVariable providerId: Long,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandProviderService.updateStatus(providerId, principalDetails.account.clientId!!)
+
+        return BasicResponse.ok("")
     }
 }

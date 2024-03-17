@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.provider.controller.request
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import jakarta.validation.constraints.NotEmpty
@@ -10,8 +11,10 @@ data class AddProviderRequest (
     val name: String?,
     val description: String?,
     @field: NotEmpty(message = "도매처 API 키는 필수 값 입니다.")
+    @JsonProperty("key")
     val apiKey: String?,
     @field: NotEmpty(message = "도매처 URL은 필수 값 입니다.")
+    @JsonProperty("url")
     val apiUrl: String?,
     @field: NotNull(message = "도매처 상태 값은 필수 값 입니다.")
     val status: BasicStatus?,
