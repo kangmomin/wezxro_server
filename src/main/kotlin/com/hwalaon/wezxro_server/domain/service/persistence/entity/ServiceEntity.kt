@@ -26,7 +26,7 @@ class ServiceEntity (
 
     @Column(nullable = false)
     var name: String?,
-    @Column(nullable = false)
+    @Column(nullable = false, name = "\"type\"")
     @Enumerated(EnumType.STRING)
     var type: ServiceType?,
 

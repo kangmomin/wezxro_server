@@ -6,7 +6,6 @@ import com.hwalaon.wezxro_server.domain.deposit.model.constant.DepositType
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Size
 
 class AddDepositRequest (
     @field: NotNull(message = "결제 금액은 비어있을 수 없습니다.")
@@ -45,5 +44,6 @@ class AddDepositRequest (
             type = null,
             status = DepositType.PENDING,
             note = null,
+            clientId = null
         )
 }

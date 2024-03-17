@@ -21,3 +21,15 @@ create table "order" (order_id bigserial not null, created_at timestamp(6) not n
 
 alter table if exists providers add column created_at timestamp(6) not null default now();
 alter table if exists providers add column updated_at timestamp(6) not null default now();
+
+-- 임시로 데이터를 백업하고 테이블을 변경합니다.
+CREATE TABLE service_backup AS SELECT * FROM service;
+-- 기존 테이블을 삭제하고 새로운 구조로 다시 생성합니다.
+DROP TABLE service;
+
+-- 작동 시키기
+
+-- 백업한 데이터를 다시 삽입합니다.
+INSERT INTO service SELECT * FROM service_backup;
+-- 백업 테이블은 더 이상 필요하지 않으므로 삭제합니다.
+DROP TABLE service_backup;

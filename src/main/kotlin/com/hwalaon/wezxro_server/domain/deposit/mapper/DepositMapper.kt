@@ -22,6 +22,7 @@ class DepositMapper: BasicMapper<Deposit, DepositEntity> {
             entity.status,
             entity.type,
             entity.note,
+            entity.clientId,
         ).let {
             it.createdAt = entity.createdAt
             it.updatedAt = entity.updatedAt
@@ -42,6 +43,7 @@ class DepositMapper: BasicMapper<Deposit, DepositEntity> {
             domain.status,
             domain.type,
             domain.note,
+            domain.clientId
         ).let {
             it.createdAt = domain.createdAt
             it.updatedAt = domain.updatedAt
@@ -62,5 +64,6 @@ class DepositMapper: BasicMapper<Deposit, DepositEntity> {
             domain.status,
             domain.type,
             domain.note,
+            domain.clientId
         )
 }

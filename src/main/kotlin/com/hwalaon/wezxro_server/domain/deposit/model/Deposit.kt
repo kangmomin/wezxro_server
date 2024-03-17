@@ -2,7 +2,7 @@ package com.hwalaon.wezxro_server.domain.deposit.model
 
 import com.hwalaon.wezxro_server.domain.deposit.model.constant.DepositType
 import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
-import java.util.UUID
+import java.util.*
 
 class Deposit (
     var id: Long?,
@@ -17,4 +17,5 @@ class Deposit (
     var status: DepositType?,
     var type: String?,
     var note: String?,
+    var clientId: UUID?,
 ): BasicTime()

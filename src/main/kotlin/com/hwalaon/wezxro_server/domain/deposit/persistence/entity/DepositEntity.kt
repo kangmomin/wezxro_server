@@ -3,8 +3,10 @@ package com.hwalaon.wezxro_server.domain.deposit.persistence.entity
 import com.hwalaon.wezxro_server.domain.deposit.model.constant.DepositType
 import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
+import java.util.*
 
 @Entity
+@Table(name = "deposit")
 class DepositEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +32,5 @@ class DepositEntity (
     var status: DepositType?,
     var type: String?,
     var note: String?,
+    var clientId: UUID?,
 ): BasicTimeEntity()

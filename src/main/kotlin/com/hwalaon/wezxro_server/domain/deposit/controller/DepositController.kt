@@ -23,7 +23,9 @@ class DepositController(
         @RequestBody @Valid addDepositRequest: AddDepositRequest,
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
     ): ResponseEntity<BasicResponse.BaseResponse> {
-        commandDepositService.save(addDepositRequest.toDomain())
+        val deposit = addDepositRequest.toDomain()
+        deposit.clientId = principalDetails.account.clientId
+        commandDepositService.save(deposit)
 
         return BasicResponse.ok("충전 신청이 완료되었습니다.")
     }
