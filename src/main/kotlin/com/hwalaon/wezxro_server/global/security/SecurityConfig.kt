@@ -22,7 +22,9 @@ import org.springframework.web.cors.CorsUtils
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtParser: JwtParser,
-    private val principalDetailsService: PrincipalDetailsService
+    private val principalDetailsService: PrincipalDetailsService,
+    private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
+    private val exceptionFilter: ExceptionFilter
 ) {
 
     @Bean
@@ -40,12 +42,12 @@ class SecurityConfig(
             }
             .formLogin { it.disable() }
             .exceptionHandling {
-                it.authenticationEntryPoint(CustomAuthenticationEntryPoint())
+                it.authenticationEntryPoint(customAuthenticationEntryPoint)
                     .accessDeniedHandler(CustomAccessDeniedHandler())
             }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .addFilterBefore(JwtAuthFilter(jwtParser, principalDetailsService), UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterBefore(ExceptionFilter(), JwtAuthFilter::class.java)
+            .addFilterBefore(exceptionFilter, JwtAuthFilter::class.java)
 
         return http.build()
     }
