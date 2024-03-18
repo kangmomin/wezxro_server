@@ -20,14 +20,18 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun jsonExceptionHandler(e: HttpMessageNotReadableException) =
-        BasicResponse.error(ErrorCode.NON_BODY_ERROR)
+        BasicResponse.error(ErrorCode.NON_BODY_ERROR).let {
+            e.printStackTrace()
+        }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun validExceptionHandler(e: MethodArgumentNotValidException) =
         BasicResponse.customStatus(
             MsgResponse(e.bindingResult.allErrors[0].defaultMessage ?: "데이터가 정상적으로 전달되지 않았습니다."),
             HttpStatus.BAD_REQUEST,
-            BasicResponse.BaseStatus.ERROR)
+            BasicResponse.BaseStatus.ERROR).let {
+                e.printStackTrace()
+        }
 
     @ExceptionHandler(NoResourceFoundException::class)
     fun jsonExceptionHandler(e: NoResourceFoundException) =

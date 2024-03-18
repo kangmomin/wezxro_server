@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.category.controller
 
+import com.hwalaon.wezxro_server.domain.category.controller.request.CategorySortRequest
 import com.hwalaon.wezxro_server.domain.category.controller.request.SaveCategoryRequest
 import com.hwalaon.wezxro_server.domain.category.service.CommandCategoryService
 import com.hwalaon.wezxro_server.domain.category.service.QueryCategoryService
@@ -49,4 +50,29 @@ class CategoryAdminController(
             queryCategoryService.detail(
                 principalDetails.account.clientId,
                 categoryId, true))
+
+    @GetMapping("/list")
+    fun categoryList(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ) =
+        BasicResponse.ok(
+            queryCategoryService.categoryListForAdmin(principalDetails.account.clientId!!)
+        )
+
+    @PostMapping("/status/{id}")
+    fun categoryStatusToggle(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable(name = "id") categoryId: Long,
+    ) = BasicResponse.ok(
+        commandCategoryService.toggleStatus(categoryId, principalDetails.account.clientId!!)
+    )
+
+    @PostMapping("/sort/{id}")
+    fun categorySortUpdate(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable(name = "id") categoryId: Long,
+        @RequestBody @Valid categorySortRequest: CategorySortRequest
+    ) = BasicResponse.ok(
+        commandCategoryService.updateSort(categoryId, categorySortRequest.sort!!, principalDetails.account.clientId!!)
+    )
 }

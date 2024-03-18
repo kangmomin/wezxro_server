@@ -23,7 +23,6 @@ import org.springframework.web.cors.CorsUtils
 class SecurityConfig(
     private val jwtParser: JwtParser,
     private val principalDetailsService: PrincipalDetailsService,
-    private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val exceptionFilter: ExceptionFilter
 ) {
 
@@ -42,7 +41,7 @@ class SecurityConfig(
             }
             .formLogin { it.disable() }
             .exceptionHandling {
-                it.authenticationEntryPoint(customAuthenticationEntryPoint)
+                it.authenticationEntryPoint(CustomAuthenticationEntryPoint())
                     .accessDeniedHandler(CustomAccessDeniedHandler())
             }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }

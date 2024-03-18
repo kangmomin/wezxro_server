@@ -17,6 +17,10 @@ class CategoryPersistenceAdapter(
 
     /** sort로 정렬한 카테고리들 반환 */
     fun findAll(clientId: UUID) =
+        categoryRepository.findAllByClientIdAndStatusOrderBySort(clientId, BasicStatus.ACTIVE).map {
+            categoryMapper.toDomain(it)
+        }
+    fun findAllAdmin(clientId: UUID) =
         categoryRepository.findAllByClientIdAndStatusNotOrderBySort(clientId).map {
             categoryMapper.toDomain(it)
         }
@@ -44,13 +48,13 @@ class CategoryPersistenceAdapter(
             category.name!!, category.sort!!, clientId)
 
     fun detail(categoryId: Long, clientId: UUID?): Category? =
-        categoryRepository.findByIdAndClientIdAndStatusNot(categoryId, clientId).let {
+        categoryRepository.findByIdAndClientIdAndStatus(categoryId, clientId).let {
             if (it == null) return null
             categoryMapper.toDomain(it)
         }
 
     fun detailAdmin(categoryId: Long, clientId: UUID?): Category? =
-        categoryRepository.findByIdAndClientIdAndStatus(categoryId, clientId).let {
+        categoryRepository.findByIdAndClientIdAndStatusNot(categoryId, clientId).let {
             if (it == null) return null
             categoryMapper.toDomain(it)
         }

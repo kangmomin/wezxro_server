@@ -7,4 +7,6 @@ data class CategoryListResponse (
     val id: Long,
     @JsonProperty("name")
     val name: String,
+    val sort: Int,
+    val status: Int
 )

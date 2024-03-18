@@ -14,7 +14,12 @@ class QueryCategoryService(
 
     fun categoryList(clientId: UUID) =
         categoryPersistenceAdapter.findAll(clientId).map {
-            CategoryListResponse(it.id!!, it.name!!)
+            CategoryListResponse(it.id!!, it.name!!, it.sort!!, it.status!!.code)
+        }
+
+    fun categoryListForAdmin(clientId: UUID) =
+        categoryPersistenceAdapter.findAllAdmin(clientId).map {
+            CategoryListResponse(it.id!!, it.name!!, it.sort!!, it.status!!.code)
         }
 
     fun detail(clientId: UUID?, categoryId: Long, isAdmin: Boolean = false): Category {

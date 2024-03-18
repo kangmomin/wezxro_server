@@ -10,6 +10,7 @@ import java.util.*
 interface CategoryRepository: JpaRepository<CategoryEntity, Long> {
 
     fun findAllByClientIdAndStatusNotOrderBySort(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<CategoryEntity>
+    fun findAllByClientIdAndStatusOrderBySort(clientId: UUID, status: BasicStatus = BasicStatus.ACTIVE): List<CategoryEntity>
     fun existsByNameAndSortAndClientIdAndStatusNot(name: String, sort: Int, clientId: UUID, status: BasicStatus = BasicStatus.DELETED): Boolean
     fun findByIdAndClientIdAndStatusNot(categoryId: Long, clientId: UUID?, status: BasicStatus = BasicStatus.DELETED): CategoryEntity?
     fun findByIdAndClientIdAndStatus(categoryId: Long, clientId: UUID?, status: BasicStatus = BasicStatus.ACTIVE): CategoryEntity?
