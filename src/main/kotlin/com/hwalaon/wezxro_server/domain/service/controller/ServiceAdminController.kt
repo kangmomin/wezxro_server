@@ -10,7 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/s/admin")
+@RequestMapping("/admin/s")
 class ServiceAdminController(
     private val commandAdminServiceService: CommandAdminServiceService,
     private val queryAdminServiceService: QueryAdminServiceService
@@ -19,7 +19,8 @@ class ServiceAdminController(
     @GetMapping("/list")
     fun getServices(
         @AuthenticationPrincipal userInfo: PrincipalDetails,
-        @RequestParam(name = "category", defaultValue = "0") categoryId: Long) =
+        @RequestParam(name = "category", defaultValue = "0") categoryId: Long
+    ) =
         queryAdminServiceService.serviceList(userInfo.account.clientId, categoryId).let {
             BasicResponse.ok(it)
         }
