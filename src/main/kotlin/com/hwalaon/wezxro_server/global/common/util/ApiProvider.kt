@@ -1,7 +1,9 @@
 package com.hwalaon.wezxro_server.global.common.util
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedException
+import com.hwalaon.wezxro_server.global.common.util.dto.ProviderServiceDto
 import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -11,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.lang.reflect.Type
 
 class ApiProvider(
     private val apiKey: String,
@@ -56,8 +59,10 @@ class ApiProvider(
         }
     }
 
-    fun getServices(): String {
-        return fetchApi("services")
+    fun getServices(): List<ProviderServiceDto> {
+        val response = fetchApi("services")
+        val type: Type = object : TypeToken<List<ProviderServiceDto>>() {}.type
+        return Gson().fromJson(response, type) ?: throw ApiRequestFailedException()
     }
 
     fun addOrder(service: Long, link: String, quantity: Long): String {

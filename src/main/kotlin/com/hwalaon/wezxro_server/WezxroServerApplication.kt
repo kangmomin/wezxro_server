@@ -6,7 +6,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 
 @SpringBootApplication
 @EnableRedisRepositories(basePackages = [
-	"com.hwalaon.wezxro_server.domain.deposit.persistence.redis",
+	"com.hwalaon.wezxro_server.domain.*.persistence.redis",
 	"com.hwalaon.wezxro_server.global.common.refreshToken.persistence.repository"
 ])
 class WezxroServerApplication

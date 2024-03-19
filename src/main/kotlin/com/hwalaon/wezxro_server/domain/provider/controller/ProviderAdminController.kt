@@ -65,4 +65,12 @@ class ProviderAdminController(
     ) = BasicResponse.ok(
         queryProviderService.providerServiceCategory(providerId, principalDetails.account.clientId!!)
     )
+
+    @PostMapping("/sync/{providerId}")
+    fun providerSync(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable providerId: Long
+    ) = commandProviderService.syncProviderServices(providerId, principalDetails.account.clientId!!).let {
+        BasicResponse.ok("도매처 서비스를 동기화하였습니다.")
+    }
 }

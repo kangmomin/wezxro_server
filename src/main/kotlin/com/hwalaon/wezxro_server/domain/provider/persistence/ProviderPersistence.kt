@@ -4,8 +4,9 @@ import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundExcep
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderMapper
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
+import com.hwalaon.wezxro_server.domain.provider.persistence.entity.ProviderServiceEntity
 import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
-import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderServiceRedisRepository
+import com.hwalaon.wezxro_server.domain.provider.persistence.redis.ProviderServiceRedisRepository
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto
@@ -65,4 +66,27 @@ class ProviderPersistence(
             if (it == null) return null
             providerMapper.toDomain(it)
         }
+
+    fun syncServices(provider: Provider) {
+        val apiProvider = ApiProvider(provider.apiKey!!, provider.apiUrl!!)
+
+        val services = apiProvider.getServices().map {
+            ProviderServiceEntity(
+                id = null,
+                rate = it.rate,
+                max = it.max,
+                min = it.min,
+                type = it.type,
+                name = it.name,
+                category = it.category,
+                service = it.service,
+                providerLink = provider.apiUrl,
+                cancel = it.cancel,
+                refill = it.refill,
+                dripfeed = it.dripfeed
+            )
+        }
+
+        providerServiceRedisRepository.saveAll(services)
+    }
 }

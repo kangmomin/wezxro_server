@@ -9,7 +9,7 @@ import org.springframework.data.redis.core.index.Indexed
 class ProviderServiceEntity (
 
     @Id
-    val id: String,
+    val id: String?,
     @Indexed
     val providerLink: String,
     /** serviceId */
