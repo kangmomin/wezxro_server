@@ -17,5 +17,5 @@ class CustomRateEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     var user: AccountEntity?,
-    var rate: Float
+    var rate: Double
 ): BasicTimeEntity()

@@ -6,9 +6,9 @@ data class ServiceDetailAndCustomRateDto
 @QueryProjection constructor(
     val serviceId: Long,
     val name: String,
-    val rate: Float,
+    val rate: Double,
     val min: Long,
     val max: Long,
     val description: String,
-    val customRate: Float?,
+    val customRate: Double?,
 )

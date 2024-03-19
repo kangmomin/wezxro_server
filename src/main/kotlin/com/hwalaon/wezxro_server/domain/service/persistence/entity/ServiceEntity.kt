@@ -31,7 +31,7 @@ class ServiceEntity (
     var type: ServiceType?,
 
     @Column(nullable = false)
-    var rate: Float?,
+    var rate: Double?,
 
     @Column(nullable = false)
     var min: Long?,
@@ -47,5 +47,5 @@ class ServiceEntity (
     var status: BasicStatus?,
 
     @Column(nullable = false)
-    var originalRate: Float?
+    var originalRate: Double?
 ): BasicTimeEntity()

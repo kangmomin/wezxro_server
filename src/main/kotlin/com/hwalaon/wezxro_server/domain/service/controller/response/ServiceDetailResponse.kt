@@ -6,7 +6,7 @@ data class ServiceDetailResponse(
     val name: String,
     val min: Long,
     val max: Long,
-    val rate: Float,
+    val rate: Double,
     val description: String
 ) {
     companion object {

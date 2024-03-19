@@ -11,7 +11,7 @@ data class AddCustomRateRequest (
 
 ) {
     companion object {
-        class AddCustomRateList (
+        class AddCustomRateList(
             /**
              * customRateId
              */
@@ -20,7 +20,7 @@ data class AddCustomRateRequest (
             @field:NotNull("서비스 아이디는 필수 입력 값 입니다.")
             val serviceId: Long,
 
-            val rate: Float?
+            val rate: Double?
         )
     }
 }

@@ -11,7 +11,17 @@ class QueryAdminServiceService(
 ) {
     fun serviceList(clientId: UUID?, categoryId: Long) =
         servicePersistenceAdapter.serviceList(clientId!!, categoryId).map {
-            ServiceListResponse(it.id!!, it.name!!)
+            ServiceListResponse(
+                id = it.id!!,
+                name = it.name!!,
+                description = it.description!!,
+                apiServiceId = it.apiServiceId!!,
+                status = it.status!!.code,
+                type = it.type!!,
+                providerId = it.providerId!!,
+                min = it.min!!,
+                max = it.max!!,
+                rate = it.rate!!)
         }
 
 

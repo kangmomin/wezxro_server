@@ -13,15 +13,15 @@ class Service (
     var apiServiceId: Long?,
     var name: String?,
     var type: ServiceType?,
-    var rate: Float?,
+    var rate: Double?,
     var min: Long?,
     var max: Long?,
     var description: String?,
     var status: BasicStatus?,
-    var originalRate: Float?
+    var originalRate: Double?
 ): BasicTime() {
     companion object {
-        fun serviceDetail(serviceId: Long, rate: Float, name: String, description: String, min: Long, max: Long) =
+        fun serviceDetail(serviceId: Long, rate: Double, name: String, description: String, min: Long, max: Long) =
             Service(
                 id = serviceId,
                 rate = rate,

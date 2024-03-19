@@ -78,7 +78,7 @@ class AccountPersistenceAdapter(
 
                 account.customRate = account.customRate?.map { cr ->
                     if (cr.id != addCustomRate.crId) return@map cr
-                    cr.rate = addCustomRate.rate ?: 0F
+                    cr.rate = addCustomRate.rate ?: 0.0
 
                     return@map cr
                 }?.toMutableList()

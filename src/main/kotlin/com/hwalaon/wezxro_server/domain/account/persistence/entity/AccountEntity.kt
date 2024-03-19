@@ -50,7 +50,7 @@ class AccountEntity(
         val customRateEntity = CustomRateEntity(
             id = null,
             serviceId = addCustomRateList.serviceId,
-            rate = addCustomRateList.rate ?: 0F,
+            rate = addCustomRateList.rate ?: 0.0,
             user = this
         )
 

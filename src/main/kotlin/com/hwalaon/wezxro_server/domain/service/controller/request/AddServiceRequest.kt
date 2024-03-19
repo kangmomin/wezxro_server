@@ -25,7 +25,7 @@ data class AddServiceRequest (
     val type: ServiceType?,
 
     @field:NotNull(message = "서비스 가격은 필수 입력 값 입니다.")
-    val rate: Float?,
+    val rate: Double?,
 
     @field:NotNull(message = "Status는 필수 입력 값 입니다.")
     val status: BasicStatus?,
@@ -40,7 +40,7 @@ data class AddServiceRequest (
     val description: String?,
 
     @field:NotNull(message = "도매처 서비스의 비용은 필수 입력 값 입니다.")
-    val originalRate: Float?
+    val originalRate: Double?
 ) {
     fun toDomain(clientId: UUID) =
         Service(
