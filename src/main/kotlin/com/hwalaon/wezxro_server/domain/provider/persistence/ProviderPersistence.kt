@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderMapper
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
+import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderServiceRedisRepository
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto
@@ -15,6 +16,7 @@ import java.util.*
 class ProviderPersistence(
     private val providerRepository: ProviderRepository,
     private val customProviderRepository: CustomProviderRepository,
+    private val providerServiceRedisRepository: ProviderServiceRedisRepository,
     private val providerMapper: ProviderMapper
 ) {
     fun valid(provider: Provider) =
@@ -48,6 +50,19 @@ class ProviderPersistence(
 
     fun adminList(clientId: UUID) =
         providerRepository.findAllByClientIdAndStatusIsNot(clientId).map {
+            providerMapper.toDomain(it)
+        }
+
+    fun providerCategories(provider: Provider): List<String> {
+        val categories = providerServiceRedisRepository.findByProviderLink(provider.apiUrl!!).map {
+            it.category
+        }
+        return categories
+    }
+
+    fun providerDetail(providerId: Long, clientId: UUID): Provider? =
+        providerRepository.findByClientIdAndId(clientId, providerId).let {
+            if (it == null) return null
             providerMapper.toDomain(it)
         }
 }

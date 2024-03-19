@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.domain.provider.controller
 
 import com.hwalaon.wezxro_server.domain.provider.controller.request.AddProviderRequest
 import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderListResponse
+import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.service.CommandProviderService
 import com.hwalaon.wezxro_server.domain.provider.service.QueryProviderService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
@@ -55,5 +56,13 @@ class ProviderAdminController(
                 balance = it.balance!!
             )
         }
+    )
+
+    @GetMapping("/category/{providerId}")
+    fun providerServiceCategory(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable providerId: Long
+    ) = BasicResponse.ok(
+        queryProviderService.providerServiceCategory(providerId, principalDetails.account.clientId!!)
     )
 }
