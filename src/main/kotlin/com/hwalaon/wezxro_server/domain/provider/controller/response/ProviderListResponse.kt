@@ -2,7 +2,6 @@ package com.hwalaon.wezxro_server.domain.provider.controller.response
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
-import java.util.*
 
 class ProviderListResponse (
     @JsonProperty("providerId")
