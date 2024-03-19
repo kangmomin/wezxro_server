@@ -43,7 +43,7 @@ class ProviderPersistence(
         val provider = providerRepository.findByClientIdAndId(clientId, providerId) ?: throw ProviderNotFoundException()
 
         if (provider.status!! == BasicStatus.ACTIVE) provider.status = BasicStatus.DEACTIVE
-        if (provider.status!! == BasicStatus.DEACTIVE) provider.status = BasicStatus.ACTIVE
+        else if (provider.status!! == BasicStatus.DEACTIVE) provider.status = BasicStatus.ACTIVE
     }
 
     fun adminList(clientId: UUID) =
