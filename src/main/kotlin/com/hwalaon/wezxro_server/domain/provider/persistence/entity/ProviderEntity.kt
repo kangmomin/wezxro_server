@@ -18,7 +18,7 @@ data class ProviderEntity(
     @Column(name = "user_id", nullable = false)
     val userId: Long?,
 
-    @Column(length = 50, unique = true, nullable = false)
+    @Column(length = 50, nullable = false)
     val name: String?,
 
     @Column(length = 200)

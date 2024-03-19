@@ -1,7 +1,7 @@
 package com.hwalaon.wezxro_server.domain.provider.controller
 
 import com.hwalaon.wezxro_server.domain.provider.controller.request.AddProviderRequest
-import com.hwalaon.wezxro_server.domain.provider.controller.response.AddProviderResponse
+import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderListResponse
 import com.hwalaon.wezxro_server.domain.provider.service.CommandProviderService
 import com.hwalaon.wezxro_server.domain.provider.service.QueryProviderService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
@@ -27,8 +27,8 @@ class ProviderAdminController(
         provider.userId = principalDetails.account.userId!!
         provider.clientId = principalDetails.account.clientId!!
 
-        val providerId = commandProviderService.addProvider(provider)
-        return BasicResponse.ok(AddProviderResponse(providerId))
+        commandProviderService.addProvider(provider)
+        return BasicResponse.ok("도매처가 등록되었습니다.")
     }
 
     @PostMapping("/status/{providerId}")
@@ -40,4 +40,20 @@ class ProviderAdminController(
 
         return BasicResponse.ok("")
     }
+
+    @GetMapping("/list")
+    fun providerList(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+    ) = BasicResponse.ok(
+        queryProviderService.adminList(principalDetails.account.clientId!!).map {
+            ProviderListResponse(
+                id = it.id!!,
+                name = it.name!!,
+                description = it.description,
+                status = it.status!!.code,
+                apiUrl = it.apiUrl!!,
+                balance = it.balance!!
+            )
+        }
+    )
 }

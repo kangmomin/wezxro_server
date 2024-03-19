@@ -12,4 +12,7 @@ class QueryProviderService(
     fun list(clientId: UUID): List<Provider> {
         return providerPersistence.list(clientId)
     }
+
+    fun adminList(clientId: UUID) =
+        providerPersistence.adminList(clientId)
 }

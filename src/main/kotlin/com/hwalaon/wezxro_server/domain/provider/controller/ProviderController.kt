@@ -25,7 +25,7 @@ class ProviderController(
             queryProviderService.list(principalDetails.account.clientId!!).map {
                 ProviderListResponse(
                     id = it.id,
-                    status = it.status!!,
+                    status = it.status!!.code,
                     name = it.name,
                     description = it.description,
                     balance = it.balance!!,

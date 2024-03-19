@@ -18,11 +18,11 @@ class ProviderPersistence(
     private val providerMapper: ProviderMapper
 ) {
     fun valid(provider: Provider) =
-        !providerRepository.existsByClientIdIsAndNameOrApiUrlIsAndApiKeyIs(
-            provider.clientId!!,
-            provider.name!!,
-            provider.apiUrl!!,
-            provider.apiKey!!
+        !providerRepository.existsByClientIdAndNameAndStatusIsNotOrApiUrlAndApiKeyAndStatusIsNot(
+            clientId = provider.clientId!!,
+            name = provider.name!!,
+            apiUrl = provider.apiUrl!!,
+            apiKey = provider.apiKey!!
         )
 
     fun save(provider: Provider) =
@@ -35,7 +35,7 @@ class ProviderPersistence(
     }
 
     fun list(clientId: UUID) =
-        providerRepository.findAllByClientId(clientId).map {
+        providerRepository.findAllByClientIdAndStatus(clientId).map {
             providerMapper.toDomain(it)
         }
 
@@ -45,4 +45,9 @@ class ProviderPersistence(
         if (provider.status!! == BasicStatus.ACTIVE) provider.status = BasicStatus.DEACTIVE
         if (provider.status!! == BasicStatus.DEACTIVE) provider.status = BasicStatus.ACTIVE
     }
+
+    fun adminList(clientId: UUID) =
+        providerRepository.findAllByClientIdAndStatusIsNot(clientId).map {
+            providerMapper.toDomain(it)
+        }
 }

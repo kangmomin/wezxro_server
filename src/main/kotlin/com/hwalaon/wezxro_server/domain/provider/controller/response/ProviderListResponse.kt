@@ -1,7 +1,6 @@
 package com.hwalaon.wezxro_server.domain.provider.controller.response
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 
 class ProviderListResponse (
     @JsonProperty("providerId")
@@ -9,6 +8,6 @@ class ProviderListResponse (
     val name: String?,
     val description: String?,
     val apiUrl: String,
-    val status: BasicStatus,
+    val status: Int,
     var balance: Double,
 )
