@@ -47,4 +47,13 @@ class ServicePersistenceAdapter(
 
     fun userServiceDetailList(userId: Long?, clientId: UUID?, category: String?) =
         customServiceRepository.serviceDetailList(userId, clientId, category)
+
+    fun toggleStatus(serviceId: Long, clientId: UUID): BasicStatus? {
+        val service = serviceRepository.findByClientIdAndId(clientId, serviceId) ?: return null
+
+        if (service.status!! == BasicStatus.ACTIVE) service.status = BasicStatus.DEACTIVE
+        else if (service.status!! == BasicStatus.DEACTIVE) service.status = BasicStatus.ACTIVE
+
+        return service.status
+    }
 }
