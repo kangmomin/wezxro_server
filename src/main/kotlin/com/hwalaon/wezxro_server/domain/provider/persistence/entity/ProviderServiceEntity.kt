@@ -5,7 +5,7 @@ import jakarta.persistence.Index
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.index.Indexed
 
-@RedisHash("providerService", timeToLive = 60L * 60 * 24)
+@RedisHash("providerService")
 class ProviderServiceEntity (
 
     @Id
@@ -15,14 +15,14 @@ class ProviderServiceEntity (
     /** serviceId */
     @Indexed
     val service: String,
-    val name: String,
-    val type: String,
-    val rate: Double,
-    val min: Long,
-    val max: Long,
-    val dripfeed: Boolean,
-    val refill: Boolean,
-    val cancel: Boolean,
+    var name: String,
+    var type: String,
+    var rate: Double,
+    var min: Long,
+    var max: Long,
+    var dripfeed: Boolean,
+    var refill: Boolean,
+    var cancel: Boolean,
     @Indexed
-    val category: String
+    var category: String
 )

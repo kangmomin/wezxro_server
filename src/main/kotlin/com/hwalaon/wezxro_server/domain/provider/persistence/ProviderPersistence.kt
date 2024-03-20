@@ -70,7 +70,31 @@ class ProviderPersistence(
     fun syncServices(provider: Provider) {
         val apiProvider = ApiProvider(provider.apiKey!!, provider.apiUrl!!)
 
-        val services = apiProvider.getServices().map {
+        val servicesDto = apiProvider.getServices().toMutableList()
+        val removeServiceIds: MutableList<String> = ArrayList()
+
+        providerServiceRedisRepository.findAll().forEach {pse ->
+            if (pse.providerLink !== provider.apiUrl) return
+
+            servicesDto.forEach {psd ->
+                if (pse.service == psd.service) {
+                    pse.name = psd.name
+                    pse.category = psd.category
+                    pse.max = psd.max
+                    pse.min = psd.min
+                    pse.rate = psd.rate
+                    pse.type = psd.type
+                    pse.cancel = psd.cancel
+                    pse.dripfeed = psd.dripfeed
+                    pse.refill = psd.refill
+                }
+
+                servicesDto.remove(psd)
+                removeServiceIds.add(psd.service)
+            }
+        }
+
+        val servicesEntity = servicesDto.map {
             ProviderServiceEntity(
                 id = null,
                 rate = it.rate,
@@ -87,6 +111,7 @@ class ProviderPersistence(
             )
         }
 
-        providerServiceRedisRepository.saveAll(services)
+        providerServiceRedisRepository.removeAllByProviderLinkAndServiceNotIn(provider.apiUrl, removeServiceIds)
+        providerServiceRedisRepository.saveAll(servicesEntity)
     }
 }
