@@ -73,7 +73,7 @@ class ProviderPersistence(
         val servicesDto = apiProvider.getServices().toMutableList()
         val removeServiceIds: MutableList<String> = ArrayList()
 
-        providerServiceRedisRepository.findAll().forEach {pse ->
+        providerServiceRedisRepository.findByProviderLink(provider.apiUrl).forEach {pse ->
             if (pse.providerLink !== provider.apiUrl) return
 
             servicesDto.forEach {psd ->
