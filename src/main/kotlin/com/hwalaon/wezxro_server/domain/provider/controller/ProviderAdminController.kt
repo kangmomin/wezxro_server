@@ -2,7 +2,6 @@ package com.hwalaon.wezxro_server.domain.provider.controller
 
 import com.hwalaon.wezxro_server.domain.provider.controller.request.AddProviderRequest
 import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderListResponse
-import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.service.CommandProviderService
 import com.hwalaon.wezxro_server.domain.provider.service.QueryProviderService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
@@ -73,4 +72,12 @@ class ProviderAdminController(
     ) = commandProviderService.syncProviderServices(providerId, principalDetails.account.clientId!!).let {
         BasicResponse.ok("도매처 서비스를 동기화하였습니다.")
     }
+
+    @GetMapping("/services/{providerId}")
+    fun providerService(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable providerId: Long
+    ) = BasicResponse.ok(
+        queryProviderService.providerService(principalDetails.account.clientId!!, providerId)
+    )
 }

@@ -114,4 +114,7 @@ class ProviderPersistence(
         providerServiceRedisRepository.removeAllByProviderLinkAndServiceNotIn(provider.apiUrl, removeServiceIds)
         providerServiceRedisRepository.saveAll(servicesEntity)
     }
+
+    fun providerServices(apiUrl: String) =
+        providerServiceRedisRepository.findByProviderLink(apiUrl)
 }
