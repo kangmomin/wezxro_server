@@ -10,6 +10,7 @@ import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -32,7 +33,7 @@ class AccountController(
             BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
         }
 
-    @PostMapping("/info")
+    @GetMapping("/info")
     fun accountDetails(
         @AuthenticationPrincipal userInfo: PrincipalDetails) =
         BasicResponse.ok(
