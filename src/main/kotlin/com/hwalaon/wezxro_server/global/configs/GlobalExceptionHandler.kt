@@ -7,9 +7,13 @@ import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.security.web.firewall.RequestRejectedException
+import org.springframework.web.HttpMediaTypeNotSupportedException
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.HandlerMethodValidationException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @RestControllerAdvice
@@ -42,4 +46,23 @@ class GlobalExceptionHandler {
         e.printStackTrace()
         return BasicResponse.error(ErrorCode.UNEXPECTED_ERROR)
     }
+
+    @ExceptionHandler(HandlerMethodValidationException::class)
+    fun validationFailureExceptionHandler() =
+        BasicResponse.error(ErrorCode.VALIDATION_FAILED_ERROR)
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun methodNotSupportExceptionHandler() =
+        BasicResponse.error(ErrorCode.METHOD_NOT_SUPPORT_ERROR)
+
+    @ExceptionHandler(RequestRejectedException::class)
+    fun requestRejectionExceptionHandler() =
+        BasicResponse.error(ErrorCode.REQUEST_REJECTION_ERROR)
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException::class)
+    fun notSupportType() = BasicResponse.error(ErrorCode.NOT_SUPPORT_TYPE_REQUEST)
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun cannotReadBodyExceptionHandler(e: HttpMessageNotReadableException) =
+        BasicResponse.error(ErrorCode.WRONG_BODY_ERROR)
 }
