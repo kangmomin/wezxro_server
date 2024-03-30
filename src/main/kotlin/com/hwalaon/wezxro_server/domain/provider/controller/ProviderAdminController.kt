@@ -77,9 +77,10 @@ class ProviderAdminController(
     @GetMapping("/services/{providerId}")
     fun providerService(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
-        @PathVariable providerId: Long
+        @PathVariable providerId: Long,
+        @RequestParam(name = "category") category: String?
     ) = BasicResponse.ok(
-        queryProviderService.providerService(principalDetails.account.clientId!!, providerId).map {
+        queryProviderService.providerService(principalDetails.account.clientId!!, providerId, category).map {
             ProviderServiceListResponse(
                 providerLink = it.providerLink!!,
                 service = it.service!!,

@@ -125,6 +125,10 @@ class ProviderPersistence(
         providerServiceRedisRepository.findByProviderLink(apiUrl).map {
             providerServiceMapper.toDomain(it)
         }
+    fun providerServicesByCategory(apiUrl: String, category: String) =
+        providerServiceRedisRepository.findByCategoryAndProviderLink(category, apiUrl).map {
+            providerServiceMapper.toDomain(it)
+        }
 
     fun searchProviderService(serviceId: String, apiUrl: String): ProviderService? {
         providerServiceRedisRepository.findByServiceAndProviderLink(serviceId, apiUrl).let {

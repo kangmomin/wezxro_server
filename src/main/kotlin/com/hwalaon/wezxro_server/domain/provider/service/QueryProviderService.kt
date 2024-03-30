@@ -28,11 +28,12 @@ class QueryProviderService(
             }
         }
 
-    fun providerService(clientId: UUID, providerId: Long): List<ProviderService> {
+    fun providerService(clientId: UUID, providerId: Long, category: String?): List<ProviderService> {
         providerPersistence.providerDetail(providerId, clientId).let {p ->
             if (p == null) throw ProviderNotFoundException()
 
-            return providerPersistence.providerServices(p.apiUrl!!)
+            return if (category.isNullOrBlank()) providerPersistence.providerServices(p.apiUrl!!)
+                else providerPersistence.providerServicesByCategory(p.apiUrl!!, category)
         }
     }
 
