@@ -6,6 +6,7 @@ import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.model.ProviderService
 import com.hwalaon.wezxro_server.domain.provider.persistence.ProviderPersistence
 import com.hwalaon.wezxro_server.domain.provider.persistence.entity.ProviderServiceEntity
+import com.hwalaon.wezxro_server.domain.service.exception.ServiceNotFoundException
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 import java.util.*
 
@@ -36,4 +37,7 @@ class QueryProviderService(
             return providerPersistence.providerServices(p.apiUrl!!)
         }
     }
+
+    fun searchProviderService(serviceId: String) =
+        providerPersistence.searchProviderService(serviceId) ?: throw ServiceNotFoundException()
 }

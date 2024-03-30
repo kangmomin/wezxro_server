@@ -4,6 +4,7 @@ import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundExcep
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderMapper
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderServiceMapper
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
+import com.hwalaon.wezxro_server.domain.provider.model.ProviderService
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.entity.ProviderServiceEntity
 import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
@@ -124,4 +125,11 @@ class ProviderPersistence(
         providerServiceRedisRepository.findByProviderLink(apiUrl).map {
             providerServiceMapper.toDomain(it)
         }
+
+    fun searchProviderService(serviceId: String): ProviderService? {
+        providerServiceRedisRepository.findByService(serviceId).let {
+            if (it == null) return null
+            return providerServiceMapper.toDomain(it)
+        }
+    }
 }

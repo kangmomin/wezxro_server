@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ProviderServiceRedisRepository: CrudRepository<ProviderServiceEntity, String> {
     fun findByProviderLink(providerLink: String): List<ProviderServiceEntity>
+    fun findByService(service: String): ProviderServiceEntity?
 }

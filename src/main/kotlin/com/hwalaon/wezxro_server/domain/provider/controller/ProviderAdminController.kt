@@ -95,4 +95,11 @@ class ProviderAdminController(
             )
         }
     )
+
+    @GetMapping("/service")
+    fun searchProviderService(
+        @RequestParam(required = true, name = "serviceId") serviceId: String
+    ) = BasicResponse.ok(
+            queryProviderService.searchProviderService(serviceId)
+    )
 }
