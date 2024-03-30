@@ -7,8 +7,8 @@ import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.model.ProviderService
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.entity.ProviderServiceEntity
-import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.redis.ProviderServiceRedisRepository
+import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto

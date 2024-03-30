@@ -1,7 +1,5 @@
 package com.hwalaon.wezxro_server.global.common.util.dto
 
-import com.hwalaon.wezxro_server.domain.service.model.constant.ServiceType
-
 class ProviderServiceDto (
     val service: String,
     val name: String,

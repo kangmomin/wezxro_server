@@ -1,7 +1,6 @@
 package com.hwalaon.wezxro_server.domain.provider.persistence.entity
 
 import jakarta.persistence.Id
-import jakarta.persistence.Index
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.index.Indexed
 
