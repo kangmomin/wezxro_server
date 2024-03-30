@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.domain.provider.controller
 
 import com.hwalaon.wezxro_server.domain.provider.controller.request.AddProviderRequest
 import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderListResponse
+import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderServiceListResponse
 import com.hwalaon.wezxro_server.domain.provider.service.CommandProviderService
 import com.hwalaon.wezxro_server.domain.provider.service.QueryProviderService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
@@ -78,6 +79,20 @@ class ProviderAdminController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @PathVariable providerId: Long
     ) = BasicResponse.ok(
-        queryProviderService.providerService(principalDetails.account.clientId!!, providerId)
+        queryProviderService.providerService(principalDetails.account.clientId!!, providerId).map {
+            ProviderServiceListResponse(
+                providerLink = it.providerLink,
+                service = it.service,
+                name = it.name,
+                type = it.type,
+                rate = it.rate,
+                min = it.min,
+                max = it.max,
+                dripfeed = it.dripfeed,
+                refill = it.refill,
+                cancel = it.cancel,
+                category = it.category
+            )
+        }
     )
 }

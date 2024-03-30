@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.provider.service
 
+import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderServiceListResponse
 import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.ProviderPersistence
@@ -26,10 +27,10 @@ class QueryProviderService(
         }
 
     fun providerService(clientId: UUID, providerId: Long): List<ProviderServiceEntity> {
-        providerPersistence.providerDetail(providerId, clientId).let {
-            if (it == null) throw ProviderNotFoundException()
+        providerPersistence.providerDetail(providerId, clientId).let {p ->
+            if (p == null) throw ProviderNotFoundException()
 
-            return providerPersistence.providerServices(it.apiUrl!!)
+            return providerPersistence.providerServices(p.apiUrl!!)
         }
     }
 }
