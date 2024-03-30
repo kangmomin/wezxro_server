@@ -6,6 +6,7 @@ import com.hwalaon.wezxro_server.domain.service.service.admin.QueryAdminServiceS
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -28,7 +29,7 @@ class ServiceAdminController(
 
     @PostMapping("/add")
     fun addService(
-        @RequestBody addServiceRequest: AddServiceRequest,
+        @RequestBody @Valid addServiceRequest: AddServiceRequest,
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ) =
         commandAdminServiceService.add(
