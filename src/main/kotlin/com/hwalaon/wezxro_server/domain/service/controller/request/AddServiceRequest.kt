@@ -21,7 +21,7 @@ data class AddServiceRequest (
     @field:NotEmpty(message = "이름은 필수 입력 값 입니다.")
     val name: String?,
 
-    @field:NotEmpty(message = "서비스 타입은 필수 입력 값 입니다.")
+    @field:NotNull(message = "서비스 타입은 필수 입력 값 입니다.")
     val type: ServiceType?,
 
     @field:NotNull(message = "서비스 가격은 필수 입력 값 입니다.")
