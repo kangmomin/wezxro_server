@@ -22,12 +22,6 @@ class GlobalExceptionHandler {
     @ExceptionHandler(BasicException::class)
     fun basicExceptionHandler(e: BasicException) = BasicResponse.error(e.errorCode)
 
-    @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun jsonExceptionHandler(e: HttpMessageNotReadableException) =
-        BasicResponse.error(ErrorCode.NON_BODY_ERROR).let {
-            e.printStackTrace()
-        }
-
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun validExceptionHandler(e: MethodArgumentNotValidException) =
         BasicResponse.customStatus(
