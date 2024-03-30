@@ -126,8 +126,8 @@ class ProviderPersistence(
             providerServiceMapper.toDomain(it)
         }
 
-    fun searchProviderService(serviceId: String): ProviderService? {
-        providerServiceRedisRepository.findByService(serviceId).let {
+    fun searchProviderService(serviceId: String, apiUrl: String): ProviderService? {
+        providerServiceRedisRepository.findByServiceAndProviderLink(serviceId, apiUrl).let {
             if (it == null) return null
             return providerServiceMapper.toDomain(it)
         }

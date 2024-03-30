@@ -1,11 +1,9 @@
 package com.hwalaon.wezxro_server.domain.provider.service
 
-import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderServiceListResponse
 import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.model.ProviderService
 import com.hwalaon.wezxro_server.domain.provider.persistence.ProviderPersistence
-import com.hwalaon.wezxro_server.domain.provider.persistence.entity.ProviderServiceEntity
 import com.hwalaon.wezxro_server.domain.service.exception.ServiceNotFoundException
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 import java.util.*
@@ -38,6 +36,9 @@ class QueryProviderService(
         }
     }
 
-    fun searchProviderService(serviceId: String) =
-        providerPersistence.searchProviderService(serviceId) ?: throw ServiceNotFoundException()
+    fun searchProviderService(serviceId: String, providerId: Long, clientId: UUID): ProviderService {
+        val provider = providerPersistence.providerDetail(providerId, clientId) ?: throw ProviderNotFoundException()
+
+        return providerPersistence.searchProviderService(serviceId, provider.apiUrl!!) ?: throw ServiceNotFoundException()
+    }
 }

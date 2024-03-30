@@ -98,8 +98,10 @@ class ProviderAdminController(
 
     @GetMapping("/service")
     fun searchProviderService(
-        @RequestParam(required = true, name = "serviceId") serviceId: String
+        @RequestParam(required = true, name = "serviceId") serviceId: String,
+        @RequestParam(required = true, name = "providerId") providerId: Long,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
     ) = BasicResponse.ok(
-            queryProviderService.searchProviderService(serviceId)
+            queryProviderService.searchProviderService(serviceId, providerId, principalDetails.account.clientId!!)
     )
 }
