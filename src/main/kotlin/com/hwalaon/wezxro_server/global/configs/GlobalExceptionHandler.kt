@@ -27,9 +27,7 @@ class GlobalExceptionHandler {
         BasicResponse.customStatus(
             MsgResponse(e.bindingResult.allErrors[0].defaultMessage ?: "데이터가 정상적으로 전달되지 않았습니다."),
             HttpStatus.BAD_REQUEST,
-            BasicResponse.BaseStatus.ERROR).let {
-                e.printStackTrace()
-        }
+            BasicResponse.BaseStatus.ERROR)
 
     @ExceptionHandler(NoResourceFoundException::class)
     fun jsonExceptionHandler(e: NoResourceFoundException) =
