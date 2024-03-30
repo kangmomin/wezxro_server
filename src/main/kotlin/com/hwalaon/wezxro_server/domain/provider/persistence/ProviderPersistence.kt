@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.domain.provider.persistence
 
 import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderMapper
+import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderServiceMapper
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.entity.ProviderServiceEntity
@@ -18,7 +19,8 @@ class ProviderPersistence(
     private val providerRepository: ProviderRepository,
     private val customProviderRepository: CustomProviderRepository,
     private val providerServiceRedisRepository: ProviderServiceRedisRepository,
-    private val providerMapper: ProviderMapper
+    private val providerMapper: ProviderMapper,
+    private val providerServiceMapper: ProviderServiceMapper
 ) {
     fun valid(provider: Provider) =
         !providerRepository.existsByClientIdAndNameAndStatusIsNotOrApiUrlAndApiKeyAndStatusIsNot(
@@ -54,12 +56,10 @@ class ProviderPersistence(
             providerMapper.toDomain(it)
         }
 
-    fun providerCategories(provider: Provider): List<String> {
-        val categories = providerServiceRedisRepository.findByProviderLink(provider.apiUrl!!).map {
-            it.category
-        }
-        return categories
-    }
+    fun providerCategories(provider: Provider) =
+         providerServiceRedisRepository.findByProviderLink(provider.apiUrl!!).map {
+             providerServiceMapper.toDomain(it)
+         }
 
     fun providerDetail(providerId: Long, clientId: UUID): Provider? =
         providerRepository.findByClientIdAndId(clientId, providerId).let {
@@ -121,5 +121,7 @@ class ProviderPersistence(
     }
 
     fun providerServices(apiUrl: String) =
-        providerServiceRedisRepository.findByProviderLink(apiUrl)
+        providerServiceRedisRepository.findByProviderLink(apiUrl).map {
+            providerServiceMapper.toDomain(it)
+        }
 }

@@ -11,18 +11,18 @@ class ProviderServiceEntity (
     @Id
     val id: String?,
     @Indexed
-    val providerLink: String,
+    val providerLink: String?,
     /** serviceId */
     @Indexed
-    val service: String,
-    var name: String,
-    var type: String,
-    var rate: Double,
-    var min: Long,
-    var max: Long,
-    var dripfeed: Boolean,
-    var refill: Boolean,
-    var cancel: Boolean,
+    val service: String?,
+    var name: String?,
+    var type: String?,
+    var rate: Double?,
+    var min: Long?,
+    var max: Long?,
+    var dripfeed: Boolean?,
+    var refill: Boolean?,
+    var cancel: Boolean?,
     @Indexed
-    var category: String
+    var category: String?
 )

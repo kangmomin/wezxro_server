@@ -81,17 +81,17 @@ class ProviderAdminController(
     ) = BasicResponse.ok(
         queryProviderService.providerService(principalDetails.account.clientId!!, providerId).map {
             ProviderServiceListResponse(
-                providerLink = it.providerLink,
-                service = it.service,
-                name = it.name,
-                type = it.type,
-                rate = it.rate,
-                min = it.min,
-                max = it.max,
-                dripfeed = it.dripfeed,
-                refill = it.refill,
-                cancel = it.cancel,
-                category = it.category
+                providerLink = it.providerLink!!,
+                service = it.service!!,
+                name = it.name!!,
+                type = it.type!!,
+                rate = it.rate!!,
+                min = it.min!!,
+                max = it.max!!,
+                dripfeed = it.dripfeed!!,
+                refill = it.refill!!,
+                cancel = it.cancel!!,
+                category = it.category!!
             )
         }
     )
