@@ -14,11 +14,10 @@ enum class ErrorCode(
     PAGE_NOT_FOUND("엔드포인트를 찾지 못했습니다.", HttpStatus.NOT_FOUND, "404"),
     NOT_SUPPORT_TYPE_REQUEST("지원하지 않는 콘텐츠 타입입니다.", HttpStatus.BAD_REQUEST, "4003"),
     VALIDATION_FAILED_ERROR("데이터 검증에 실패하였습니다.", HttpStatus.BAD_REQUEST, "4004"),
-    WRONG_BODY_ERROR("필수 데이터를 읽을 수 없습니다.", HttpStatus.BAD_REQUEST, "4005"),
+    WRONG_BODY_ERROR("데이터가 정상적으로 들어오지 않았습니다.", HttpStatus.BAD_REQUEST, "4005"),
     REQUEST_REJECTION_ERROR("요청이 거부되었습니다.", HttpStatus.BAD_REQUEST, "4006"),
     METHOD_NOT_SUPPORT_ERROR("지원하지 않는 메소드입니다.", HttpStatus.BAD_REQUEST, "4007"),
     NOT_ENOUGH_DATA_ERROR("필수 요청 데이터가 정상적으로 입력되지 않았습니다.", HttpStatus.BAD_REQUEST, "4001"),
-    NON_BODY_ERROR("데이터가 정상적으로 들어오지 않았습니다.", HttpStatus.BAD_REQUEST, "4002"),
 
     // account
     ACCOUNT_ALREADY_JOINED_ERROR("해당 이메일은 이미 가입이 완료되었습니다.", HttpStatus.CONFLICT, "A209"),
