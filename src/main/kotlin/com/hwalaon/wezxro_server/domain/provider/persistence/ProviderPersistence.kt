@@ -71,9 +71,9 @@ class ProviderPersistence(
         val apiProvider = ApiProvider(provider.apiKey!!, provider.apiUrl!!)
 
         val servicesDto = apiProvider.getServices().toMutableList()
-        val removeServiceIds: MutableList<String> = ArrayList()
 
-        providerServiceRedisRepository.findByProviderLink(provider.apiUrl).forEach {pse ->
+        val providerServiceEntityList = providerServiceRedisRepository.findByProviderLink(provider.apiUrl).toMutableList()
+        providerServiceEntityList.forEach { pse ->
             if (pse.providerLink !== provider.apiUrl) return
 
             servicesDto.forEach {psd ->
@@ -89,30 +89,35 @@ class ProviderPersistence(
                     pse.refill = psd.refill
                 }
 
+                // 사라진 서비스를 삭제하기 업데이트 되는 서비스 배열에서 제외
+                providerServiceEntityList.remove(pse)
+
+                // 새로운 서비스를 저장을 위해 업데이트되는 서비스는 제외
                 servicesDto.remove(psd)
-                removeServiceIds.add(psd.service)
             }
         }
 
-        val servicesEntity = servicesDto.map {
+        val newServiceEntities = servicesDto.map {
             ProviderServiceEntity(
                 id = null,
-                rate = it.rate,
+                service = it.service,
+                type = it.type,
+                category = it.category,
+                providerLink = provider.apiUrl,
                 max = it.max,
                 min = it.min,
-                type = it.type,
-                name = it.name,
-                category = it.category,
-                service = it.service,
-                providerLink = provider.apiUrl,
-                cancel = it.cancel,
                 refill = it.refill,
-                dripfeed = it.dripfeed
+                rate = it.rate,
+                cancel = it.cancel,
+                dripfeed = it.dripfeed,
+                name = it.name
             )
         }
 
-        providerServiceRedisRepository.removeAllByProviderLinkAndServiceNotIn(provider.apiUrl, removeServiceIds)
-        providerServiceRedisRepository.saveAll(servicesEntity)
+        // 사라진 서비스들은 삭제 처리
+        providerServiceRedisRepository.deleteAll(providerServiceEntityList)
+        
+        providerServiceRedisRepository.saveAll(newServiceEntities)
     }
 
     fun providerServices(apiUrl: String) =
