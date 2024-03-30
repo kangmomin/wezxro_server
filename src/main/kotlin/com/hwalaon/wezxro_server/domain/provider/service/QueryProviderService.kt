@@ -20,11 +20,13 @@ class QueryProviderService(
     fun adminList(clientId: UUID) =
         providerPersistence.adminList(clientId)
 
-    fun providerServiceCategory(providerId: Long, clientId: UUID): List<ProviderService> =
-        providerPersistence.providerDetail(providerId, clientId).let {
-            if (it == null) throw ProviderNotFoundException()
+    fun providerServiceCategory(providerId: Long, clientId: UUID): List<String?> =
+        providerPersistence.providerDetail(providerId, clientId).let {p ->
+            if (p == null) throw ProviderNotFoundException()
 
-            return providerPersistence.providerCategories(it)
+            return providerPersistence.providerCategories(p).map {
+                it.category
+            }
         }
 
     fun providerService(clientId: UUID, providerId: Long): List<ProviderService> {
