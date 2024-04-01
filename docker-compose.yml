@@ -20,7 +20,9 @@ services:
       REDIS_PASSWORD: "testtest"
 
   app:
-    build: .
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
     image: koldin/wezxro_server:latest
     ports:
       - "8080:8080"
