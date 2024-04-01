@@ -1,14 +1,14 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/wezxro_server
+    url: jdbc:postgresql://host.docker.internal:5432/wezxro
     username: wezxro_user
     password: testtest
     driver-class-name: org.postgresql.Driver
 
   data:
     redis:
-#      password: koldin13579
-      host: localhost
+      password: testtest
+      host: docker.host.internal
       port: 6379
 
   jpa:
