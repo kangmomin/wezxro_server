@@ -1,12 +1,11 @@
 version: '3'
 services:
   postgres:
-    image: postgres:latest
+    image: koldin/postgres_kr:latest
     container_name: postgresql_container
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: "wezxro"
       POSTGRES_USER: "wezxro_user"
       POSTGRES_PASSWORD: "testtest"
 
@@ -24,5 +23,8 @@ services:
       dockerfile: ./Dockerfile
       context: ./
     image: koldin/wezxro_server:latest
+    depends_on:
+      - redis
+      - postgres
     ports:
       - "8080:8080"
