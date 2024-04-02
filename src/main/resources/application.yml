@@ -21,7 +21,13 @@ spring:
       format_sql: true
 
 server:
-  port: 8080
+  port: 8443
+  ssl:
+    enabled: true
+    key-alias: ayokeystore
+    key-store: ayokeystore.pkcs12
+    key-store-type: PKCS12
+    key-store-password: '123456'
 
 jwt:
   accessSecret: 'ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5'
