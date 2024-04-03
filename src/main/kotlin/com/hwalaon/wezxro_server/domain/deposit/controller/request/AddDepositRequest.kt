@@ -44,6 +44,7 @@ class AddDepositRequest (
             type = null,
             status = DepositType.PENDING,
             note = null,
-            clientId = null
+            clientId = null,
+            userId = null
         )
 }

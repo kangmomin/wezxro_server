@@ -13,6 +13,11 @@ class DepositEntity (
     @Column(name = "depositId")
     var id: Long?,
 
+    @Column(
+        nullable = false,
+        updatable = false)
+    var userId: Long?,
+
     @Column(nullable = false,)
     /** 입금할 금액 */
     var amount: Long?,

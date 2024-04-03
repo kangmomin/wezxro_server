@@ -23,6 +23,7 @@ class PendingDepositEntity(
     var status:DepositType?,
     var type: String?,
     var note: String?,
+    var userId: Long?,
     @Indexed
     var clientId: UUID?,
 )

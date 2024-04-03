@@ -12,6 +12,7 @@ class DepositMapper: BasicMapper<Deposit, DepositEntity> {
         Deposit(
             entity.id,
             entity.amount,
+            entity.userId,
             entity.name,
             entity.businessName,
             entity.businessPhone,
@@ -33,6 +34,7 @@ class DepositMapper: BasicMapper<Deposit, DepositEntity> {
         DepositEntity(
             domain.id,
             domain.amount,
+            domain.userId,
             domain.name,
             domain.businessName,
             domain.businessPhone,
@@ -64,6 +66,7 @@ class DepositMapper: BasicMapper<Deposit, DepositEntity> {
             domain.status,
             domain.type,
             domain.note,
+            domain.userId,
             domain.clientId
         )
 }

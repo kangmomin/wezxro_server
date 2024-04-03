@@ -6,6 +6,7 @@ import java.util.*
 
 class Deposit (
     var id: Long?,
+    var userId: Long?,
     var amount: Long?,
     var name: String?,
     var businessEmail: String?,
