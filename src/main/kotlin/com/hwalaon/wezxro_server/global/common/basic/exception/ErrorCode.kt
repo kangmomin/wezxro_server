@@ -46,9 +46,10 @@ enum class ErrorCode(
     JWT_EXPIRED_ERROR("토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED, "TK401"),
 
     // provider(api)
-    API_REQUEST_FAILED_ERROR("도매처와의 연결을 실패하였습니다.", HttpStatus.BAD_REQUEST, "P500"),
+    API_REQUEST_FAILED_ERROR("도매처와의 연결을 실패하였습니다.", HttpStatus.BAD_REQUEST, "P5001"),
     PROVIDER_NOT_FOUND_ERROR("도매처를 찾을 수 없습니다.", HttpStatus.OK, "P204"),
     PROVIDER_CONFLICT_ERROR("이미 존재하는 도매처입니다.", HttpStatus.CONFLICT, "P209"),
+    PROVIDER_SERVER_ERROR("도매처 서버에서 에러가 발생하였습니다.", HttpStatus.OK, "P5002"),
 
     // Deposit
     DEPOSIT_CONFLICT_ERROR("동일한 정보의 충전 신청이 존재합니다.", HttpStatus.CONFLICT, "D209"),

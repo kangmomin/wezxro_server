@@ -3,6 +3,8 @@ package com.hwalaon.wezxro_server.global.common.util
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedException
+import com.hwalaon.wezxro_server.global.common.exception.ApiServerException
+import com.hwalaon.wezxro_server.global.common.util.dto.ProviderApiErrorDto
 import com.hwalaon.wezxro_server.global.common.util.dto.ProviderServiceDto
 import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto
 import kotlinx.serialization.Serializable
@@ -55,7 +57,13 @@ class ApiProvider(
             if (!response.isSuccessful) {
                 throw ApiRequestFailedException()
             }
-            return response.body?.string() ?: throw ApiRequestFailedException()
+            val apiResponse = response.body?.string() ?: throw ApiRequestFailedException()
+            try {
+                Gson().fromJson(apiResponse, ProviderApiErrorDto::class.java)
+                throw ApiServerException()
+            } catch(e: IllegalStateException) {
+                return apiResponse
+            }
         }
     }
 
