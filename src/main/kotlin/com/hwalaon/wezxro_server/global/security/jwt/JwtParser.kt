@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetailsServi
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
 import java.security.Key
 
@@ -29,13 +30,13 @@ class JwtParser(
      * request에서 header 분리후 perfix까지 분리
      * prefix 없으면 null 리턴
      */
-    fun parseAccessToken(request: HttpServletRequest): String? =
+    fun parseAccessToken(request: HttpServletRequest, response: HttpServletResponse): String? =
         request.getHeader("X-Auth-Token")
             .let { it ?: return null }
             .let {
                 if (it.startsWith(jwtProperties.jwtPrefix))
                     it.replace(jwtProperties.jwtPrefix, "").trim()
-                else throw TokenNotValidException()
+                else throw TokenNotValidException(res = response, req = request)
             }
 
     /**

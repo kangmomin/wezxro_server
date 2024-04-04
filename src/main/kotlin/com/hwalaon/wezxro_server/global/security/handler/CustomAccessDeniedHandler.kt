@@ -11,5 +11,5 @@ class CustomAccessDeniedHandler : AccessDeniedHandler {
         request: HttpServletRequest?,
         response: HttpServletResponse?,
         accessDeniedException: AccessDeniedException?
-    ) = throw ForbiddenException()
+    ) = throw ForbiddenException(response = response!!, request = request!!)
 }

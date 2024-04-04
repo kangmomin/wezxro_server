@@ -3,7 +3,7 @@ package com.hwalaon.wezxro_server.domain.deposit.controller
 import com.hwalaon.wezxro_server.domain.deposit.controller.request.AddDepositRequest
 import com.hwalaon.wezxro_server.domain.deposit.service.CommandDepositService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
-import com.hwalaon.wezxro_server.global.security.exception.UnAuthorizedException
+import com.hwalaon.wezxro_server.global.common.exception.UnAuthorizedException
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity

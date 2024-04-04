@@ -4,8 +4,8 @@ import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 
-class ForbiddenException(
-    val code: ErrorCode = ErrorCode.FORBIDDEN_ERROR,
-    val response: HttpServletResponse,
-    val request: HttpServletRequest
-) : BasicSecurityException(code, response, request)
+class SecurityUnAuthorizedException(
+    val code: ErrorCode = ErrorCode.UNAUTHORIZED_ERROR,
+    override val req: HttpServletRequest,
+    override val res: HttpServletResponse
+): BasicSecurityException(code, res, req)

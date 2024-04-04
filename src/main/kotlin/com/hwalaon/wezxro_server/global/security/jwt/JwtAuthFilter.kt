@@ -1,5 +1,7 @@
 package com.hwalaon.wezxro_server.global.security.jwt
 
+import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
+import com.hwalaon.wezxro_server.global.security.exception.CustomSecurityException
 import com.hwalaon.wezxro_server.global.security.exception.TokenExpiredException
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetailsService
 import io.jsonwebtoken.ExpiredJwtException
@@ -19,7 +21,7 @@ class JwtAuthFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val accessToken = jwtParser.parseAccessToken(request)
+        val accessToken = jwtParser.parseAccessToken(request, response)
         if (!accessToken.isNullOrBlank()) {
             try {
                 val userEmail = jwtParser.authentication(accessToken, true)
@@ -28,7 +30,10 @@ class JwtAuthFilter(
                 val securityContext = SecurityContextHolder.getContext()
                 securityContext.authentication = UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
             } catch(e: ExpiredJwtException) {
-                throw TokenExpiredException()
+                throw TokenExpiredException(req = request, res = response)
+            } catch (e: BasicException) {
+                // BasicException 에 response, request 데이터를 담을 수 있는 객체로 변환
+                throw CustomSecurityException(response, request, e.errorCode)
             }
         }
 

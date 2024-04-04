@@ -1,8 +1,8 @@
-package com.hwalaon.wezxro_server.global.security.exception
+package com.hwalaon.wezxro_server.global.common.exception
 
 import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
 import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
 
 class UnAuthorizedException(
-    val code: ErrorCode = ErrorCode.UNAUTHORIZED_ERROR
-): BasicException(code)
+    override val errorCode: ErrorCode = ErrorCode.UNAUTHORIZED_ERROR
+): BasicException(errorCode)
