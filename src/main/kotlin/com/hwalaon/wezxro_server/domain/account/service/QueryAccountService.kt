@@ -43,10 +43,10 @@ class QueryAccountService(
                 name = it.name!!,
                 email = it.email!!,
                 status = it.status!!,
-                role = "user",
+                role = it.role!!,
                 createdAt = it.createdAt!!,
                 staticRate = it.staticRate!!,
-                balance = it.money!!,
+                money = it.money!!,
             )
         }
         var activateCnt: Long = 0

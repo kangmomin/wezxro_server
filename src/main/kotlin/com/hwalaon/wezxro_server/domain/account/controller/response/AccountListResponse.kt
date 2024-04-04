@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.controller.response
 
+import com.hwalaon.wezxro_server.domain.account.model.constant.AccountRole
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import java.time.LocalDateTime
 
@@ -13,9 +14,9 @@ data class AccountListResponse (
         val userId: Long,
         val name: String,
         val email: String,
-        val balance: Double,
+        val money: Double,
         val staticRate: Float,
-        val role: String,
+        val role: AccountRole,
         val createdAt: LocalDateTime,
         val status: BasicStatus,
     )
