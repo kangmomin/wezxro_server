@@ -2,12 +2,17 @@ package com.hwalaon.wezxro_server.global.security.principal
 
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class PrincipalDetails (
     val account: Account
 ): UserDetails {
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> = ArrayList()
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
+        val auth: ArrayList<SimpleGrantedAuthority> = ArrayList()
+        auth.add(SimpleGrantedAuthority(account.role.toString()))
+        return auth
+    }
 
     override fun getPassword(): String? = account.password
 

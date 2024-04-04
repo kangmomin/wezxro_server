@@ -1,9 +1,11 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.entity
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
+import com.hwalaon.wezxro_server.domain.account.model.constant.AccountRole
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.entity.BasicTimeEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.ColumnDefault
 import java.util.*
 
 @Entity
@@ -45,6 +47,11 @@ class AccountEntity(
         mappedBy = "user",
         orphanRemoval = true)
     var customRate: MutableList<CustomRateEntity>?,
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("USER")
+    var role: AccountRole?,
 ): BasicTimeEntity() {
     fun addCustomRate(addCustomRateList: AddCustomRateRequest.Companion.AddCustomRateList) {
         val customRateEntity = CustomRateEntity(

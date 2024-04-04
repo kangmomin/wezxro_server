@@ -26,7 +26,7 @@ class JwtAuthFilter(
                 val userDetails = principalDetailsService.loadUserByUsername(userEmail)
 
                 val securityContext = SecurityContextHolder.getContext()
-                securityContext.authentication = UsernamePasswordAuthenticationToken(userDetails, "", ArrayList())
+                securityContext.authentication = UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
             } catch(e: ExpiredJwtException) {
                 throw TokenExpiredException()
             }

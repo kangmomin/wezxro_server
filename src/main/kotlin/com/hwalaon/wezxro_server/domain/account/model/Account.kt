@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.model
 
+import com.hwalaon.wezxro_server.domain.account.model.constant.AccountRole
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
 import java.util.*
@@ -14,4 +15,5 @@ data class Account(
     var status: BasicStatus?,
     var clientId: UUID?,
     var staticRate: Float?,
+    var role: AccountRole?
 ): BasicTime()

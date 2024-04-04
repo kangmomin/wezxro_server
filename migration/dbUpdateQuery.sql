@@ -33,3 +33,7 @@ DROP TABLE service;
 INSERT INTO service SELECT * FROM service_backup;
 -- 백업 테이블은 더 이상 필요하지 않으므로 삭제합니다.
 DROP TABLE service_backup;
+
+---------------------------240405 이후----------------------------------------
+
+alter table if exists account add column role varchar(255) default USER not null
