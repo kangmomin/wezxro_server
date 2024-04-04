@@ -13,7 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/u/admin")
+@RequestMapping("/admin/u")
 class AccountAdminController(
     private val queryAccountService: QueryAccountService,
     private val commandAccountService: CommandAccountService,
