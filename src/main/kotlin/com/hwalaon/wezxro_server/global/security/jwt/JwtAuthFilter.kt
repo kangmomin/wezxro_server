@@ -25,12 +25,11 @@ class JwtAuthFilter(
         if (!accessToken.isNullOrBlank()) {
             try {
                 val userEmail = jwtParser.authentication(accessToken, true)
+                    ?: throw TokenExpiredException(req = request, res = response)
                 val userDetails = principalDetailsService.loadUserByUsername(userEmail)
 
                 val securityContext = SecurityContextHolder.getContext()
                 securityContext.authentication = UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
-            } catch(e: ExpiredJwtException) {
-                throw TokenExpiredException(req = request, res = response)
             } catch (e: BasicException) {
                 // BasicException 에 response, request 데이터를 담을 수 있는 객체로 변환
                 throw CustomSecurityException(response, request, e.errorCode)

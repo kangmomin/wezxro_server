@@ -3,6 +3,7 @@ package com.hwalaon.wezxro_server.global.security.jwt
 import com.hwalaon.wezxro_server.global.security.exception.TokenNotValidException
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetailsService
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -51,7 +52,11 @@ class JwtParser(
                 jwtProperties.refreshKey
             }
 
-            getTokenBody(accessOrRefreshToken, secret).subject
+            try {
+                getTokenBody(accessOrRefreshToken, secret).subject
+            } catch (e: ExpiredJwtException) {
+                return null
+            }
         }
 
     private fun getTokenBody(token: String, secret: Key): Claims =
