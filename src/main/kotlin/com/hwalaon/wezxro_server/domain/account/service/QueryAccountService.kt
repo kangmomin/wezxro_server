@@ -32,10 +32,10 @@ class QueryAccountService(
 
     fun detail(userInfo: PrincipalDetails) =
         accountPersistenceAdapter.findById(userInfo.account.userId ?: 0, userInfo.account.clientId!!)
-            ?: AccountNotFoundException()
+            ?: throw AccountNotFoundException()
 
     fun adminDetail(id: Long, clientId: UUID) =
-        accountPersistenceAdapter.findById(id, clientId)
+        accountPersistenceAdapter.findById(id, clientId) ?: throw AccountNotFoundException()
 
     fun list(clientId: UUID?): AccountListResponse {
         val accountList = accountPersistenceAdapter.list(clientId!!).map {

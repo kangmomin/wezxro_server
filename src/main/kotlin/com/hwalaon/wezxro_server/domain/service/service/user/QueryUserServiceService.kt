@@ -16,7 +16,7 @@ class QueryUserServiceService(
 
             // 감가액 적용
             var rate = (if (it.customRate != null) it.rate / it.customRate
-                        else it.rate.times(user.staticRate ?: 0F)) * 100.0
+                        else it.rate.times(user.staticRate ?: 0.0)) * 100.0
             rate = Math.round(rate) / 100.0
 
 

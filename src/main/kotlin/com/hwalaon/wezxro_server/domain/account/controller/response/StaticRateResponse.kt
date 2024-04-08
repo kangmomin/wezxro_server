@@ -5,7 +5,7 @@ import com.hwalaon.wezxro_server.domain.account.model.Account
 class StaticRateResponse(
     val email: String,
     val userId: Long,
-    val staticRate: Float
+    val staticRate: Double
 ) {
     companion object {
         fun fromDomain(domain: Account) =

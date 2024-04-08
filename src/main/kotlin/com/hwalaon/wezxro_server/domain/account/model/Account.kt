@@ -14,6 +14,6 @@ data class Account(
     var money: Double?,
     var status: BasicStatus?,
     var clientId: UUID?,
-    var staticRate: Float?,
+    var staticRate: Double?,
     var role: AccountRole?
 ): BasicTime()

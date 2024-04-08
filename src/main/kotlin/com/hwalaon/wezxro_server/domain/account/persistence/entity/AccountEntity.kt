@@ -39,7 +39,7 @@ class AccountEntity(
     var clientId: UUID?,
 
     @Column(nullable = false)
-    var staticRate: Float?,
+    var staticRate: Double?,
 
     @OneToMany(
         fetch = FetchType.LAZY,

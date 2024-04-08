@@ -15,7 +15,7 @@ data class AccountListResponse (
         val name: String,
         val email: String,
         val money: Double,
-        val staticRate: Float,
+        val staticRate: Double,
         val role: AccountRole,
         val createdAt: LocalDateTime,
         val status: BasicStatus,
