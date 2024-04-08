@@ -48,6 +48,7 @@ class AccountPersistenceAdapter(
             accountEntity.password = account.password
             accountEntity.money = account.money
             accountEntity.status = account.status
+            accountEntity.staticRate = account.staticRate
         }
 
     fun findById(id: Long, clientId: UUID): Account? {

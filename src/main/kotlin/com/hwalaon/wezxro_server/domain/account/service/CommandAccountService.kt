@@ -62,4 +62,10 @@ class CommandAccountService(
     fun storeCustomRate(clientId: UUID, addCustomRateRequest: AddCustomRateRequest) {
         accountPersistenceAdapter.storeCustomRate(addCustomRateRequest.userId, clientId, addCustomRateRequest)
     }
+
+    fun updateStaticRate(staticRate: Double, userId: Long, clientId: UUID) {
+        val target = accountPersistenceAdapter.findById(userId, clientId) ?: throw AccountNotFoundException()
+        target.staticRate = staticRate
+        accountPersistenceAdapter.updateInfo(target)
+    }
 }

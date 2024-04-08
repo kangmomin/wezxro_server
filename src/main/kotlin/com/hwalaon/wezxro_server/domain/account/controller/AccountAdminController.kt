@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.domain.account.controller
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateAccountRequest
+import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateStaticRate
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
@@ -61,6 +62,19 @@ class AccountAdminController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @PathVariable userId: Long
     ) = BasicResponse.ok(queryAccountService.getStaticRate(principalDetails.account.clientId, userId))
+
+    @PatchMapping("/static-rate/update/{userId}")
+    fun updateStaticRate(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable userId: Long,
+        @RequestBody @Valid updateStaticRate: UpdateStaticRate
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandAccountService.updateStaticRate(
+            updateStaticRate.staticRate!!, userId,
+            principalDetails.account.clientId!!)
+
+        return BasicResponse.ok("전체 감가액을 지정하였습니다.")
+    }
 
     @PostMapping("/custom-rate")
     fun addCustomRate(
