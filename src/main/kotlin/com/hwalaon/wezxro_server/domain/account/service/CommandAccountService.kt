@@ -3,6 +3,7 @@ package com.hwalaon.wezxro_server.domain.account.service
 import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountAlreadyJoinedException
+import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
 import com.hwalaon.wezxro_server.global.annotation.CommandService
@@ -54,7 +55,7 @@ class CommandAccountService(
             userId = account.userId!!)
 
     fun deleteAccount(id: Long, clientId: UUID) {
-        val account = accountPersistenceAdapter.findById(id, clientId)
+        val account = accountPersistenceAdapter.findById(id, clientId) ?: throw AccountNotFoundException()
         account.status = BasicStatus.DELETED
     }
 

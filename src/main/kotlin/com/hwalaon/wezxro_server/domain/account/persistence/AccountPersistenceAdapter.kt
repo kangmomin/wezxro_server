@@ -50,10 +50,11 @@ class AccountPersistenceAdapter(
             accountEntity.status = account.status
         }
 
-    fun findById(id: Long, clientId: UUID) =
-        accountMapper.toDomain(
-        accountEntityRepository.findByUserIdAndClientIdAndStatusNot(id, clientId)
-            ?: throw AccountNotFoundException())
+    fun findById(id: Long, clientId: UUID): Account? {
+        return accountMapper.toDomain(
+            accountEntityRepository.findByUserIdAndClientIdAndStatusNot(id, clientId)
+                ?: return null)
+    }
 
     fun list(clientId: UUID) =
         accountEntityRepository

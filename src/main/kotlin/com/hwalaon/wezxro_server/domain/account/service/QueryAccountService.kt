@@ -32,6 +32,7 @@ class QueryAccountService(
 
     fun detail(userInfo: PrincipalDetails) =
         accountPersistenceAdapter.findById(userInfo.account.userId ?: 0, userInfo.account.clientId!!)
+            ?: AccountNotFoundException()
 
     fun adminDetail(id: Long, clientId: UUID) =
         accountPersistenceAdapter.findById(id, clientId)
@@ -66,6 +67,7 @@ class QueryAccountService(
 
     fun getStaticRate(clientId: UUID?, userId: Long) =
         accountPersistenceAdapter.findById(userId, clientId!!).let {
+            if (it == null) throw AccountNotFoundException()
             StaticRateResponse.fromDomain(it)
         }
 }
