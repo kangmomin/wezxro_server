@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.global.common.util
 
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedException
 import com.hwalaon.wezxro_server.global.common.exception.ApiServerException
@@ -10,10 +11,8 @@ import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.lang.reflect.Type
 
@@ -30,15 +29,6 @@ class ApiProvider(
 
     private val client = OkHttpClient()
     private val json = Json { ignoreUnknownKeys = true }
-
-    private fun createFormData(params: Map<String, String>): RequestBody {
-        val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
-        builder.addFormDataPart("key", apiKey)
-        params.forEach { (key, value) ->
-            builder.addFormDataPart(key, value)
-        }
-        return builder.build()
-    }
 
     private fun fetchApi(action: String, params: Map<String, String> = emptyMap()): String {
         // API 요청 객체 생성
@@ -59,9 +49,11 @@ class ApiProvider(
             }
             val apiResponse = response.body?.string() ?: throw ApiRequestFailedException()
             try {
-                Gson().fromJson(apiResponse, ProviderApiErrorDto::class.java)
-                throw ApiServerException()
-            } catch(e: IllegalStateException) {
+                val errorMessage = Gson().fromJson(apiResponse, ProviderApiErrorDto::class.java).error
+                    ?: return apiResponse
+
+                throw ApiServerException("도매처 서버에서 에러가 발생하였습니다. [${errorMessage}]")
+            } catch(e: JsonSyntaxException) {
                 return apiResponse
             }
         }

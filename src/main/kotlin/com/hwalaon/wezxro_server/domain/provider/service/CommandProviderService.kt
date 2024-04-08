@@ -14,7 +14,7 @@ class CommandProviderService(
     fun addProvider(provider: Provider) {
         if (!providerPersistence.valid(provider)) throw ProviderConflictException()
         val balance = providerPersistence.getBalance(provider).balance
-        provider.balance = balance
+        provider.balance = balance.toDouble()
 
         providerPersistence.save(provider)
     }

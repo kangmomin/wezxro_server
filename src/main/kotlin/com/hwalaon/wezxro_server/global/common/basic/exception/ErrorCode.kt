@@ -3,7 +3,7 @@ package com.hwalaon.wezxro_server.global.common.basic.exception
 import org.springframework.http.HttpStatus
 
 enum class ErrorCode(
-    val msg: String,
+    var msg: String,
     val status: HttpStatus,
     val code: String
 ) {
