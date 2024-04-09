@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.HandlerMethodValidationException
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @RestControllerAdvice
@@ -28,6 +29,9 @@ class GlobalExceptionHandler {
             MsgResponse(e.bindingResult.allErrors[0].defaultMessage ?: "데이터가 정상적으로 전달되지 않았습니다."),
             HttpStatus.BAD_REQUEST,
             BasicResponse.BaseStatus.ERROR)
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    fun methodMissMatchExceptionHandler() = BasicResponse.error(errorInfo = ErrorCode.METHOD_MISS_MATCH_ERROR)
 
     @ExceptionHandler(NoResourceFoundException::class)
     fun jsonExceptionHandler(e: NoResourceFoundException) =

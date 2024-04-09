@@ -12,12 +12,13 @@ enum class ErrorCode(
     UNAUTHORIZED_ERROR("로그인이 필요한 작업입니다.", HttpStatus.UNAUTHORIZED, "0001"),
     UNEXPECTED_ERROR("서버에서 오류가 발생하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR, "500"),
     PAGE_NOT_FOUND("엔드포인트를 찾지 못했습니다.", HttpStatus.NOT_FOUND, "404"),
+    NOT_ENOUGH_DATA_ERROR("필수 요청 데이터가 정상적으로 입력되지 않았습니다.", HttpStatus.BAD_REQUEST, "4001"),
+    METHOD_MISS_MATCH_ERROR("메소드 타입이 틀리게 들어왔습니다.", HttpStatus.BAD_REQUEST, "4002"),
     NOT_SUPPORT_TYPE_REQUEST("지원하지 않는 콘텐츠 타입입니다.", HttpStatus.BAD_REQUEST, "4003"),
     VALIDATION_FAILED_ERROR("데이터 검증에 실패하였습니다.", HttpStatus.BAD_REQUEST, "4004"),
     WRONG_BODY_ERROR("데이터가 정상적으로 들어오지 않았습니다.", HttpStatus.BAD_REQUEST, "4005"),
     REQUEST_REJECTION_ERROR("요청이 거부되었습니다.", HttpStatus.BAD_REQUEST, "4006"),
     METHOD_NOT_SUPPORT_ERROR("지원하지 않는 메소드입니다.", HttpStatus.BAD_REQUEST, "4007"),
-    NOT_ENOUGH_DATA_ERROR("필수 요청 데이터가 정상적으로 입력되지 않았습니다.", HttpStatus.BAD_REQUEST, "4001"),
 
     // account
     ACCOUNT_ALREADY_JOINED_ERROR("해당 이메일은 이미 가입이 완료되었습니다.", HttpStatus.CONFLICT, "A209"),
