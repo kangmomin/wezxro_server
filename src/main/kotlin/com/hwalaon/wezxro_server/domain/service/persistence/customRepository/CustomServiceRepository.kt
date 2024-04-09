@@ -49,7 +49,7 @@ class CustomServiceRepository(
                     ))
             .fetchOne()
 
-    fun serviceDetailList(userId: Long?, clientId: UUID?, category: String?, isAdmin: Boolean = false): MutableList<ServiceDetailAndCustomRateDto> {
+    fun serviceDetailList(userId: Long?, clientId: UUID?, category: Long?, isAdmin: Boolean = false): MutableList<ServiceDetailAndCustomRateDto> {
         val sql = query.select(
             QServiceDetailAndCustomRateDto(
                 serviceEntity.id,
@@ -68,11 +68,7 @@ class CustomServiceRepository(
                 )
             )
 
-        if (category != null) {
-            sql.leftJoin(categoryEntity)
-                .on(categoryEntity.name.eq(category))
-                .where(serviceEntity.categoryId.eq(categoryEntity.id))
-        }
+        if (category != null) sql.where(serviceEntity.categoryId.eq(category))
 
         sql.where(
             if (isAdmin) serviceEntity.status.ne(BasicStatus.DELETED)

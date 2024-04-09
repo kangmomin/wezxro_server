@@ -27,7 +27,7 @@ class ServiceController(
     @GetMapping("/list")
     fun serviceDetailList(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
-        @RequestParam(name = "category") category: String?
+        @RequestParam(name = "category") category: Long?
     ) = queryUserServiceService.serviceDetailList(principalDetails.account, category).let {
             BasicResponse.ok(
                 it.map { service ->

@@ -45,7 +45,7 @@ class ServicePersistenceAdapter(
             it.status = BasicStatus.DELETED
         }
 
-    fun userServiceDetailList(userId: Long?, clientId: UUID?, category: String?) =
+    fun userServiceDetailList(userId: Long?, clientId: UUID?, category: Long?) =
         customServiceRepository.serviceDetailList(userId, clientId, category)
 
     fun toggleStatus(serviceId: Long, clientId: UUID): BasicStatus? {
