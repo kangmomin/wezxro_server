@@ -28,6 +28,7 @@ server:
     key-store: ayokeystore.pkcs12
     key-store-type: PKCS12
     key-store-password: '123456'
+  max-http-request-header-size: 40KB
 
 jwt:
   accessSecret: 'ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5'
