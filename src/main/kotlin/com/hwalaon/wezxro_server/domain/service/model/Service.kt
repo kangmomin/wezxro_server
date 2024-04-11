@@ -21,7 +21,7 @@ class Service (
     var originalRate: Double?
 ): BasicTime() {
     companion object {
-        fun serviceDetail(serviceId: Long, rate: Double, name: String, description: String, min: Long, max: Long) =
+        fun serviceDetail(serviceId: Long, rate: Double, name: String, description: String, min: Long, max: Long, type: ServiceType) =
             Service(
                 id = serviceId,
                 rate = rate,
@@ -29,8 +29,8 @@ class Service (
                 description = description,
                 max = max,
                 min = min,
+                type = type,
                 status = null,
-                type = null,
                 originalRate = null,
                 clientId = null,
                 categoryId = null,

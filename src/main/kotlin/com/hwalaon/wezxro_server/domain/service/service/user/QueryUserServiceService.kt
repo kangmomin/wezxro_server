@@ -26,7 +26,8 @@ class QueryUserServiceService(
                 name = it.name,
                 description = it.description,
                 max = it.max,
-                min = it.min)
+                min = it.min,
+                type = it.type)
         }
 
     fun serviceDetailList(account: Account, category: Long?) =
@@ -38,6 +39,7 @@ class QueryUserServiceService(
                 min = it.min,
                 rate = it.rate,
                 description = it.description,
+                type = it.type
             )
         }
 

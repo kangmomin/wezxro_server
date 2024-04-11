@@ -8,7 +8,7 @@ enum class ServiceType(str: String) {
     MENTIONS_WITH_HASHTAGS("Mentions with hashtags"),
     MENTIONS_CUSTOM_LIST("Mentions custom list"),
     MENTIONS_HASHTAG("Mention hashtag"),
-    MENTIONS_USER_FOLLOWER("Mentions user followers"),
+    MENTIONS_USER_FOLLOWERS("Mentions user followers"),
     MENTIONS_MEDIEA_LIKERS("Mentions media likers"),
     PACKAGE("Package"),
     COMMENT_LIKES("Commment likes"),

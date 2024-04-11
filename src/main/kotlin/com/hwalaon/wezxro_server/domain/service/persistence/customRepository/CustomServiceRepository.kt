@@ -26,6 +26,7 @@ class CustomServiceRepository(
             serviceEntity.max,
             serviceEntity.description,
             customRateEntity.rate,
+            serviceEntity.type
         )).from(serviceEntity)
             .leftJoin(customRateEntity)
             .on(customRateEntity.user.userId.eq(userId).and(
@@ -59,6 +60,7 @@ class CustomServiceRepository(
                 serviceEntity.max,
                 serviceEntity.description,
                 customRateEntity.rate,
+                serviceEntity.type
             )
         ).from(serviceEntity)
             .leftJoin(customRateEntity)

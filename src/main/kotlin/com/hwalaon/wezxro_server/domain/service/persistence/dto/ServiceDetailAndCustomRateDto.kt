@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.service.persistence.dto
 
+import com.hwalaon.wezxro_server.domain.service.model.constant.ServiceType
 import com.querydsl.core.annotations.QueryProjection
 
 data class ServiceDetailAndCustomRateDto
@@ -11,4 +12,5 @@ data class ServiceDetailAndCustomRateDto
     val max: Long,
     val description: String,
     val customRate: Double?,
+    val type: ServiceType,
 )
