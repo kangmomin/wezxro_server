@@ -1,12 +1,16 @@
 package com.hwalaon.wezxro_server.domain.order.mapper
 
 import com.hwalaon.wezxro_server.domain.order.model.Order
+import com.hwalaon.wezxro_server.domain.order.model.OrderInfo
 import com.hwalaon.wezxro_server.domain.order.persistence.entity.OrderEntity
+import com.hwalaon.wezxro_server.domain.order.persistence.entity.OrderInfoEntity
 import com.hwalaon.wezxro_server.global.common.basic.mapper.BasicMapper
 import org.springframework.stereotype.Component
 
 @Component
-class OrderMapper: BasicMapper<Order, OrderEntity> {
+class OrderMapper(
+    private val orderInfoMapper: OrderInfoMapper
+): BasicMapper<Order, OrderEntity> {
     private val prefix = "!!$//$!!"
 
     override fun toDomain(entity: OrderEntity) =
@@ -17,51 +21,40 @@ class OrderMapper: BasicMapper<Order, OrderEntity> {
             userId = entity.userId,
             type = entity.type,
             apiOrderId = entity.apiOrderId,
-            link = entity.link,
-            totalCharge = entity.totalCharge,
-            count = entity.count,
             remain = entity.remain,
             startCnt = entity.startCnt,
-            answerNumber = entity.answerNumber,
-            comments = entity.comments!!.split(prefix),
-            groups = entity.groups,
-            hashtag = entity.hashtag,
-            hashtags = entity.hashtags!!.split(prefix),
-            mediaUrl = entity.mediaUrl,
-            commentsCustomPackage = entity.commentsCustomPackage,
-            username = entity.username,
-            usernames = entity.usernames!!.split(prefix),
+            count = entity.count,
+            totalCharge = entity.totalCharge,
+            info = null
         ).let {
             it.createdAt = entity.createdAt
             it.updatedAt = entity.updatedAt
             it
         }
 
-    override fun toEntity(domain: Order) =
-        OrderEntity(
+    override fun toEntity(domain: Order): OrderEntity = this.toEntity(domain, null)
+    fun toEntity(domain: Order, info: OrderInfo?): OrderEntity {
+
+        var orderInfoEntity: OrderInfoEntity? = null
+
+        if (info != null) orderInfoEntity = orderInfoMapper.toEntity(info)
+
+        return OrderEntity(
             id = domain.id,
             status = domain.status,
             serviceId = domain.serviceId,
             userId = domain.userId,
             type = domain.type,
             apiOrderId = domain.apiOrderId,
-            link = domain.link,
             totalCharge = domain.totalCharge,
             count = domain.count,
             remain = domain.remain,
             startCnt = domain.startCnt,
-            answerNumber = domain.answerNumber,
-            comments = domain.comments!!.joinToString(prefix = prefix),
-            groups = domain.groups,
-            hashtag = domain.hashtag,
-            hashtags = domain.hashtags!!.joinToString(prefix = prefix),
-            mediaUrl = domain.mediaUrl,
-            commentsCustomPackage = domain.commentsCustomPackage,
-            username = domain.username,
-            usernames = domain.usernames!!.joinToString(prefix = prefix),
+            info = orderInfoEntity,
         ).let {
             it.createdAt = domain.createdAt
             it.updatedAt = domain.updatedAt
             it
         }
+    }
 }
