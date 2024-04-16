@@ -4,7 +4,7 @@ services:
     image: koldin/postgres_kr:latest
     container_name: postgresql_container
     ports:
-      - "5432:5432"
+      - "1453:5432"
     environment:
       POSTGRES_USER: "wezxro_user"
       POSTGRES_PASSWORD: "testtest"
