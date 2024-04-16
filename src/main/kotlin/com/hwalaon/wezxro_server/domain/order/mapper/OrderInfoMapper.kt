@@ -1,6 +1,8 @@
 package com.hwalaon.wezxro_server.domain.order.mapper
 
+import com.hwalaon.wezxro_server.domain.order.model.Order
 import com.hwalaon.wezxro_server.domain.order.model.OrderInfo
+import com.hwalaon.wezxro_server.domain.order.persistence.entity.OrderEntity
 import com.hwalaon.wezxro_server.domain.order.persistence.entity.OrderInfoEntity
 import com.hwalaon.wezxro_server.global.common.basic.mapper.BasicMapper
 import org.springframework.stereotype.Component
@@ -9,6 +11,11 @@ import org.springframework.stereotype.Component
 class OrderInfoMapper : BasicMapper<OrderInfo, OrderInfoEntity> {
 
     override fun toDomain(entity: OrderInfoEntity) =
+        throw IllegalStateException("order 를 입력하여주십시오.")
+    override fun toEntity(domain: OrderInfo) =
+        throw IllegalStateException("order 를 입력하여주십시오.")
+
+    fun toDomain(entity: OrderInfoEntity, order: Order?) =
         OrderInfo(
             id = entity.id,
             link = entity.link,
@@ -25,10 +32,11 @@ class OrderInfoMapper : BasicMapper<OrderInfo, OrderInfoEntity> {
             subMin = entity.subMin,
             subMax = entity.subMax,
             subDelay = entity.subDelay,
-            expiry = entity.expiry
+            expiry = entity.expiry,
+            order = order
         )
 
-    override fun toEntity(domain: OrderInfo) =
+    fun toEntity(domain: OrderInfo, order: OrderEntity?) =
         OrderInfoEntity(
             id = domain.id,
             link = domain.link,
@@ -46,6 +54,6 @@ class OrderInfoMapper : BasicMapper<OrderInfo, OrderInfoEntity> {
             subMax = domain.subMax,
             subDelay = domain.subDelay,
             expiry = domain.expiry,
-            order = null,
+            order = order,
         )
 }

@@ -5,9 +5,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedException
 import com.hwalaon.wezxro_server.global.common.exception.ApiServerException
-import com.hwalaon.wezxro_server.global.common.util.dto.ProviderApiErrorDto
-import com.hwalaon.wezxro_server.global.common.util.dto.ProviderServiceDto
-import com.hwalaon.wezxro_server.global.common.util.dto.UserBalanceDto
+import com.hwalaon.wezxro_server.global.common.util.dto.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -24,13 +22,13 @@ class ApiProvider(
     private data class ApiRequest(
         val key: String,
         val action: String,
-        val params: Map<String, String> = emptyMap()
+        val params: Map<String, String>
     )
 
     private val client = OkHttpClient()
     private val json = Json { ignoreUnknownKeys = true }
 
-    private fun fetchApi(action: String, params: Map<String, String> = emptyMap()): String {
+    private fun fetchApi(action: String, params: Map<String, String> = emptyMap(), addOrderInfoDto: String? = null): String {
         // API 요청 객체 생성
         val apiRequest = ApiRequest(apiKey, action, params)
 
@@ -38,10 +36,19 @@ class ApiProvider(
         val requestBody = json.encodeToString(ApiRequest.serializer(), apiRequest)
             .toRequestBody("application/json; charset=utf-8".toMediaType())
 
-        val request = Request.Builder()
-            .url(apiUrl)
-            .post(requestBody)
-            .build()
+        // apiProvider 의 param 에 어떤 데이터가 들어가는지 확인
+        val request = if (action == "add")
+            Request.Builder()
+                .url(apiUrl)
+                .post(addOrderInfoDto!!
+                    .toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
+        else
+            Request.Builder()
+                .url(apiUrl)
+                .post(requestBody)
+                .build()
+
 
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) {
@@ -65,8 +72,13 @@ class ApiProvider(
         return Gson().fromJson(response, type) ?: throw ApiRequestFailedException()
     }
 
-    fun addOrder(service: Long, link: String, quantity: Long): String {
-        return fetchApi("add", mapOf("service" to service.toString(), "link" to link, "quantity" to quantity.toString()))
+    fun addOrder(addOrderInfoDto: AddOrderInfoDto): OrderIdDto {
+        addOrderInfoDto.key = this.apiKey
+        addOrderInfoDto.action = "add"
+
+        val response =
+            fetchApi("add", addOrderInfoDto = json.encodeToString(AddOrderInfoDto.serializer(), addOrderInfoDto))
+        return Gson().fromJson(response, OrderIdDto::class.java) ?: throw ApiRequestFailedException()
     }
 
     fun getOrderStatus(order: Int): String {

@@ -36,10 +36,7 @@ class OrderMapper(
     fun toEntity(domain: Order, info: OrderInfo?): OrderEntity {
 
         var orderInfoEntity: OrderInfoEntity? = null
-
-        if (info != null) orderInfoEntity = orderInfoMapper.toEntity(info)
-
-        return OrderEntity(
+        val orderEntity = OrderEntity(
             id = domain.id,
             status = domain.status,
             serviceId = domain.serviceId,
@@ -56,5 +53,10 @@ class OrderMapper(
             it.updatedAt = domain.updatedAt
             it
         }
+
+        if (info != null) orderInfoEntity = orderInfoMapper.toEntity(info, orderEntity)
+        orderEntity.info = orderInfoEntity
+
+        return orderEntity
     }
 }

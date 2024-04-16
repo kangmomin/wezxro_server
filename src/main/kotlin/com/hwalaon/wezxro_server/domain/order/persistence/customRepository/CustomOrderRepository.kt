@@ -18,7 +18,7 @@ class CustomOrderRepository(
             orderEntity.id,
             orderEntity.serviceId,
             serviceEntity.name,
-            orderEntity.link,
+            orderEntity.info.link,
             orderEntity.count,
             orderEntity.totalCharge,
             orderEntity.startCnt,

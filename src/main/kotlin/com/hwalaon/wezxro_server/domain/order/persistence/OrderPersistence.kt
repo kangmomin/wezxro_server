@@ -2,12 +2,14 @@ package com.hwalaon.wezxro_server.domain.order.persistence
 
 import com.hwalaon.wezxro_server.domain.order.mapper.OrderMapper
 import com.hwalaon.wezxro_server.domain.order.model.Order
+import com.hwalaon.wezxro_server.domain.order.model.OrderInfo
 import com.hwalaon.wezxro_server.domain.order.persistence.customRepository.CustomOrderRepository
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
 import com.hwalaon.wezxro_server.domain.order.persistence.repository.OrderRepository
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
+import com.hwalaon.wezxro_server.global.common.util.dto.AddOrderInfoDto
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -28,10 +30,28 @@ class OrderPersistence(
 
 
     fun add(order: Order, providerInfo: ProviderApiDto, apiServiceId: Long): Long {
+        val orderInfo = order.info!!
+
         val apiOrderId = ApiProvider(
             apiUrl = providerInfo.apiUrl,
             apiKey = providerInfo.apiKey
-        ).addOrder(apiServiceId, order.link!!, order.count!!).toLong()
+        ).addOrder(
+            AddOrderInfoDto(
+                apiServiceId.toString(),
+                orderInfo.link,
+                order.count,
+                orderInfo.comments,
+                orderInfo.usernames,
+                orderInfo.hashtags,
+                orderInfo.username,
+                orderInfo.mediaUrl,
+                orderInfo.subMin,
+                orderInfo.subMax,
+                orderInfo.subPosts,
+                orderInfo.subDelay,
+                orderInfo.expiry,
+            )
+        ).order.toLong()
 
         order.apiOrderId = apiOrderId
 

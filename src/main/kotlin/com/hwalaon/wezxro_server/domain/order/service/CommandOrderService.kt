@@ -24,6 +24,7 @@ class CommandOrderService(
         val order = addOrderRequest.toDomain()
         order.type = serviceInfo.type
         order.userId = userId
+        order.info!!.order = order
 
         return orderPersistence.add(order, providerInfo, serviceInfo.apiServiceId)
     }

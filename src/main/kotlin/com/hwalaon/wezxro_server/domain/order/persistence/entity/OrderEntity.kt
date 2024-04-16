@@ -29,11 +29,7 @@ class OrderEntity (
         updatable = false)
     var userId: Long?,
 
-    @Column(
-        nullable = false,
-        updatable = false,
-        unique = true)
-    @OneToOne(mappedBy = "order")
+    @OneToOne(mappedBy = "order",)
     var info: OrderInfoEntity?,
 
     @Column(nullable = false)

@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.domain.order.model
 
 class OrderInfo(
     var id: Long?,
+    var order: Order?,
     var link: String?,
     var comments: String?,
     var commentsCustomPackage: String?,
