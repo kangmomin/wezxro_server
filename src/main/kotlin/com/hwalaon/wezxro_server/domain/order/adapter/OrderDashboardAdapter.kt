@@ -16,7 +16,7 @@ class OrderDashboardAdapter(
 ): OrderPort {
     override fun dashboardByUserId(userId: Long): MutableList<DashboardResponse.OrderStatusCntDto>? {
         val dateTemplate =
-            Expressions.stringTemplate("TO_CHAR({0}, {1})", orderEntity.createdAt, "%Y-%m-%d")
+            Expressions.stringTemplate("TO_CHAR({0}, 'yyyy-mm-dd')", orderEntity.createdAt)
 
         return query.select(
             QDashboardResponse_OrderStatusCntDto(
