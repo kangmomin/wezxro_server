@@ -67,6 +67,7 @@ data class AddOrderRequest (
                 usernamesCustom = this.usernamesCustom,
                 commentsCustomPackage = commentsCustomPackage,
             ),
-            totalCharge = this.totalCharge
+            totalCharge = this.totalCharge,
+            providerId = null
         )
 }

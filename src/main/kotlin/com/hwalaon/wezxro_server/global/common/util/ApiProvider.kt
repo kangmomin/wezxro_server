@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedExcepti
 import com.hwalaon.wezxro_server.global.common.exception.ApiServerException
 import com.hwalaon.wezxro_server.global.common.util.dto.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -22,31 +23,19 @@ class ApiProvider(
     private data class ApiRequest(
         val key: String,
         val action: String,
-        val params: Map<String, String>
     )
 
     private val client = OkHttpClient()
     private val json = Json { ignoreUnknownKeys = true }
 
-    private fun fetchApi(action: String, params: Map<String, String> = emptyMap(), addOrderInfoDto: String? = null): String {
-        // API 요청 객체 생성
-        val apiRequest = ApiRequest(apiKey, action, params)
-
-        // JSON 문자열로 직렬화
-        val requestBody = json.encodeToString(ApiRequest.serializer(), apiRequest)
-            .toRequestBody("application/json; charset=utf-8".toMediaType())
-
+    private fun fetchApi(action: String,
+                         params: String = json.encodeToString(ApiRequest(apiKey, action))
+    ): String {
         // apiProvider 의 param 에 어떤 데이터가 들어가는지 확인
-        val request = if (action == "add")
-            Request.Builder()
+        val request = Request.Builder()
                 .url(apiUrl)
-                .post(addOrderInfoDto!!
+                .post(params
                     .toRequestBody("application/json; charset=utf-8".toMediaType()))
-                .build()
-        else
-            Request.Builder()
-                .url(apiUrl)
-                .post(requestBody)
                 .build()
 
 
@@ -77,32 +66,41 @@ class ApiProvider(
         addOrderInfoDto.action = "add"
 
         val response =
-            fetchApi("add", addOrderInfoDto = json.encodeToString(AddOrderInfoDto.serializer(), addOrderInfoDto))
+            fetchApi("add", json.encodeToString(AddOrderInfoDto.serializer(), addOrderInfoDto))
+
         return Gson().fromJson(response, OrderIdDto::class.java) ?: throw ApiRequestFailedException()
     }
 
     fun getOrderStatus(order: Int): String {
-        return fetchApi("status", mapOf("order" to order.toString()))
+        return fetchApi("status", )
     }
 
-    fun getMultipleOrdersStatus(orders: List<Int>): String {
-        return fetchApi("status", mapOf("orders" to orders.joinToString(",")))
+    fun getMultipleOrdersStatus(orders: List<Long>): Map<String, MultipleOrderStatus> {
+        val response = fetchApi("status", json.encodeToString(
+            OrderRequestDto.serializer(),
+            OrderRequestDto(
+                orders = orders.joinToString(","),
+                key = this.apiKey,
+                action = "status"
+            )))
+        val type: Type = object : TypeToken<Map<String, MultipleOrderStatus>>() {}.type
+        return Gson().fromJson(response, type) ?: throw ApiRequestFailedException()
     }
 
     fun createRefill(order: Int): String {
-        return fetchApi("refill", mapOf("order" to order.toString()))
+        return fetchApi("refill")
     }
 
     fun createMultipleRefills(orders: List<Int>): String {
-        return fetchApi("refill", mapOf("orders" to orders.joinToString(",")))
+        return fetchApi("refill")
     }
 
     fun getRefillStatus(refill: Int): String {
-        return fetchApi("refill_status", mapOf("refill" to refill.toString()))
+        return fetchApi("refill_status")
     }
 
     fun getMultipleRefillStatus(refills: List<Int>): String {
-        return fetchApi("refill_status", mapOf("refills" to refills.joinToString(",")))
+        return fetchApi("refill_status")
     }
 
     fun getUserBalance(): UserBalanceDto {

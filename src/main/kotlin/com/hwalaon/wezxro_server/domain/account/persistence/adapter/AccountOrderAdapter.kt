@@ -15,7 +15,7 @@ class AccountOrderAdapter(
     override fun boughtMoney(totalCharge: Double, userId: Long): Account? {
         val account = accountRepository.findByIdOrNull(userId) ?: return null
 
-        account.money = account.money!! + totalCharge
+        account.money = account.money!! - totalCharge
         return accountMapper.toDomain(account)
     }
 }

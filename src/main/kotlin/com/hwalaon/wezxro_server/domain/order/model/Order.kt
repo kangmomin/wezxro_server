@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.global.common.basic.model.BasicTime
 class Order (
     var id: Long?,
     var serviceId: Long?,
+    var providerId: Long?,
     var apiOrderId: Long?,
     var userId: Long?,
     var totalCharge: Double?,

@@ -18,6 +18,11 @@ class OrderEntity (
         updatable = false,)
     var serviceId: Long?,
 
+    @Column(
+        nullable = false,
+        updatable = false)
+    var providerId: Long?,
+
     // Provider가 부여한 주문 id
     @Column(
         nullable = false,

@@ -25,7 +25,8 @@ class OrderMapper(
             startCnt = entity.startCnt,
             count = entity.count,
             totalCharge = entity.totalCharge,
-            info = null
+            info = null,
+            providerId = entity.providerId
         ).let {
             it.createdAt = entity.createdAt
             it.updatedAt = entity.updatedAt
@@ -36,6 +37,8 @@ class OrderMapper(
     fun toEntity(domain: Order, info: OrderInfo?): OrderEntity {
 
         var orderInfoEntity: OrderInfoEntity? = null
+        if (info != null) orderInfoEntity = orderInfoMapper.toEntity(info, null)
+
         val orderEntity = OrderEntity(
             id = domain.id,
             status = domain.status,
@@ -48,6 +51,7 @@ class OrderMapper(
             remain = domain.remain,
             startCnt = domain.startCnt,
             info = orderInfoEntity,
+            providerId = domain.providerId
         ).let {
             it.createdAt = domain.createdAt
             it.updatedAt = domain.updatedAt

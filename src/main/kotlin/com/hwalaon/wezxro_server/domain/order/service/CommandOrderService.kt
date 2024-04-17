@@ -23,6 +23,7 @@ class CommandOrderService(
 
         val order = addOrderRequest.toDomain()
         order.type = serviceInfo.type
+        order.providerId = serviceInfo.providerId
         order.userId = userId
         order.info!!.order = order
 

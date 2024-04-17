@@ -10,6 +10,9 @@ class DashboardPersistence (
     private val accountPort: AccountPort,
 ) {
     fun getOrderDataByUserId(userId: Long) = orderPort.dashboardByUserId(userId)
+    fun updateOrderStatus(userId: Long) {
+        orderPort.updateOrderStatus(userId)
+    }
     fun getPayInfo(userId: Long) = accountPort.payInfo(userId)
 
 }
