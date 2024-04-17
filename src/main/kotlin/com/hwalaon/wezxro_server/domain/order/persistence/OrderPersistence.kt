@@ -2,8 +2,8 @@ package com.hwalaon.wezxro_server.domain.order.persistence
 
 import com.hwalaon.wezxro_server.domain.order.mapper.OrderMapper
 import com.hwalaon.wezxro_server.domain.order.model.Order
-import com.hwalaon.wezxro_server.domain.order.model.OrderInfo
 import com.hwalaon.wezxro_server.domain.order.persistence.customRepository.CustomOrderRepository
+import com.hwalaon.wezxro_server.domain.order.persistence.port.AccountPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
@@ -12,6 +12,7 @@ import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import com.hwalaon.wezxro_server.global.common.util.dto.AddOrderInfoDto
 import org.springframework.stereotype.Component
 import java.util.*
+import javax.security.auth.login.AccountNotFoundException
 
 @Component
 class OrderPersistence(
@@ -19,6 +20,7 @@ class OrderPersistence(
     private val orderRepository: OrderRepository,
     private val servicePort: ServicePort,
     private val providerPort: ProviderPort,
+    private val accountPort: AccountPort,
     private val orderMapper: OrderMapper,
 ) {
 
@@ -54,6 +56,9 @@ class OrderPersistence(
         ).order.toLong()
 
         order.apiOrderId = apiOrderId
+
+        accountPort.boughtMoney(order.totalCharge!!, order.userId!!)
+            ?: throw AccountNotFoundException()
 
         val orderEntity = orderMapper.toEntity(order)
         val orderId = orderRepository.save(orderEntity).id
