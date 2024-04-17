@@ -3,8 +3,6 @@ package com.hwalaon.wezxro_server.domain.order.adapter
 import com.hwalaon.wezxro_server.dashboard.controller.response.DashboardResponse
 import com.hwalaon.wezxro_server.dashboard.controller.response.QDashboardResponse_OrderStatusCntDto
 import com.hwalaon.wezxro_server.dashboard.persistence.port.OrderPort
-import com.hwalaon.wezxro_server.dashboard.service.QueryDashboardService
-import com.hwalaon.wezxro_server.domain.order.persistence.entity.QOrderEntity
 import com.hwalaon.wezxro_server.domain.order.persistence.entity.QOrderEntity.orderEntity
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory

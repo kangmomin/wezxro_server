@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.hwalaon.wezxro_server.domain.order.model.Order
 import com.hwalaon.wezxro_server.domain.order.model.OrderInfo
 import com.hwalaon.wezxro_server.domain.order.model.constant.OrderStatus
-import com.hwalaon.wezxro_server.domain.service.model.constant.ServiceType
 import jakarta.validation.constraints.NotNull
 
 data class AddOrderRequest (

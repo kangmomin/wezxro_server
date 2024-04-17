@@ -4,7 +4,6 @@ import com.hwalaon.wezxro_server.dashboard.persistence.port.AccountPort
 import com.hwalaon.wezxro_server.dashboard.persistence.port.dto.AccountPayInfoDto
 import com.hwalaon.wezxro_server.dashboard.persistence.port.dto.QAccountPayInfoDto
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QAccountEntity.accountEntity
-import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
 
