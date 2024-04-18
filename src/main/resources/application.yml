@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5432/wezxro_db?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:postgresql://host.docker.internal:5432/wezxro_db
+#    url: jdbc:postgresql://localhost:1453/wezxro_db
     username: wezxro_user
     password: testtest
     driver-class-name: org.postgresql.Driver
@@ -9,6 +10,7 @@ spring:
     redis:
       password: testtest
       host: host.docker.internal
+#      host: localhost
       port: 6379
 
   jpa:
@@ -35,3 +37,5 @@ jwt:
   accessExp: 180000
   refreshSecret: 'Y2Y3MTQ1N2EtMWQwYy00MTlhLWE2ODgtZDljMThmNDgyNzQ4ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5'
   refreshExp: 7200
+
+rtpKey: ${ RTP_KEY:"" }
