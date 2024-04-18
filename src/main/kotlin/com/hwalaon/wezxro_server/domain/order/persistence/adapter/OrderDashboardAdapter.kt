@@ -41,9 +41,11 @@ class OrderDashboardAdapter(
                         it.apiOrderId == orderId && it.providerId == providerId
                     }
 
-                    order!!.status = OrderStatus.valueOf(newOrder.status!!.uppercase(Locale.getDefault()))
-                    order.remain = newOrder.remains
-                    order.startCnt = newOrder.start_count
+                    order!!.status = OrderStatus.valueOf(
+                        newOrder.status!!.replace(" ", "")
+                            .uppercase(Locale.getDefault()))
+                    order.remain = newOrder.remains ?: 0
+                    order.startCnt = newOrder.start_count ?: 0
                 }
             }
         }
