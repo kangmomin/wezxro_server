@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.deposit.service
 
 import com.google.gson.Gson
+import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.deposit.controller.request.CheckPayRequest
 import com.hwalaon.wezxro_server.domain.deposit.controller.response.CheckPayResponse
 import com.hwalaon.wezxro_server.domain.deposit.exception.DepositConflictException
@@ -45,8 +46,10 @@ class CommandDepositService(
             if (response.RCODE != "200") {
                 response.PCHK = "NO"
             } else {
-                val updateDeposit = depositPersistence.updateDeposit(checkPayDto)
-                if (updateDeposit == null) response.PCHK = "NO"
+                val depositInfo = depositPersistence.updateDeposit(checkPayDto)
+                if (depositInfo == null) response.PCHK = "NO"
+                else depositPersistence.updateMoney(depositInfo.userId, depositInfo.money)
+                        ?: throw AccountNotFoundException()
             }
         } catch (e: Exception) {
             response.RCODE = "600"

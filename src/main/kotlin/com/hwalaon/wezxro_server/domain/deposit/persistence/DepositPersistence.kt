@@ -23,7 +23,8 @@ import java.util.*
 class DepositPersistence(
     private val depositRepository: DepositRepository,
     private val depositRedisRepository: DepositRedisRepository,
-    private val depositMapper: DepositMapper
+    private val depositMapper: DepositMapper,
+    private val accountPort: AccountDepositPort
 ) {
 
     fun save(deposit: Deposit) {
@@ -47,7 +48,7 @@ class DepositPersistence(
         }
 
 
-    fun updateDeposit(payInfo: CheckPayDto): String? {
+    fun updateDeposit(payInfo: CheckPayDto): DepositInfoDto? {
         val pendingDeposit = depositRedisRepository.findByNameAndAmount(payInfo.RNAME ?: "", (payInfo.RPAY ?: "0").toLong())
             ?: return null
 
@@ -71,6 +72,8 @@ class DepositPersistence(
         depositRepository.save(deposit)
         depositRedisRepository.delete(pendingDeposit)
 
-        return "success"
+        return DepositInfoDto(
+            pendingDeposit.userId!!,
+            pendingDeposit.amount!!)
     }
 }
