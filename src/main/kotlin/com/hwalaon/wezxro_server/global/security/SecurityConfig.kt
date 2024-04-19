@@ -38,7 +38,7 @@ class SecurityConfig(
                     CorsUtils.isPreFlightRequest(req)
                 }).permitAll()
 
-                it.requestMatchers("/u/login", "/u/join", "/master/c/*").permitAll()
+                it.requestMatchers("/u/login", "/u/join", "/master/c/*", "/d/check").permitAll()
                     .requestMatchers("/admin/**").hasRole(AccountRole.ADMIN.toString())
                     .anyRequest().authenticated()
             }

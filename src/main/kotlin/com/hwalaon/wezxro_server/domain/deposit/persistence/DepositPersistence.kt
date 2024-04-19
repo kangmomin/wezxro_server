@@ -1,10 +1,21 @@
 package com.hwalaon.wezxro_server.domain.deposit.persistence
 
+import com.google.gson.Gson
+import com.hwalaon.wezxro_server.domain.deposit.controller.request.CheckPayRequest
 import com.hwalaon.wezxro_server.domain.deposit.controller.response.DepositListResponse
 import com.hwalaon.wezxro_server.domain.deposit.mapper.DepositMapper
 import com.hwalaon.wezxro_server.domain.deposit.model.Deposit
+import com.hwalaon.wezxro_server.domain.deposit.model.constant.DepositType
+import com.hwalaon.wezxro_server.domain.deposit.persistence.dto.CheckPayDto
+import com.hwalaon.wezxro_server.domain.deposit.persistence.entity.DepositEntity
 import com.hwalaon.wezxro_server.domain.deposit.persistence.redis.DepositRedisRepository
 import com.hwalaon.wezxro_server.domain.deposit.persistence.repository.DepositRepository
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -34,4 +45,32 @@ class DepositPersistence(
                 note = it.note ?: ""
             )
         }
+
+
+    fun updateDeposit(payInfo: CheckPayDto): String? {
+        val pendingDeposit = depositRedisRepository.findByNameAndAmount(payInfo.RNAME ?: "", (payInfo.RPAY ?: "0").toLong())
+            ?: return null
+
+        val deposit = DepositEntity(
+            id = null,
+            name = pendingDeposit.name,
+            userId = pendingDeposit.userId,
+            type = pendingDeposit.type,
+            personalPhone = pendingDeposit.personalPhone,
+            note = pendingDeposit.note,
+            status = DepositType.DONE,
+            businessPhone = pendingDeposit.businessPhone,
+            businessOwner = pendingDeposit.businessOwner,
+            businessName = pendingDeposit.businessName,
+            clientId = pendingDeposit.clientId,
+            amount = pendingDeposit.amount,
+            businessEmail = pendingDeposit.businessEmail,
+            businessRegno = pendingDeposit.businessRegno,
+        )
+
+        depositRepository.save(deposit)
+        depositRedisRepository.delete(pendingDeposit)
+
+        return "success"
+    }
 }

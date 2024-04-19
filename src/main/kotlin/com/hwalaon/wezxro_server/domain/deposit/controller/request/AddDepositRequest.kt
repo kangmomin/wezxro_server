@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull
 
 class AddDepositRequest (
     @field: NotNull(message = "결제 금액은 비어있을 수 없습니다.")
-    @field: Min(message = "충전은 1000원부터 가능합니다.", value = 1000)
+//    @field: Min(message = "충전은 1000원부터 가능합니다.", value = 1000)
     @JsonProperty("payamount")
     var amount: Long?,
 

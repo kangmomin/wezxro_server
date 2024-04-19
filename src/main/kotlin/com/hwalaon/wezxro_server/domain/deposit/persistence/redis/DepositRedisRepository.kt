@@ -10,4 +10,5 @@ interface DepositRedisRepository : CrudRepository<PendingDepositEntity, Long> {
 
     fun existsByNameIsAndAmountIs(name: String, amount: Long): Boolean
     fun findByClientId(clientId: UUID): List<PendingDepositEntity>
+    fun findByNameAndAmount(name: String, amount: Long): PendingDepositEntity?
 }
