@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DepositRepository: JpaRepository<DepositEntity, Long> {
 
-    fun findByUserIdOrderByUpdatedAt(userId: Long): List<DepositEntity>
+    fun findByUserIdOrderByUpdatedAtDesc(userId: Long): List<DepositEntity>
 }

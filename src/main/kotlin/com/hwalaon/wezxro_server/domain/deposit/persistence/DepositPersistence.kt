@@ -85,7 +85,7 @@ class DepositPersistence(
             )
         }.toMutableList()
 
-        val doneDeposits = depositRepository.findByUserIdOrderByUpdatedAt(userId).map {
+        val doneDeposits = depositRepository.findByUserIdOrderByUpdatedAtDesc(userId).map {
             DepositListResponse(
                 depositId = it.id!!.toString(),
                 amount = it.amount!!,
