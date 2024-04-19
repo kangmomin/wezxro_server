@@ -31,6 +31,7 @@ class CommandDepositService(
 
     fun check(checkPayRequest: CheckPayRequest, requestUrl: String): CheckPayResponse {
         val response = CheckPayResponse("200", "OK")
+        if (checkPayRequest.rtpayData == null) return CheckPayResponse("200", "OK")
 
         if (checkPayRequest.regPkey != rtpKey) {
             response.RCODE = "600"
@@ -43,8 +44,15 @@ class CommandDepositService(
                 else requestUrl,
                 checkPayRequest)
 
-            if (response.RCODE != "200") {
+            if (checkPayDto.RCODE != "200") {
+                response.RCODE = checkPayDto.RCODE
                 response.PCHK = "NO"
+                if (checkPayRequest.ugrd != null &&
+                    checkPayRequest.BnakName != null &&
+                    checkPayRequest.MNO != null) {
+                    response.RCODE = "200"
+                    response.PCHK = "OK"
+                }
             } else {
                 val depositInfo = depositPersistence.updateDeposit(checkPayDto)
                 if (depositInfo == null) response.PCHK = "NO"
@@ -67,13 +75,22 @@ class CommandDepositService(
         if ("11" == ugrd || "12" == ugrd) RTP_URL = "https://rtpay.net/CheckPay/test_checkpay.php"
 
 
-        val requestBody = FormBody.Builder()
+        var requestBody = FormBody.Builder()
             .add("MNO", checkPayRequest.MNO ?: "")
             .add("BnakName", checkPayRequest.BnakName ?: "")
             .add("rtpayData", checkPayRequest.rtpayData ?: "")
             .add("ugrd", checkPayRequest.ugrd ?: "")
             .add("regPkey", checkPayRequest.regPkey ?: "")
             .build()
+
+        if (checkPayRequest.ugrd == null || checkPayRequest.rtpayData == null || checkPayRequest.BnakName == null) {
+            requestBody = FormBody.Builder()
+                .add("regPkey", checkPayRequest.regPkey ?: "")
+                .add("Referer", requestUrl ?: "")
+                .build()
+
+            RTP_URL="https://rtpay.net/CheckPay/setPurl.php"
+        }
 
         val request = Request.Builder()
             .url(RTP_URL)
