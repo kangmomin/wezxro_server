@@ -1,7 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.adapter
 
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
-import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.ValidAccountRepository
 import com.hwalaon.wezxro_server.domain.deposit.persistence.port.AccountDepositPort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component

@@ -1,22 +1,17 @@
 package com.hwalaon.wezxro_server.domain.deposit.persistence
 
-import com.google.gson.Gson
-import com.hwalaon.wezxro_server.domain.deposit.controller.request.CheckPayRequest
 import com.hwalaon.wezxro_server.domain.deposit.controller.response.DepositListResponse
 import com.hwalaon.wezxro_server.domain.deposit.mapper.DepositMapper
 import com.hwalaon.wezxro_server.domain.deposit.model.Deposit
 import com.hwalaon.wezxro_server.domain.deposit.model.constant.DepositType
 import com.hwalaon.wezxro_server.domain.deposit.persistence.dto.CheckPayDto
+import com.hwalaon.wezxro_server.domain.deposit.persistence.dto.DepositInfoDto
 import com.hwalaon.wezxro_server.domain.deposit.persistence.entity.DepositEntity
+import com.hwalaon.wezxro_server.domain.deposit.persistence.port.AccountDepositPort
 import com.hwalaon.wezxro_server.domain.deposit.persistence.redis.DepositRedisRepository
 import com.hwalaon.wezxro_server.domain.deposit.persistence.repository.DepositRepository
-import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 import java.util.*
 
 @Component
@@ -39,11 +34,12 @@ class DepositPersistence(
     fun pendingList(clientId: UUID) =
         depositRedisRepository.findByClientId(clientId).map {
             DepositListResponse(
-                id = it.id!!,
+                depositId = it.id!!,
                 amount = it.amount!!,
                 name = it.name!!,
                 type = it.type ?: "default",
-                note = it.note ?: ""
+                note = it.note ?: "",
+                updatedAt = LocalDateTime.now().toString()
             )
         }
 
@@ -76,4 +72,34 @@ class DepositPersistence(
             pendingDeposit.userId!!,
             pendingDeposit.amount!!)
     }
+
+    fun pendingListByUserId(userId: Long): MutableList<DepositListResponse> {
+        val deposits = depositRedisRepository.findByUserId(userId).map {
+            DepositListResponse(
+                depositId = it.id!!,
+                amount = it.amount!!,
+                name = it.name!!,
+                type = it.type ?: "default",
+                note = it.note ?: "",
+                updatedAt = LocalDateTime.now().toString()
+            )
+        }.toMutableList()
+
+        val doneDeposits = depositRepository.findByUserIdOrderByUpdatedAt(userId).map {
+            DepositListResponse(
+                depositId = it.id!!.toString(),
+                amount = it.amount!!,
+                name = it.name!!,
+                type = it.type ?: "default",
+                note = it.note ?: "",
+                updatedAt = it.updatedAt!!.toString()
+            )
+        }
+
+        deposits.addAll(doneDeposits)
+
+        return deposits
+    }
+
+    fun updateMoney(userId: Long, money: Long) = accountPort.updateMoney(userId, money)
 }

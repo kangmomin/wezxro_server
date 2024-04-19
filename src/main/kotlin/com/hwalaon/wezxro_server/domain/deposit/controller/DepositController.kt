@@ -4,6 +4,7 @@ import com.hwalaon.wezxro_server.domain.deposit.controller.request.AddDepositReq
 import com.hwalaon.wezxro_server.domain.deposit.controller.request.CheckPayRequest
 import com.hwalaon.wezxro_server.domain.deposit.controller.response.CheckPayResponse
 import com.hwalaon.wezxro_server.domain.deposit.service.CommandDepositService
+import com.hwalaon.wezxro_server.domain.deposit.service.QueryDepositService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.exception.UnAuthorizedException
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/d")
 class DepositController(
-    private val commandDepositService: CommandDepositService
+    private val commandDepositService: CommandDepositService,
+    private val queryDepositService: QueryDepositService
 ) {
 
     @PostMapping("/add")
@@ -30,6 +32,15 @@ class DepositController(
         commandDepositService.save(deposit)
 
         return BasicResponse.ok("충전 신청이 완료되었습니다.")
+    }
+
+    @GetMapping("/list")
+    fun listDeposit(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val response = queryDepositService.depositListByUserId(principalDetails.account.userId!!)
+
+        return BasicResponse.ok(response)
     }
 
     @PostMapping("/check")

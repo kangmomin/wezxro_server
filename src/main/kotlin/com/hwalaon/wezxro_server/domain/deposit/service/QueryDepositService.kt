@@ -10,4 +10,6 @@ class QueryDepositService(
 ) {
     fun pendingList(clientId: UUID) =
         depositPersistence.pendingList(clientId)
+
+    fun depositListByUserId(userId: Long) = depositPersistence.pendingListByUserId(userId)
 }
