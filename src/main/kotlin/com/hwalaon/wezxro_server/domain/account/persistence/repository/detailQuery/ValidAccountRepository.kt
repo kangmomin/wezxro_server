@@ -28,12 +28,11 @@ class ValidAccountRepository(
             .limit(1)
             .fetchFirst() > 0
 
-    fun isExistAccountForUpdate(email: String, name: String, clientId: UUID, userId: Long): Boolean =
+    fun isExistAccountForUpdate(email: String, clientId: UUID, userId: Long): Boolean =
         query.select(accountEntity.count())
             .from(accountEntity)
             .where(
                 accountEntity.userId.ne(userId),
-                accountEntity.name.eq(name).or(
-                    accountEntity.email.eq(email)))
+                accountEntity.email.eq(email))
             .fetchFirst() > 0
 }

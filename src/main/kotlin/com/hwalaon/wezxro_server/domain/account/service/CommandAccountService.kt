@@ -53,7 +53,6 @@ class CommandAccountService(
         accountPersistenceAdapter.isExistAccount(
             email = account.email!!,
             clientId = account.clientId!!,
-            name = account.name!!,
             userId = account.userId!!)
 
     fun deleteAccount(id: Long, clientId: UUID) {
