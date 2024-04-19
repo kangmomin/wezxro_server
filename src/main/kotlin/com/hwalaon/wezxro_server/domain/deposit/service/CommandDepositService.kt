@@ -47,12 +47,12 @@ class CommandDepositService(
             if (checkPayDto.RCODE != "200") {
                 response.RCODE = checkPayDto.RCODE
                 response.PCHK = "NO"
-                if (checkPayRequest.ugrd != null &&
-                    checkPayRequest.BnakName != null &&
-                    checkPayRequest.MNO != null) {
-                    response.RCODE = "200"
-                    response.PCHK = "OK"
-                }
+//                if (checkPayRequest.ugrd != null &&
+//                    checkPayRequest.BnakName != null &&
+//                    checkPayRequest.MNO != null) {
+//                    response.RCODE = "200"
+//                    response.PCHK = "OK"
+//                }
             } else {
                 val depositInfo = depositPersistence.updateDeposit(checkPayDto)
                 if (depositInfo == null) response.PCHK = "NO"
