@@ -44,6 +44,7 @@ class OrderPersistence(
                 order.count,
                 orderInfo.comments,
                 orderInfo.usernames,
+                orderInfo.hashtag,
                 orderInfo.hashtags,
                 orderInfo.username,
                 orderInfo.mediaUrl,

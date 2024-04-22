@@ -16,6 +16,7 @@ class AddOrderInfoDto(
     val quantity: Long?,
     val comments: String?,
     val usernames: String?,
+    val hashtag: String?,
     val hashtags: String?,
     val username: String?,
 
@@ -34,6 +35,7 @@ class AddOrderInfoDto(
         count: Long?,
         comments: String?,
         usernames: String?,
+        hashtag: String?,
         hashtags: String?,
         username: String?,
         mediaUrl: String?,
@@ -50,6 +52,7 @@ class AddOrderInfoDto(
         quantity = count,
         comments = comments,
         usernames = usernames,
+        hashtag = hashtags,
         hashtags = hashtags,
         username = username,
         media = mediaUrl,
