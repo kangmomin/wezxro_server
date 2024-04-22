@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5432/wezxro_db
+#    url: jdbc:postgresql://host.docker.internal:5432/wezxro_db
+    url: jdbc:postgresql://localhost:1453/wezxro_db
     username: wezxro_user
     password: testtest
     driver-class-name: org.postgresql.Driver
@@ -8,7 +9,8 @@ spring:
   data:
     redis:
       password: testtest
-      host: host.docker.internal
+#      host: host.docker.internal
+      host: localhost
       port: 6379
 
   jpa:
@@ -19,15 +21,14 @@ spring:
         default_batch_fetch_size: 100
       show_sql: true
       format_sql: true
-
   config:
     activate:
-      on-profile: default
+      on-profile: local
 
 server:
   port: 8443
   ssl:
-    enabled: true
+    enabled: false
     key-alias: ayokeystore
     key-store: ayokeystore.pkcs12
     key-store-type: PKCS12
