@@ -46,8 +46,7 @@ class CommandAccountService(
      * 계정이 있을 때 true를 리턴
      */
     private fun validAccount(account: Account): Boolean =
-        accountPersistenceAdapter.isExistAccount(account.email!!, account.clientId!!) ||
-        accountPersistenceAdapter.isExistName(account.name!!, account.clientId!!)
+        accountPersistenceAdapter.isExistAccount(account.email!!, account.clientId!!)
 
     private fun validAccountUpdate(account: Account): Boolean =
         accountPersistenceAdapter.isExistAccount(
