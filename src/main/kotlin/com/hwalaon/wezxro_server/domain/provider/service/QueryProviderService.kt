@@ -42,4 +42,8 @@ class QueryProviderService(
 
         return providerPersistence.searchProviderService(serviceId, provider.apiUrl!!) ?: throw ServiceNotFoundException()
     }
+
+    fun providerDetail(providerId: Long, clientId: UUID): Provider {
+        return providerPersistence.providerDetail(providerId, clientId) ?: throw ProviderNotFoundException()
+    }
 }

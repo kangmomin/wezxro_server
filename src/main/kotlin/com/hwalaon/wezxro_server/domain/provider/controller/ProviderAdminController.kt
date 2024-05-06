@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.provider.controller
 
 import com.hwalaon.wezxro_server.domain.provider.controller.request.AddProviderRequest
+import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderDetailResponse
 import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderListResponse
 import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderServiceListResponse
 import com.hwalaon.wezxro_server.domain.provider.service.CommandProviderService
@@ -18,6 +19,24 @@ class ProviderAdminController(
     private val queryProviderService: QueryProviderService,
     private val commandProviderService: CommandProviderService
 ) {
+
+    @GetMapping("/detail/{providerId}")
+    fun providerDetail(
+        @PathVariable providerId: Long,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val provider = queryProviderService.providerDetail(providerId, principalDetails.account.clientId!!)
+        val response = ProviderDetailResponse(
+            providerId = provider.id!!,
+            name = provider.name!!,
+            status = provider.status!!,
+            apiUrl = provider.apiUrl!!,
+            apiKey = provider.apiKey!!,
+            balance = provider.balance!!,
+        )
+
+        return BasicResponse.ok(response)
+    }
 
     @PostMapping("/add")
     fun addProvider(
