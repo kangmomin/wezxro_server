@@ -86,4 +86,18 @@ class AccountPersistenceAdapter(
                 }?.toMutableList()
             }
         }
+
+    fun addMoney(userId: Long, amount: Double, clientId: UUID): Double? {
+        val user = accountEntityRepository.findByUserIdAndClientIdAndStatusNot(userId, clientId) ?: return null
+
+        user.money = user.money!! + amount
+
+        return user.money
+    }
+
+    fun getPassword(userId: Long, clientId: UUID): String? {
+        val account = accountEntityRepository.findByUserIdAndClientIdAndStatusNot(userId, clientId) ?: return null
+
+        return account.password
+    }
 }
