@@ -8,7 +8,7 @@ class UpdateMoneyRequest (
     val userId: Long?,
 
     @NotNull(message = "추가 금액이 비어있습니다.")
-    val amount: Double?,
+    val balance: Double?,
 
     @NotEmpty(message = "비밀번호가 비어있습니다.")
     val password: String?
