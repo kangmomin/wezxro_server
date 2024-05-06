@@ -1,9 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.controller
 
-import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
-import com.hwalaon.wezxro_server.domain.account.controller.request.AddFundRequest
-import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateAccountRequest
-import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateStaticRate
+import com.hwalaon.wezxro_server.domain.account.controller.request.*
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
@@ -85,12 +82,12 @@ class AccountAdminController(
         BasicResponse.ok("개별 감가액의 업데이트가 정상적으로 처리 되었습니다.")
     }
 
-    @PatchMapping("/fund")
-    fun addFund(
+    @PatchMapping("/money/add")
+    fun addMoney(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
-        @RequestBody @Valid addFundRequest: AddFundRequest
+        @RequestBody @Valid updateMoneyRequest: UpdateMoneyRequest
     ): ResponseEntity<BasicResponse.BaseResponse> {
-        commandAccountService.addFund(addFundRequest,
+        commandAccountService.addFund(updateMoneyRequest,
             principalDetails.account.clientId!!,
             principalDetails.account.userId!!)
 
