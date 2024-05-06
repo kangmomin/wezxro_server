@@ -78,4 +78,13 @@ class CommandAccountService(
         accountPersistenceAdapter.addMoney(
             updateMoneyRequest.userId!!, updateMoneyRequest.amount!!, clientId) ?: throw AccountNotFoundException()
     }
+
+    fun setMoney(updateMoneyRequest: UpdateMoneyRequest, clientId: UUID, userId: Long) {
+        val password = accountPersistenceAdapter.getPassword(userId, clientId)
+
+        if (!passwordEncoder.matches(updateMoneyRequest.password, password)) throw AccountNotFoundException()
+
+        accountPersistenceAdapter.setMoney(
+            updateMoneyRequest.userId!!, updateMoneyRequest.amount!!, clientId) ?: throw AccountNotFoundException()
+    }
 }

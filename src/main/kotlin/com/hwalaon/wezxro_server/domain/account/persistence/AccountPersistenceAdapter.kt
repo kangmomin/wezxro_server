@@ -100,4 +100,12 @@ class AccountPersistenceAdapter(
 
         return account.password
     }
+
+    fun setMoney(userId: Long, amount: Double, clientId: UUID): String? {
+        val account = accountEntityRepository.findByUserIdAndClientIdAndStatusNot(userId, clientId) ?: return null
+
+        account.money = amount
+
+        return ""
+    }
 }

@@ -91,6 +91,18 @@ class AccountAdminController(
             principalDetails.account.clientId!!,
             principalDetails.account.userId!!)
 
-        return BasicResponse.ok("유저의 보유액이 추가되었습니다.")
+        return BasicResponse.ok("유저의 잔액이 추가되었습니다.")
+    }
+
+    @PatchMapping("/money/set")
+    fun setMoney(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody @Valid updateMoneyRequest: UpdateMoneyRequest
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandAccountService.setMoney(updateMoneyRequest,
+            principalDetails.account.clientId!!,
+            principalDetails.account.userId!!)
+        
+        return BasicResponse.ok("잔액을 설정하였습니다.")
     }
 }
