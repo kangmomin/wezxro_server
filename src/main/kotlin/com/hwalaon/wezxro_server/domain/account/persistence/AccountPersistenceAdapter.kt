@@ -60,7 +60,7 @@ class AccountPersistenceAdapter(
 
     fun list(clientId: UUID) =
         accountEntityRepository
-            .findAllByClientIdAndStatusNot(clientId).map {
+            .findAllByClientIdAndStatusNotOrderByUserId(clientId).map {
                 accountMapper.toDomain(it)
             }
 

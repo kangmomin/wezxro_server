@@ -10,7 +10,7 @@ import java.util.*
 interface AccountEntityRepository: JpaRepository<AccountEntity, Long> {
 
     fun findOneByEmailAndClientIdAndStatusNot(email: String, clientId: UUID, status: BasicStatus = BasicStatus.DELETED): AccountEntity?
-    fun findAllByClientIdAndStatusNot(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<AccountEntity>
+    fun findAllByClientIdAndStatusNotOrderByUserId(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<AccountEntity>
     fun findAllByUserIdAndStatusNot(userId: Long, status: BasicStatus = BasicStatus.DELETED): AccountEntity?
 
     fun findByUserIdAndClientIdAndStatusNot(userId: Long, clientId: UUID, status: BasicStatus = BasicStatus.DELETED): AccountEntity?
