@@ -108,4 +108,12 @@ class AccountPersistenceAdapter(
 
         return ""
     }
+
+    fun setPassword(encodedPassword: String, userId: Long, clientId: UUID): String? {
+        val account = accountEntityRepository.findByUserIdAndClientIdAndStatusNot(userId, clientId) ?: return null
+
+        account.password = encodedPassword
+
+        return account.password
+    }
 }

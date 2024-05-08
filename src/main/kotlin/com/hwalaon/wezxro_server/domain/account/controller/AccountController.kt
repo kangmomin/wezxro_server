@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/u")
-class AccountController(
+class
+AccountController(
     private val queryAccountService: QueryAccountService,
     private val commandAccountService: CommandAccountService,
 ) {

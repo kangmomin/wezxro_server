@@ -105,4 +105,16 @@ class AccountAdminController(
         
         return BasicResponse.ok("잔액을 설정하였습니다.")
     }
+
+    @PatchMapping("/password/update")
+    fun updatePassword(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody @Valid updatePasswordRequest: UpdatePasswordRequest
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandAccountService.setPassword(updatePasswordRequest,
+            principalDetails.account.userId!!,
+            principalDetails.account.clientId!!)
+
+        return BasicResponse.ok("비밀번호를 설정하였습니다.")
+    }
 }
