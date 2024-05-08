@@ -117,4 +117,16 @@ class AccountAdminController(
 
         return BasicResponse.ok("비밀번호를 설정하였습니다.")
     }
+
+    @PatchMapping("/status/update")
+    fun updateStatus(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody @Valid updateStatusRequest: UpdateStatusRequest
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandAccountService.updateStatus(
+            principalDetails.account.clientId!!, updateStatusRequest
+        )
+
+        return BasicResponse.ok("Status를 업데이트 하였습니다.")
+    }
 }

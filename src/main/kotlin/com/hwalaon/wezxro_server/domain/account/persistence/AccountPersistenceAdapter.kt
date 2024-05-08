@@ -2,6 +2,7 @@ package com.hwalaon.wezxro_server.domain.account.persistence
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
+import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateStatusRequest
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
@@ -115,5 +116,14 @@ class AccountPersistenceAdapter(
         account.password = encodedPassword
 
         return account.password
+    }
+
+    fun updateStatus(updateStatusRequest: UpdateStatusRequest, clientId: UUID): String? {
+        val account =
+            accountEntityRepository.findByUserIdAndClientIdAndStatusNot(updateStatusRequest.userId!!, clientId) ?: return null
+
+        account.status = updateStatusRequest.status!!
+
+        return ""
     }
 }

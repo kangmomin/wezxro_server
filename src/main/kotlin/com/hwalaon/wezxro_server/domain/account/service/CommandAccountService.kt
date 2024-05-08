@@ -1,9 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.service
 
-import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
-import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateMoneyRequest
-import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
-import com.hwalaon.wezxro_server.domain.account.controller.request.UpdatePasswordRequest
+import com.hwalaon.wezxro_server.domain.account.controller.request.*
 import com.hwalaon.wezxro_server.domain.account.exception.AccountAlreadyJoinedException
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.model.Account
@@ -97,5 +94,9 @@ class CommandAccountService(
         val encodedPassword = passwordEncoder.encode(updatePasswordRequest.newPassword)
         accountPersistenceAdapter
             .setPassword(encodedPassword, updatePasswordRequest.userId, clientId) ?: throw AccountNotFoundException()
+    }
+
+    fun updateStatus(clientId: UUID, updateStatusRequest: UpdateStatusRequest) {
+        accountPersistenceAdapter.updateStatus(updateStatusRequest, clientId) ?: throw AccountNotFoundException()
     }
 }
