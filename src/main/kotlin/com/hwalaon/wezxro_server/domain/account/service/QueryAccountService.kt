@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.account.service
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
+import com.hwalaon.wezxro_server.domain.account.controller.request.SendMailRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
 import com.hwalaon.wezxro_server.domain.account.controller.response.StaticRateResponse
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
@@ -10,14 +11,21 @@ import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.mail.SimpleMailMessage
+import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.*
+
 
 @ReadOnlyService
 class QueryAccountService(
     private val accountPersistenceAdapter: AccountPersistenceAdapter,
     private val passwordEncoder: PasswordEncoder,
-    private val jwtGenerator: JwtGenerator
+    private val jwtGenerator: JwtGenerator,
+    private val javaMailSender: JavaMailSender,
+    @Value("\${spring.mail.username}")
+    private val senderEmail: String,
 ) {
 
     fun login(loginRequest: LoginRequest): TokenDto {
@@ -70,4 +78,13 @@ class QueryAccountService(
             if (it == null) throw AccountNotFoundException()
             StaticRateResponse.fromDomain(it)
         }
+
+    fun sendMail(sendMailRequest: SendMailRequest) {
+        val mailSender = SimpleMailMessage()
+        mailSender.setTo(sendMailRequest.email!!)
+        mailSender.subject = sendMailRequest.subject!!
+        mailSender.text = sendMailRequest.description!!
+        mailSender.from = senderEmail
+        javaMailSender.send(mailSender)
+    }
 }

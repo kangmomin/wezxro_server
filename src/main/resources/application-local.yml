@@ -1,6 +1,18 @@
 spring:
+  mail:
+    host: smtp.hostinger.com
+    port: 587
+    username: ${EMAIL:""}
+    password: ${EMAIL_PASSWORD:""}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+
   datasource:
-#    url: jdbc:postgresql://host.docker.internal:5432/wezxro_db
     url: jdbc:postgresql://localhost:1453/wezxro_db
     username: wezxro_user
     password: testtest
@@ -9,7 +21,6 @@ spring:
   data:
     redis:
       password: testtest
-#      host: host.docker.internal
       host: localhost
       port: 6379
 

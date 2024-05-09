@@ -129,4 +129,14 @@ class AccountAdminController(
 
         return BasicResponse.ok("Status를 업데이트 하였습니다.")
     }
+
+    @PostMapping("/mail-send")
+    fun sendMail(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody @Valid sendMailRequest: SendMailRequest
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        queryAccountService.sendMail(sendMailRequest)
+
+        return BasicResponse.ok("메일을 전송하였습니다.")
+    }
 }

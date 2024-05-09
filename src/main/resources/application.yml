@@ -1,4 +1,16 @@
 spring:
+  mail:
+    host: smtp.hostinger.com
+    port: 587
+    username: ${EMAIL:""}
+    password: ${EMAIL_PASSWORD:""}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
   datasource:
     url: jdbc:postgresql://host.docker.internal:5432/wezxro_db
     username: wezxro_user
