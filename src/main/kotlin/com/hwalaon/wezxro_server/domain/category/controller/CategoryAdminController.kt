@@ -34,14 +34,12 @@ class CategoryAdminController(
             BasicResponse.ok("서비스를 삭제하였습니다.")
         }
 
-    @PostMapping("/update/{id}")
+    @PatchMapping("/update/{id}")
     fun categoryUpdate(@RequestBody @Valid categoryRequest: SaveCategoryRequest,
-                       @PathVariable("id") categoryId: Long) =
-        commandCategoryService.updateCategory(
-            categoryId,
-            categoryRequest.toDomain()).run {
-            BasicResponse.ok("서비스를 수정하였습니다.")
-        }
+                       @PathVariable("id") categoryId: Long): ResponseEntity<BasicResponse.BaseResponse> {
+        commandCategoryService.updateCategory(categoryId, categoryRequest.toDomain())
+        return BasicResponse.ok("서비스를 수정하였습니다.")
+    }
 
     @GetMapping("/detail/{categoryId}")
     fun categoryDetail(
