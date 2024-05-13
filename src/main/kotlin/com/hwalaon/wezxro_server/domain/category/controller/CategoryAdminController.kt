@@ -75,7 +75,8 @@ class CategoryAdminController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @PathVariable(name = "id") categoryId: Long,
         @RequestBody @Valid categorySortRequest: CategorySortRequest
-    ) = BasicResponse.ok(
+    ): ResponseEntity<BasicResponse.BaseResponse> {
         commandCategoryService.updateSort(categoryId, categorySortRequest.sort!!, principalDetails.account.clientId!!)
-    )
+        return BasicResponse.ok("정렬 번호를 수정하였습니다.")
+    }
 }
