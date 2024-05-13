@@ -24,12 +24,14 @@ class CommandCategoryService(
         categoryPersistenceAdapter.update(categoryId, category)
 
     fun delete(categoryId: Long) = categoryPersistenceAdapter.delete(categoryId)
-    fun toggleStatus(categoryId: Long, clientId: UUID) {
+    fun toggleStatus(categoryId: Long, clientId: UUID): BasicStatus {
         val category = categoryPersistenceAdapter.detailAdmin(categoryId, clientId) ?: throw CategoryNotFoundException()
 
         category.status = if (category.status === BasicStatus.ACTIVE) BasicStatus.DEACTIVE else BasicStatus.ACTIVE
 
         categoryPersistenceAdapter.update(categoryId, category)
+
+        return category.status!!
     }
 
     fun updateSort(categoryId: Long, sort: Int, clientId: UUID) {

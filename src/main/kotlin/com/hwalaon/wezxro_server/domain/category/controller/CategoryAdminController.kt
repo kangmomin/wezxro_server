@@ -4,9 +4,11 @@ import com.hwalaon.wezxro_server.domain.category.controller.request.CategorySort
 import com.hwalaon.wezxro_server.domain.category.controller.request.SaveCategoryRequest
 import com.hwalaon.wezxro_server.domain.category.service.CommandCategoryService
 import com.hwalaon.wezxro_server.domain.category.service.QueryCategoryService
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -59,15 +61,16 @@ class CategoryAdminController(
             queryCategoryService.categoryListForAdmin(principalDetails.account.clientId!!)
         )
 
-    @PostMapping("/status/{id}")
+    @PatchMapping("/status/{id}")
     fun categoryStatusToggle(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @PathVariable(name = "id") categoryId: Long,
-    ) = BasicResponse.ok(
-        commandCategoryService.toggleStatus(categoryId, principalDetails.account.clientId!!)
-    )
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val status = commandCategoryService.toggleStatus(categoryId, principalDetails.account.clientId!!)
+        return BasicResponse.ok("카테고리를 ${if (status == BasicStatus.ACTIVE) "활성화" else "비활성화"} 했습니다.")
+    }
 
-    @PostMapping("/sort/{id}")
+    @PatchMapping("/sort/{id}")
     fun categorySortUpdate(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @PathVariable(name = "id") categoryId: Long,
