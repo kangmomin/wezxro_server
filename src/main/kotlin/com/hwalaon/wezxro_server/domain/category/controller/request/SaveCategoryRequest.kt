@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 
 data class SaveCategoryRequest (
-    @field: NotEmpty
+    @field: NotEmpty(message = "카테고리 이름이 필요합니다.")
     val name: String?,
 
-    @field: NotNull
+    @field: NotNull(message = "상태 값이 필요합니다.")
     val status: BasicStatus?,
 
-    @field: NotNull
+    @field: NotNull(message = "정렬 값이 필요합니다.")
     val sort: Int?,
 ) {
     fun toDomain() =
