@@ -10,6 +10,8 @@ data class ServiceListResponse @QueryProjection constructor (
     val name: String,
     val providerId: Long,
     val apiServiceId: Long,
+    val categoryId: Long,
+    val originalRate: Double,
     val type: ServiceType,
     val rate: Double,
     val min: Long,

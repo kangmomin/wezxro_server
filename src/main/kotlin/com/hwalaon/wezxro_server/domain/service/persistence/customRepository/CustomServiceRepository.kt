@@ -38,16 +38,22 @@ class CustomServiceRepository(
                     .and(serviceEntity.clientId.eq(clientId)))
             .fetchOne()
 
-    fun validService(apiServiceId: Long, providerId: Long, serviceName: String) =
-        query.select(serviceEntity.count())
+    fun validService(apiServiceId: Long, providerId: Long, serviceName: String, serviceId: Long?): Long? {
+        val query = query.select(serviceEntity.count())
             .from(serviceEntity)
             .where(
                 serviceEntity.status.ne(BasicStatus.DELETED),
                 serviceEntity.apiServiceId.eq(apiServiceId).and(
-                    serviceEntity.providerId.eq(providerId)).or(
-                        serviceEntity.name.eq(serviceName)
-                    ))
-            .fetchOne()
+                    serviceEntity.providerId.eq(providerId)
+                ).or(
+                    serviceEntity.name.eq(serviceName)
+                )
+            )
+
+        if (serviceId != null) query.where(serviceEntity.id.ne(serviceId))
+
+        return query.fetchOne()
+    }
 
     fun serviceDetailList(userId: Long?, clientId: UUID?, category: Long?, isAdmin: Boolean = false): MutableList<ServiceDetailAndCustomRateDto> {
         val sql = query.select(

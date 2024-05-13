@@ -1,6 +1,6 @@
 package com.hwalaon.wezxro_server.domain.service.controller
 
-import com.hwalaon.wezxro_server.domain.service.controller.request.AddServiceRequest
+import com.hwalaon.wezxro_server.domain.service.controller.request.StoreServiceRequest
 import com.hwalaon.wezxro_server.domain.service.service.admin.CommandAdminServiceService
 import com.hwalaon.wezxro_server.domain.service.service.admin.QueryAdminServiceService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
@@ -29,11 +29,11 @@ class ServiceAdminController(
 
     @PostMapping("/add")
     fun addService(
-        @RequestBody @Valid addServiceRequest: AddServiceRequest,
+        @RequestBody @Valid storeServiceRequest: StoreServiceRequest,
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ) =
         commandAdminServiceService.add(
-            addServiceRequest.toDomain(principalDetails.account.clientId!!)
+            storeServiceRequest.toDomain(principalDetails.account.clientId!!)
         ).let {
             BasicResponse.created(MsgResponse("서비스를 생성하였습니다."))
         }
@@ -53,5 +53,16 @@ class ServiceAdminController(
         val updatedStatus = commandAdminServiceService.updateStatus(serviceId, principalDetails.account.clientId!!)
 
         return BasicResponse.ok("서비스를 ${updatedStatus.name}로 수정하였습니다.")
+    }
+
+    @PatchMapping("/update/{serviceId}")
+    fun updateService(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody @Valid storeServiceRequest: StoreServiceRequest,
+        @PathVariable serviceId: Long
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandAdminServiceService.update(storeServiceRequest, serviceId, principalDetails.account.clientId!!)
+
+        return BasicResponse.ok("서비스를 업데이트 하였습니다.")
     }
 }

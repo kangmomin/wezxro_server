@@ -21,7 +21,10 @@ class QueryAdminServiceService(
                 providerId = it.providerId!!,
                 min = it.min!!,
                 max = it.max!!,
-                rate = it.rate!!)
+                rate = it.rate!!,
+                categoryId = it.categoryId!!,
+                originalRate = it.originalRate!!
+            )
         }
 
 

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import java.util.*
 
-data class AddServiceRequest (
+data class StoreServiceRequest (
 
     @field:NotNull(message = "도매처 아이디는 필수 입력 값 입니다.")
     val providerId: Long?,

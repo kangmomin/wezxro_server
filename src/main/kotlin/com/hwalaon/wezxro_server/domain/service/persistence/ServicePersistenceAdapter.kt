@@ -37,7 +37,7 @@ class ServicePersistenceAdapter(
 
     fun valid(service: Service) =
         customServiceRepository.validService(
-            service.apiServiceId!!, service.providerId!!, service.name!!)!! == 0L
+            service.apiServiceId!!, service.providerId!!, service.name!!, service.id)!! == 0L
 
     fun delete(id: Int) =
         serviceRepository.findByIdOrNull(id).let {
@@ -55,5 +55,23 @@ class ServicePersistenceAdapter(
         else if (service.status!! == BasicStatus.DEACTIVE) service.status = BasicStatus.ACTIVE
 
         return service.status
+    }
+
+    fun update(service: Service): String? {
+        val serviceEntity = serviceRepository.findByClientIdAndId(service.clientId!!, service.id!!) ?: return null
+
+        serviceEntity.apiServiceId = service.apiServiceId
+        serviceEntity.providerId = service.providerId
+        serviceEntity.categoryId = service.categoryId
+        serviceEntity.max = service.max
+        serviceEntity.min = service.min
+        serviceEntity.description = service.description
+        serviceEntity.name = service.name
+        serviceEntity.originalRate = service.originalRate
+        serviceEntity.rate = service.rate
+        serviceEntity.status = service.status
+        serviceEntity.type = service.type
+
+        return ""
     }
 }

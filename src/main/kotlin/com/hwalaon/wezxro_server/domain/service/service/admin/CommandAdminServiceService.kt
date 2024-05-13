@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.service.service.admin
 
+import com.hwalaon.wezxro_server.domain.service.controller.request.StoreServiceRequest
 import com.hwalaon.wezxro_server.domain.service.exception.ServiceConflictException
 import com.hwalaon.wezxro_server.domain.service.exception.ServiceNotFoundException
 import com.hwalaon.wezxro_server.domain.service.model.Service
@@ -23,5 +24,14 @@ class CommandAdminServiceService(
 
     fun updateStatus(serviceId: Long, clientId: UUID): BasicStatus {
         return servicePersistenceAdapter.toggleStatus(serviceId, clientId) ?: throw ServiceNotFoundException()
+    }
+
+    fun update(storeServiceRequest: StoreServiceRequest, serviceId:Long, clientId: UUID) {
+        val service = storeServiceRequest.toDomain(clientId)
+        service.id = serviceId
+
+        if (!servicePersistenceAdapter.valid(service)) throw ServiceConflictException()
+
+        servicePersistenceAdapter.update(service) ?: throw ServiceNotFoundException()
     }
 }
