@@ -61,7 +61,7 @@ class OrderPersistence(
         accountPort.boughtMoney(order.totalCharge!!, order.userId!!)
             ?: throw AccountNotFoundException()
 
-        val orderEntity = orderMapper.toEntity(order)
+        val orderEntity = orderMapper.toEntity(order, orderInfo)
         val orderId = orderRepository.save(orderEntity).id
 
         return orderId!!

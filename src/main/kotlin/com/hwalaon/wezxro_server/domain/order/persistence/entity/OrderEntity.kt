@@ -34,7 +34,10 @@ class OrderEntity (
         updatable = false)
     var userId: Long?,
 
-    @OneToOne(mappedBy = "order",)
+    @OneToOne(mappedBy = "order",
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.REMOVE, CascadeType.PERSIST],
+        orphanRemoval = true,)
     var info: OrderInfoEntity?,
 
     @Column(nullable = false)
