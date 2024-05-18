@@ -24,8 +24,11 @@ class OrderPersistence(
     private val orderMapper: OrderMapper,
 ) {
 
-    fun orderList(userId: Long, clientId: UUID) =
+    fun orderListByUserId(userId: Long, clientId: UUID) =
         customOrderRepository.orderList(userId, clientId)
+
+    fun orderList(clientId: UUID) =
+        customOrderRepository.adminOrderList(clientId)
 
     fun serviceAddOrderInfo(serviceId: Long) =
         servicePort.serviceAddOrderInfo(serviceId)

@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component
 class OrderMapper(
     private val orderInfoMapper: OrderInfoMapper
 ): BasicMapper<Order, OrderEntity> {
-    private val prefix = "!!$//$!!"
-
     override fun toDomain(entity: OrderEntity) =
         Order(
             id = entity.id,

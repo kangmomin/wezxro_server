@@ -4,7 +4,7 @@ import com.hwalaon.wezxro_server.domain.order.model.constant.OrderStatus
 import com.querydsl.core.annotations.QueryProjection
 import java.time.LocalDateTime
 
-data class OrderList @QueryProjection constructor(
+data class OrderListResponse @QueryProjection constructor(
     val orderId: Long,
     val serviceId: Long,
     val serviceName: String,
