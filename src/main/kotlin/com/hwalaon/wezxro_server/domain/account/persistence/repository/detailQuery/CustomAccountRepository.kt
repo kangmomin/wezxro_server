@@ -7,9 +7,15 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class ValidAccountRepository(
+class CustomAccountRepository(
     private val query: JPAQueryFactory
 ) {
+    fun getClientIdByUserId(userId: Long): UUID? =
+        query.select(accountEntity.clientId)
+            .from(accountEntity)
+            .where(accountEntity.userId.eq(userId))
+            .fetchOne()
+
     fun isExistEmail(email: String, clientId: UUID): Boolean =
         query.select(accountEntity.count())
             .from(accountEntity)

@@ -8,11 +8,14 @@ import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
 import com.hwalaon.wezxro_server.domain.order.persistence.repository.OrderRepository
+import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
-import com.hwalaon.wezxro_server.global.common.util.dto.AddOrderInfoDto
+import com.hwalaon.wezxro_server.global.common.util.request.AddOrderInfoRequestDto
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.security.auth.login.AccountNotFoundException
+import kotlin.collections.ArrayList
 
 @Component
 class OrderPersistence(
@@ -41,7 +44,7 @@ class OrderPersistence(
             apiUrl = providerInfo.apiUrl,
             apiKey = providerInfo.apiKey
         ).addOrder(
-            AddOrderInfoDto(
+            AddOrderInfoRequestDto(
                 apiServiceId.toString(),
                 orderInfo.link,
                 order.count,
@@ -75,4 +78,28 @@ class OrderPersistence(
 
     fun providerApiInfo(providerId: Long) =
         providerPort.providerApiInfo(providerId)
+
+    fun cancelOrder(order: Order): String? {
+        val p = providerPort.providerApiInfo(order.providerId!!) ?: throw ProviderNotFoundException()
+
+        val createCancel = ApiProvider(p.apiKey, p.apiUrl).createSingleCancel(order.apiOrderId!!)
+        if (createCancel.error != null) {
+            print("orderId: ${order.apiOrderId} \n orderExceptionMsg: ${createCancel.cancel}")
+            return null
+        }
+
+        return ""
+    }
+
+    fun orderInfo(orderId: Long): Order? =
+        orderRepository.findByIdOrNull(orderId).let {
+            if (it == null) return null
+            orderMapper.toDomain(it)
+        }
+
+    fun isClientMatch(userId: Long, rawClientId: UUID): Boolean? {
+        val clientId = accountPort.getClientId(userId) ?: return null
+
+        return clientId == rawClientId
+    }
 }

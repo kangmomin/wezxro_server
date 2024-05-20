@@ -8,7 +8,7 @@ import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.CustomRateRepository
-import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.ValidAccountRepository
+import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.CustomAccountRepository
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -16,7 +16,7 @@ import java.util.*
 class AccountPersistenceAdapter(
     private val accountEntityRepository: AccountEntityRepository,
     private val accountMapper: AccountMapper,
-    private val validAccountRepository: ValidAccountRepository,
+    private val customAccountRepository: CustomAccountRepository,
     private val customRateRepository: CustomRateRepository,
 ) {
     fun login(loginRequest: LoginRequest) =
@@ -33,11 +33,11 @@ class AccountPersistenceAdapter(
             accountEntityRepository.save(it)
         }
 
-    fun isExistAccount(email: String, clientId: UUID) = validAccountRepository.isExistEmail(email, clientId)
-    fun isExistName(name: String, clientId: UUID) = validAccountRepository.isExistName(name, clientId)
+    fun isExistAccount(email: String, clientId: UUID) = customAccountRepository.isExistEmail(email, clientId)
+    fun isExistName(name: String, clientId: UUID) = customAccountRepository.isExistName(name, clientId)
 
     fun isExistAccount(email: String, clientId: UUID, userId: Long) =
-        validAccountRepository.isExistAccountForUpdate(email, clientId, userId)
+        customAccountRepository.isExistAccountForUpdate(email, clientId, userId)
 
     fun updateInfo(account: Account) =
         accountEntityRepository.findById(account.userId!!).let {

@@ -3,9 +3,14 @@ package com.hwalaon.wezxro_server.domain.order.service
 import com.hwalaon.wezxro_server.domain.order.controller.request.AddOrderRequest
 import com.hwalaon.wezxro_server.domain.order.exception.NotEnoughMoneyException
 import com.hwalaon.wezxro_server.domain.order.exception.OrderCountNotValidCountException
+import com.hwalaon.wezxro_server.domain.order.exception.OrderNotFoundException
 import com.hwalaon.wezxro_server.domain.order.persistence.OrderPersistence
+import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.global.annotation.CommandService
+import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedException
+import com.hwalaon.wezxro_server.global.common.exception.ForbiddenException
 import java.util.*
+import javax.security.auth.login.AccountNotFoundException
 
 @CommandService
 class CommandOrderService(
@@ -20,6 +25,7 @@ class CommandOrderService(
             serviceInfo.min < addOrderRequest.count) throw OrderCountNotValidCountException()
 
         val providerInfo = orderPersistence.providerApiInfo(serviceInfo.providerId)
+            ?: throw ProviderNotFoundException()
 
         val order = addOrderRequest.toDomain()
         order.type = serviceInfo.type
@@ -28,5 +34,12 @@ class CommandOrderService(
         order.info!!.order = order
 
         return orderPersistence.add(order, providerInfo, serviceInfo.apiServiceId)
+    }
+
+    fun cancelOrder(orderId: Long, clientId: UUID) {
+        val orderInfo = orderPersistence.orderInfo(orderId) ?: throw OrderNotFoundException()
+        val clientMatch = orderPersistence.isClientMatch(orderInfo.userId!!, clientId) ?: throw AccountNotFoundException()
+        if (!clientMatch) throw ForbiddenException()
+        orderPersistence.cancelOrder(orderInfo) ?: throw ApiRequestFailedException()
     }
 }

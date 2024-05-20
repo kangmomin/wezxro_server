@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 @Component
 interface ProviderPort {
 
-    fun providerApiInfo(apiServiceId: Long): ProviderApiDto
+    fun providerApiInfo(providerId: Long): ProviderApiDto?
     fun getProvidersById(providerIds: List<Long>): List<Provider>
 
 }

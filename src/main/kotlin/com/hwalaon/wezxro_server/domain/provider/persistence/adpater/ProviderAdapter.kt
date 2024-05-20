@@ -15,9 +15,10 @@ class ProviderAdapter(
     private val providerRepository: ProviderRepository,
     private val providerMapper: ProviderMapper
 ): ProviderPort {
-    override fun providerApiInfo(apiServiceId: Long): ProviderApiDto {
-        return customProviderRepository.getApiInfo(apiServiceId) ?: throw ProviderNotFoundException()
-    }
+
+    override fun providerApiInfo(providerId: Long): ProviderApiDto? =
+        customProviderRepository.getApiInfo(providerId)
+
     override fun getProvidersById(providerIds: List<Long>): List<Provider> {
         return providerRepository.findIdAndApiKeyAndApiUrlByIdIn(providerIds).map {
             providerMapper.toDomain(it)

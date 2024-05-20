@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.global.common.util.dto
+package com.hwalaon.wezxro_server.global.common.util.response
 
 class MultipleOrderStatus (
     var charge: String?,

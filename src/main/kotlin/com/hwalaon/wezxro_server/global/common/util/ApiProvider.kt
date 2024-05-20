@@ -5,7 +5,10 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedException
 import com.hwalaon.wezxro_server.global.common.exception.ApiServerException
-import com.hwalaon.wezxro_server.global.common.util.dto.*
+import com.hwalaon.wezxro_server.global.common.util.request.AddOrderInfoRequestDto
+import com.hwalaon.wezxro_server.global.common.util.request.CancelOrderRequestDto
+import com.hwalaon.wezxro_server.global.common.util.request.OrderRequestDto
+import com.hwalaon.wezxro_server.global.common.util.response.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -61,12 +64,26 @@ class ApiProvider(
         return Gson().fromJson(response, type) ?: throw ApiRequestFailedException()
     }
 
-    fun addOrder(addOrderInfoDto: AddOrderInfoDto): OrderIdDto {
-        addOrderInfoDto.key = this.apiKey
-        addOrderInfoDto.action = "add"
+    fun createSingleCancel(orderId: Long): CancelOrderResponseDto {
+
+        val res = fetchApi("cancel", json.encodeToString(
+                CancelOrderRequestDto.serializer(),
+                CancelOrderRequestDto(
+                    key = apiKey,
+                    action = "cancel",
+                    order = orderId.toString()
+                )
+            ))
+
+        return Gson().fromJson(res, CancelOrderResponseDto::class.java)
+    }
+
+    fun addOrder(addOrderInfoRequestDto: AddOrderInfoRequestDto): OrderIdDto {
+        addOrderInfoRequestDto.key = this.apiKey
+        addOrderInfoRequestDto.action = "add"
 
         val response =
-            fetchApi("add", json.encodeToString(AddOrderInfoDto.serializer(), addOrderInfoDto))
+            fetchApi("add", json.encodeToString(AddOrderInfoRequestDto.serializer(), addOrderInfoRequestDto))
 
         return Gson().fromJson(response, OrderIdDto::class.java) ?: throw ApiRequestFailedException()
     }
@@ -82,7 +99,8 @@ class ApiProvider(
                 orders = orders.joinToString(","),
                 key = this.apiKey,
                 action = "status"
-            )))
+            )
+        ))
         val type: Type = object : TypeToken<Map<String, MultipleOrderStatus>>() {}.type
         return Gson().fromJson(response, type) ?: throw ApiRequestFailedException()
     }

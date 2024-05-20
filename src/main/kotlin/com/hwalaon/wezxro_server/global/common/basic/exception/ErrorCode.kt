@@ -27,6 +27,7 @@ enum class ErrorCode(
     // order
     NOT_ENOUGH_MONEY("보유액이 부족합니다.", HttpStatus.BAD_REQUEST, "O4001"),
     ORDER_COUNT_NOT_VALID("주문 수량이 초과하거나 부족합니다.", HttpStatus.BAD_REQUEST, "O4002"),
+    ORDER_NOT_FOUND("존재하지 않는 주문입니다.", HttpStatus.NO_CONTENT, "O204"),
 
     // Account Login - 계정 관련이라 A
     REFRESH_TOKEN_NOT_FOUND("로그인 정보를 찾을 수 없습니다.", HttpStatus.OK, "AL204"),

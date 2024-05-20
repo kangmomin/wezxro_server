@@ -1,13 +1,14 @@
 package com.hwalaon.wezxro_server.domain.order.controller
 
+import com.hwalaon.wezxro_server.domain.order.controller.request.UpdateOrderRequest
 import com.hwalaon.wezxro_server.domain.order.service.CommandOrderService
 import com.hwalaon.wezxro_server.domain.order.service.QueryOrderService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
+import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/admin/o")
@@ -22,4 +23,21 @@ class AdminOrderController(
     ) = BasicResponse.ok(
             queryOrderService.getEveryOrderList(principalDetails.account.clientId!!)
         )
+
+    @PatchMapping("/update")
+    fun updateOrder(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody @Valid updateOrderRequest: UpdateOrderRequest
+    ) {
+
+    }
+
+    @PatchMapping("/cancel/{orderId}")
+    fun cancelOrder(
+        @PathVariable orderId: Long,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandOrderService.cancelOrder(orderId, principalDetails.account.clientId!!)
+        return BasicResponse.ok("주문을 취소하였습니다.")
+    }
 }

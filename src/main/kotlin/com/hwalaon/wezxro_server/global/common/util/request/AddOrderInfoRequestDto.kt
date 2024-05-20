@@ -1,10 +1,10 @@
-package com.hwalaon.wezxro_server.global.common.util.dto
+package com.hwalaon.wezxro_server.global.common.util.request
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.serialization.Serializable
 
 @Serializable
-class AddOrderInfoDto(
+class AddOrderInfoRequestDto(
     var key: String?,
     var action: String?,
 

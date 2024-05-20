@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.global.common.util.dto
+package com.hwalaon.wezxro_server.global.common.util.request
 
 import kotlinx.serialization.Serializable
 
