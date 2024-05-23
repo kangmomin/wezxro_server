@@ -67,6 +67,13 @@ data class BasicResponse<T> (
                 status = BaseStatus.SUCCESS,
                 data = data
             ))
+
+        fun created(msg: String) = ResponseEntity
+            .status(201)
+            .body(BaseResponse(
+                status = BaseStatus.SUCCESS,
+                data = MsgResponse(msg)
+            ))
     }
 
     class BaseResponse (
