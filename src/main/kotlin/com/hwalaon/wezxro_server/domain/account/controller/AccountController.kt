@@ -10,6 +10,7 @@ import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -32,10 +33,10 @@ AccountController(
         queryAccountService.demoLogin(demoLoginRequest.key!!))
 
     @PostMapping("/join")
-    fun join(@RequestBody @Valid joinRequest: JoinRequest) {
+    fun join(@RequestBody @Valid joinRequest: JoinRequest): ResponseEntity<BasicResponse.BaseResponse> {
         commandAccountService.join(joinRequest)
 
-        BasicResponse.created("회원가입에 성공하였습니다.")
+        return BasicResponse.created("회원가입에 성공하였습니다.")
     }
 
     @GetMapping("/info")
