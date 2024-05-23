@@ -1,5 +1,5 @@
 package com.hwalaon.wezxro_server.domain.account.model.constant
 
 enum class AccountRole {
-    MASTER, ADMIN, USER
+    MASTER, ADMIN, USER, DEMO
 }

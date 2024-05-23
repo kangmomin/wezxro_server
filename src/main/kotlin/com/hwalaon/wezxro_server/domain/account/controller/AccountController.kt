@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.controller
 
+import com.hwalaon.wezxro_server.domain.account.controller.request.DemoLoginRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
@@ -23,6 +24,12 @@ AccountController(
     @PostMapping("/login")
     fun login(@RequestBody @Valid loginRequest: LoginRequest) =
         BasicResponse.ok(queryAccountService.login(loginRequest))
+
+    @PostMapping("/login/demo")
+    fun demoLogin(
+        @RequestBody @Valid demoLoginRequest: DemoLoginRequest
+    ) = BasicResponse.ok(
+        queryAccountService.demoLogin(demoLoginRequest.key!!))
 
     @PostMapping("/join")
     fun join(@RequestBody @Valid joinRequest: JoinRequest) {

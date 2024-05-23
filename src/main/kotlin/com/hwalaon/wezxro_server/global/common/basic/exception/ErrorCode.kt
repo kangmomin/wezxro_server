@@ -23,6 +23,7 @@ enum class ErrorCode(
     // account
     ACCOUNT_ALREADY_JOINED_ERROR("해당 이메일은 이미 가입이 완료되었습니다.", HttpStatus.CONFLICT, "A209"),
     ACCOUNT_NOT_FOUND_ERROR("계정을 찾을 수 없습니다.", HttpStatus.OK, "A204"),
+    DEMO_ACCOUNT_CANT_USE("현재 둘러보기 기능을 사용할 수 없습니다.", HttpStatus.BAD_REQUEST, "A4002"),
 
     // order
     NOT_ENOUGH_MONEY("보유액이 부족합니다.", HttpStatus.BAD_REQUEST, "O4001"),

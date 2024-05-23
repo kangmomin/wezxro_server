@@ -126,4 +126,12 @@ class AccountPersistenceAdapter(
 
         return ""
     }
+
+    fun getDemoAccount(key: UUID): Account? {
+        accountEntityRepository.findByClientIdAndStatusAndRole(key).let {
+            if (it == null) return null
+
+            return accountMapper.toDomain(it)
+        }
+    }
 }

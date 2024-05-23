@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.domain.account.controller.request.SendMailReque
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
 import com.hwalaon.wezxro_server.domain.account.controller.response.StaticRateResponse
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
+import com.hwalaon.wezxro_server.domain.account.exception.DemoAccountCantUseException
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
@@ -86,5 +87,10 @@ class QueryAccountService(
         mailSender.text = sendMailRequest.description!!
         mailSender.from = senderEmail
         javaMailSender.send(mailSender)
+    }
+
+    fun demoLogin(key: UUID): TokenDto {
+        val account = accountPersistenceAdapter.getDemoAccount(key) ?: throw DemoAccountCantUseException()
+        return jwtGenerator.generate(account.userId!!)
     }
 }
