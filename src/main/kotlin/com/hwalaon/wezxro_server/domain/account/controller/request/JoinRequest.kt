@@ -9,7 +9,7 @@ import java.util.*
 
 data class JoinRequest (
     @field:NotNull(message = "key 값은 필수 값 입니다.")
-    val key: UUID,
+    val key: UUID?,
 
     @field:NotEmpty(message = "이름은 필수 값 입니다.")
     val name: String?,

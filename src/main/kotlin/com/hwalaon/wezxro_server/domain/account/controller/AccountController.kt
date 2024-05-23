@@ -25,10 +25,11 @@ AccountController(
         BasicResponse.ok(queryAccountService.login(loginRequest))
 
     @PostMapping("/join")
-    fun join(@RequestBody @Valid joinRequest: JoinRequest) =
-        commandAccountService.join(joinRequest).run {
-            BasicResponse.created(MsgResponse("회원가입에 성공하였습니다."))
-        }
+    fun join(@RequestBody @Valid joinRequest: JoinRequest) {
+        commandAccountService.join(joinRequest)
+
+        BasicResponse.created("회원가입에 성공하였습니다.")
+    }
 
     @GetMapping("/info")
     fun accountDetails(
