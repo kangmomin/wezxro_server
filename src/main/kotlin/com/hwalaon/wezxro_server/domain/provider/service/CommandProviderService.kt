@@ -28,4 +28,10 @@ class CommandProviderService(
 
         providerPersistence.syncServices(providerDetail)
     }
+
+    fun updateProvider(provider: Provider) {
+        if (!providerPersistence.valid(provider)) throw ProviderConflictException()
+
+        providerPersistence.update(provider) ?: throw ProviderNotFoundException()
+    }
 }

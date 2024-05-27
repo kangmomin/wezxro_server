@@ -139,4 +139,14 @@ class AccountAdminController(
 
         return BasicResponse.ok("메일을 전송하였습니다.")
     }
+
+    @PostMapping("/view-user/{userId}")
+    fun viewUser(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable userId: Long,
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val jwt = queryAccountService.viewUserLogin(userId, principalDetails.account.clientId!!)
+
+        return BasicResponse.ok(jwt)
+    }
 }

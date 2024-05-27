@@ -8,17 +8,19 @@ import java.util.*
 
 @Repository
 interface ProviderRepository: JpaRepository<ProviderEntity, Long> {
-    fun existsByClientIdAndNameAndStatusIsNotOrApiUrlAndApiKeyAndStatusIsNot(
+    fun existsByClientIdAndNameAndStatusIsNotAndIdIsNotOrApiUrlAndApiKeyAndStatusIsNotAndIdIsNot(
         clientId: UUID,
         name: String,
         status: BasicStatus = BasicStatus.DELETED,
+        id: Long = 0,
         apiUrl: String,
         apiKey: String,
-        status2: BasicStatus = BasicStatus.DELETED
+        status2: BasicStatus = BasicStatus.DELETED,
+        id2: Long = 0
     ): Boolean
     fun findAllByClientIdAndStatus(clientId: UUID, status: BasicStatus = BasicStatus.ACTIVE): List<ProviderEntity>
     fun findAllByClientIdAndStatusIsNot(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<ProviderEntity>
-    fun findByClientIdAndId(clientId: UUID, id: Long): ProviderEntity?
+    fun findByClientIdAndIdAndStatusIsNot(clientId: UUID, id: Long, status: BasicStatus = BasicStatus.DELETED): ProviderEntity?
 
     fun findIdAndApiKeyAndApiUrlByIdIn(id: List<Long>): List<ProviderEntity>
 }

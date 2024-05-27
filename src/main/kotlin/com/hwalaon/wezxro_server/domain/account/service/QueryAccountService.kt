@@ -93,4 +93,10 @@ class QueryAccountService(
         val account = accountPersistenceAdapter.getDemoAccount(key) ?: throw DemoAccountCantUseException()
         return jwtGenerator.generate(account.userId!!)
     }
+
+    fun viewUserLogin(userId: Long, clientId: UUID): TokenDto {
+        val account = accountPersistenceAdapter.findById(userId, clientId) ?: throw AccountNotFoundException()
+
+        return jwtGenerator.generate(account.userId!!)
+    }
 }

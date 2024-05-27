@@ -2,8 +2,8 @@ spring:
   mail:
     host: smtp.hostinger.com
     port: 587
-    username: ${EMAIL:""}
-    password: ${EMAIL_PASSWORD:""}
+    username: ${EMAIL:"wezxro@hwalaon.com"}
+    password: ${EMAIL_PASSWORD:"!Wezxro538"}
     properties:
       mail:
         smtp:
@@ -30,20 +30,14 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
-      show_sql: true
-      format_sql: true
+        show_sql: true
+        format_sql: true
   config:
     activate:
       on-profile: local
 
 server:
   port: 8443
-  ssl:
-    enabled: false
-    key-alias: ayokeystore
-    key-store: ayokeystore.pkcs12
-    key-store-type: PKCS12
-    key-store-password: '123456'
   max-http-request-header-size: 40KB
 
 jwt:

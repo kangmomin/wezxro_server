@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.provider.controller
 
 import com.hwalaon.wezxro_server.domain.provider.controller.request.AddProviderRequest
+import com.hwalaon.wezxro_server.domain.provider.controller.request.UpdateProviderRequest
 import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderDetailResponse
 import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderListResponse
 import com.hwalaon.wezxro_server.domain.provider.controller.response.ProviderServiceListResponse
@@ -33,6 +34,7 @@ class ProviderAdminController(
             apiUrl = provider.apiUrl!!,
             apiKey = provider.apiKey!!,
             balance = provider.balance!!,
+            description = provider.description!!
         )
 
         return BasicResponse.ok(response)
@@ -124,4 +126,16 @@ class ProviderAdminController(
     ) = BasicResponse.ok(
             queryProviderService.searchProviderService(serviceId, providerId, principalDetails.account.clientId!!)
     )
+
+    @PatchMapping("/update")
+    fun updateProvider(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody @Valid updateProviderRequest: UpdateProviderRequest
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val providerRequest = updateProviderRequest.toDomain()
+        providerRequest.clientId = principalDetails.account.clientId
+        commandProviderService.updateProvider(providerRequest)
+
+        return BasicResponse.ok("도매처 정보를 업데이트 하였습니다.")
+    }
 }

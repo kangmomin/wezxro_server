@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 class ProviderDetailResponse (
     val providerId: Long,
     val status: BasicStatus,
+    val description: String,
     val name: String,
     val apiKey: String,
     val apiUrl: String,

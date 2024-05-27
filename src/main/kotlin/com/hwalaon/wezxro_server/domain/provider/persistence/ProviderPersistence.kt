@@ -24,11 +24,13 @@ class ProviderPersistence(
     private val providerServiceMapper: ProviderServiceMapper
 ) {
     fun valid(provider: Provider) =
-        !providerRepository.existsByClientIdAndNameAndStatusIsNotOrApiUrlAndApiKeyAndStatusIsNot(
+        !providerRepository.existsByClientIdAndNameAndStatusIsNotAndIdIsNotOrApiUrlAndApiKeyAndStatusIsNotAndIdIsNot(
             clientId = provider.clientId!!,
             name = provider.name!!,
             apiUrl = provider.apiUrl!!,
-            apiKey = provider.apiKey!!
+            apiKey = provider.apiKey!!,
+            id = provider.id ?: 0,
+            id2 = provider.id ?: 0
         )
 
     fun save(provider: Provider) =
@@ -46,7 +48,7 @@ class ProviderPersistence(
         }
 
     fun changeStatus(providerId: Long, clientId: UUID) {
-        val provider = providerRepository.findByClientIdAndId(clientId, providerId) ?: throw ProviderNotFoundException()
+        val provider = providerRepository.findByClientIdAndIdAndStatusIsNot(clientId, providerId) ?: throw ProviderNotFoundException()
 
         if (provider.status!! == BasicStatus.ACTIVE) provider.status = BasicStatus.DEACTIVE
         else if (provider.status!! == BasicStatus.DEACTIVE) provider.status = BasicStatus.ACTIVE
@@ -63,7 +65,7 @@ class ProviderPersistence(
          }
 
     fun providerDetail(providerId: Long, clientId: UUID): Provider? =
-        providerRepository.findByClientIdAndId(clientId, providerId).let {
+        providerRepository.findByClientIdAndIdAndStatusIsNot(clientId, providerId).let {
             if (it == null) return null
             providerMapper.toDomain(it)
         }
@@ -135,5 +137,18 @@ class ProviderPersistence(
             if (it == null) return null
             return providerServiceMapper.toDomain(it)
         }
+    }
+
+    fun update(providerRequest: Provider): String? {
+        val provider =
+            providerRepository.findByClientIdAndIdAndStatusIsNot(providerRequest.clientId!!, providerRequest.id!!) ?: return null
+
+        provider.name = providerRequest.name
+        provider.apiUrl = providerRequest.apiUrl
+        provider.apiKey = providerRequest.apiKey
+        provider.description = providerRequest.description
+        provider.status = providerRequest.status
+
+        return ""
     }
 }

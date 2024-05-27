@@ -19,16 +19,16 @@ data class ProviderEntity(
     val userId: Long?,
 
     @Column(length = 50, nullable = false)
-    val name: String?,
+    var name: String?,
 
     @Column(length = 200)
-    val description: String?,
+    var description: String?,
 
     @Column(name = "api_key", nullable = false)
-    val apiKey: String?,
+    var apiKey: String?,
 
     @Column(name = "api_url", length = 100, nullable = false)
-    val apiUrl: String?,
+    var apiUrl: String?,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
