@@ -38,7 +38,7 @@ data class ProviderEntity(
     val type: Boolean?,
 
     @Column(nullable = false)
-    val balance: Double?,
+    var balance: Double?,
 
     @Column(nullable = false)
     val clientId: UUID?

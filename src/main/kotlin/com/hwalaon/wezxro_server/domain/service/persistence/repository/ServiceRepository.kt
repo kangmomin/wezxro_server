@@ -10,4 +10,5 @@ interface ServiceRepository: JpaRepository<ServiceEntity, Int> {
     fun findAllByClientIdAndCategoryIdAndStatusNotOrderById(clientId: UUID, categoryId: Long, status: BasicStatus = BasicStatus.DELETED): List<ServiceEntity>
     fun findAllByClientIdAndStatusNotOrderById(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<ServiceEntity>
     fun findByClientIdAndId(clientId: UUID, id: Long): ServiceEntity?
+    fun findAllByClientIdAndProviderId(clientId: UUID, providerId: Long): MutableList<ServiceEntity>
 }

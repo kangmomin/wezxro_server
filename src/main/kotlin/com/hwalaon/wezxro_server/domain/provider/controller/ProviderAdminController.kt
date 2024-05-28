@@ -87,6 +87,14 @@ class ProviderAdminController(
         queryProviderService.providerServiceCategory(providerId, principalDetails.account.clientId!!)
     )
 
+    @PostMapping("/sync/balance/{providerId}")
+    fun providerBalanceSync(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable providerId: Long
+    ) = commandProviderService.syncBalance(providerId, principalDetails.account.clientId!!).let {
+        BasicResponse.ok("도매처 보유액을 동기화하였습니다.")
+    }
+
     @PostMapping("/sync/{providerId}")
     fun providerSync(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
@@ -137,5 +145,15 @@ class ProviderAdminController(
         commandProviderService.updateProvider(providerRequest)
 
         return BasicResponse.ok("도매처 정보를 업데이트 하였습니다.")
+    }
+
+    @DeleteMapping("/delete/{providerId}")
+    fun deleteProvider(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable providerId: Long
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandProviderService.delete(providerId, principalDetails.account.clientId!!)
+
+        return BasicResponse.ok("도매처를 삭제하였습니다.")
     }
 }

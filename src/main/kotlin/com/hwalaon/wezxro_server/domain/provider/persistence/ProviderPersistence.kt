@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.provider.persistence
 
+import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
 import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderMapper
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderServiceMapper
@@ -7,6 +8,7 @@ import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.model.ProviderService
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.entity.ProviderServiceEntity
+import com.hwalaon.wezxro_server.domain.provider.persistence.port.ProviderServicePort
 import com.hwalaon.wezxro_server.domain.provider.persistence.redis.ProviderServiceRedisRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
@@ -21,7 +23,8 @@ class ProviderPersistence(
     private val customProviderRepository: CustomProviderRepository,
     private val providerServiceRedisRepository: ProviderServiceRedisRepository,
     private val providerMapper: ProviderMapper,
-    private val providerServiceMapper: ProviderServiceMapper
+    private val providerServiceMapper: ProviderServiceMapper,
+    private val servicePort: ProviderServicePort
 ) {
     fun valid(provider: Provider) =
         !providerRepository.existsByClientIdAndNameAndStatusIsNotAndIdIsNotOrApiUrlAndApiKeyAndStatusIsNotAndIdIsNot(
@@ -148,6 +151,34 @@ class ProviderPersistence(
         provider.apiKey = providerRequest.apiKey
         provider.description = providerRequest.description
         provider.status = providerRequest.status
+
+        return ""
+    }
+
+    fun syncBalance(providerId: Long, clientId: UUID): String? {
+        val provider = providerRepository.findByClientIdAndIdAndStatusIsNot(id = providerId, clientId = clientId)
+            ?: return null
+
+        val userBalance = ApiProvider(
+            provider.apiKey!!,
+            provider.apiUrl!!
+        ).getUserBalance().balance.toDoubleOrNull()
+
+        if (userBalance == null) return "balance exception"
+
+        provider.balance = userBalance
+
+        return "success"
+    }
+
+    fun delete(providerId: Long, clientId: UUID): String? {
+        val provider =
+            providerRepository.findByClientIdAndIdAndStatusIsNot(clientId, providerId) ?: return null
+
+        provider.status = BasicStatus.DELETED
+        provider.name = "deleted_provider_${provider.name}"
+
+        servicePort.deleteByProviderId(providerId, clientId)
 
         return ""
     }

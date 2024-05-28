@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundExcep
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.ProviderPersistence
 import com.hwalaon.wezxro_server.global.annotation.CommandService
+import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedException
 import java.util.*
 
 @CommandService
@@ -33,5 +34,15 @@ class CommandProviderService(
         if (!providerPersistence.valid(provider)) throw ProviderConflictException()
 
         providerPersistence.update(provider) ?: throw ProviderNotFoundException()
+    }
+
+    fun syncBalance(providerId: Long, clientId: UUID) {
+        val s = providerPersistence.syncBalance(providerId, clientId) ?: throw ProviderNotFoundException()
+
+        if (s == "balance exception") throw ApiRequestFailedException()
+    }
+
+    fun delete(providerId: Long, clientId: UUID) {
+        providerPersistence.delete(providerId, clientId) ?: throw ProviderNotFoundException()
     }
 }
