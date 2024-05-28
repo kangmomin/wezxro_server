@@ -6,6 +6,7 @@ import com.hwalaon.wezxro_server.dashboard.persistence.port.dto.QAccountPayInfoD
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QAccountEntity.accountEntity
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class AccountDashboardAdapter(
@@ -19,5 +20,10 @@ class AccountDashboardAdapter(
             .fetchOne()
     }
 
-
+    override fun payInfo(clientId: UUID): AccountPayInfoDto? =
+        query.select(QAccountPayInfoDto(
+            accountEntity.money.sum()
+        )).from(accountEntity)
+            .where(accountEntity.clientId.eq(clientId))
+            .fetchOne()
 }

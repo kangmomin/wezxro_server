@@ -4,6 +4,8 @@ import com.hwalaon.wezxro_server.dashboard.controller.response.DashboardResponse
 import com.hwalaon.wezxro_server.dashboard.persistence.DashboardPersistence
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.global.annotation.CommandService
+import java.util.*
+import kotlin.collections.ArrayList
 
 @CommandService
 class CommandDashboardService(
@@ -23,6 +25,24 @@ class CommandDashboardService(
         return DashboardResponse(
             orderStatusCnt = orderDataByUserId.toMutableList(),
             balance = accountPayInfoDto.balance,
+            totalUsed = totalUsed,
+            totalOrder = orderDataByUserId.count().toLong()
+        )
+    }
+
+    fun adminDashboard(clientId: UUID): DashboardResponse {
+        val orderDataByUserId = dashboardPersistence.getOrderDataByClientId(clientId) ?: ArrayList()
+        val accountPayInfoDto = dashboardPersistence.getPayInfo(clientId)?.balance ?: 0.0
+
+        var totalUsed = 0.0
+
+        orderDataByUserId.forEach {
+            totalUsed += it.charge
+        }
+
+        return DashboardResponse(
+            orderStatusCnt = orderDataByUserId.toMutableList(),
+            balance = accountPayInfoDto,
             totalUsed = totalUsed,
             totalOrder = orderDataByUserId.count().toLong()
         )

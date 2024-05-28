@@ -19,6 +19,9 @@ class OrderDashboardAdapter(
     override fun dashboardByUserId(userId: Long): MutableList<DashboardResponse.OrderStatusCntDto>? =
         customOrderRepository.dashboardByUserId(userId)
 
+    override fun dashboardByClientId(clientId: UUID): MutableList<DashboardResponse.OrderStatusCntDto>? =
+        customOrderRepository.dashboardByClientId(clientId)
+
     override fun updateOrderStatus(userId: Long): String? {
         val orderInfos = customOrderRepository.orderInfoByUserId(userId)
         val providerIds = orderInfos.map { it.providerId!! }.distinct()

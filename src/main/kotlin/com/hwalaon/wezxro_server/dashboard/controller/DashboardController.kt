@@ -17,4 +17,11 @@ class DashboardController(
     ) = BasicResponse.ok(
             dashboardService.userDashboard(principalDetails.account.userId!!)
         )
+
+    @GetMapping("/admin/dashboard")
+    fun adminDashboard(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ) = BasicResponse.ok(
+        dashboardService.adminDashboard(principalDetails.account.clientId!!)
+    )
 }

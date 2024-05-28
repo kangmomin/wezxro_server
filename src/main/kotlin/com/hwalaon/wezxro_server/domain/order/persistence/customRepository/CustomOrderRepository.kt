@@ -109,4 +109,23 @@ class CustomOrderRepository(
             .where(orderEntity.userId.eq(userId))
             .fetch()
     }
+
+    fun dashboardByClientId(clientId: UUID): MutableList<DashboardResponse.OrderStatusCntDto>? {
+        val dateTemplate =
+            Expressions.stringTemplate("TO_CHAR({0}, 'yyyy-mm-dd')", orderEntity.createdAt)
+
+        return query.select(
+            QDashboardResponse_OrderStatusCntDto(
+                orderEntity.status,
+                orderEntity.count,
+                dateTemplate,
+                orderEntity.totalCharge
+            )
+        )
+            .from(orderEntity)
+            .join(accountEntity)
+                .on(accountEntity.userId.eq(orderEntity.userId))
+            .where(accountEntity.clientId.eq(clientId))
+            .fetch()
+    }
 }
