@@ -77,7 +77,7 @@ class AccountAdminController(
     @PostMapping("/custom-rate")
     fun addCustomRate(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
-        @RequestBody addCustomRateRequest: AddCustomRateRequest
+        @RequestBody @Valid addCustomRateRequest: AddCustomRateRequest
     ) = commandAccountService.storeCustomRate(principalDetails.account.clientId!!, addCustomRateRequest).run {
         BasicResponse.ok("개별 감가액의 업데이트가 정상적으로 처리 되었습니다.")
     }
