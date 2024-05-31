@@ -1,5 +1,7 @@
 package com.hwalaon.wezxro_server.domain.service.persistence.adapter
 
+import com.hwalaon.wezxro_server.domain.account.persistence.port.AccountServicePort
+import com.hwalaon.wezxro_server.domain.account.persistence.port.dto.ServiceRateInfoDto
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ServiceAddOrderInfoDto
 import com.hwalaon.wezxro_server.domain.provider.persistence.port.ProviderServicePort
@@ -14,7 +16,7 @@ import java.util.*
 class ServiceAdapter(
     private val customServiceRepository: CustomServiceRepository,
     private val serviceRepository: ServiceRepository
-): ServicePort, ProviderServicePort {
+): ServicePort, ProviderServicePort, AccountServicePort {
     override fun serviceAddOrderInfo(serviceId: Long): ServiceAddOrderInfoDto {
           return customServiceRepository.addOrderServiceInfo(serviceId) ?: throw ServiceNotFoundException()
     }
@@ -25,4 +27,7 @@ class ServiceAdapter(
             s.name = "deleted_service_${s.name}"
         }
     }
+
+    override fun serviceInfo(serviceIds: List<Long>): MutableList<ServiceRateInfoDto> =
+        customServiceRepository.serviceInfos(serviceIds)
 }

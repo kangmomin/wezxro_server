@@ -3,9 +3,11 @@ package com.hwalaon.wezxro_server.domain.account.service
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.SendMailRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
+import com.hwalaon.wezxro_server.domain.account.controller.response.CustomRateInfoResponse
 import com.hwalaon.wezxro_server.domain.account.controller.response.StaticRateResponse
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.exception.DemoAccountCantUseException
+import com.hwalaon.wezxro_server.domain.account.model.CustomRate
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
@@ -98,5 +100,11 @@ class QueryAccountService(
         val account = accountPersistenceAdapter.findById(userId, clientId) ?: throw AccountNotFoundException()
 
         return jwtGenerator.generate(account.userId!!)
+    }
+
+    fun customRateByUserId(clientId: UUID, userId: Long): List<CustomRateInfoResponse> {
+        val crs = accountPersistenceAdapter.getCustomRate(clientId, userId)
+
+        return crs.toList()
     }
 }

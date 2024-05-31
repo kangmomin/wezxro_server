@@ -82,6 +82,16 @@ class AccountAdminController(
         BasicResponse.ok("개별 감가액의 업데이트가 정상적으로 처리 되었습니다.")
     }
 
+    @GetMapping("/custom-rate/{userId}")
+    fun customRateList(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable userId: Long
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val crs = queryAccountService.customRateByUserId(principalDetails.account.clientId!!, userId)
+
+        return BasicResponse.ok(crs)
+    }
+
     @PatchMapping("/money/add")
     fun addMoney(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,

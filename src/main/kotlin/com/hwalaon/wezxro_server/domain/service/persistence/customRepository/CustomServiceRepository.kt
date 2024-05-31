@@ -1,6 +1,8 @@
 package com.hwalaon.wezxro_server.domain.service.persistence.customRepository
 
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QCustomRateEntity.customRateEntity
+import com.hwalaon.wezxro_server.domain.account.persistence.port.dto.QServiceRateInfoDto
+import com.hwalaon.wezxro_server.domain.account.persistence.port.dto.ServiceRateInfoDto
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.QServiceAddOrderInfoDto
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ServiceAddOrderInfoDto
 import com.hwalaon.wezxro_server.domain.service.persistence.dto.QServiceDetailAndCustomRateDto
@@ -96,5 +98,16 @@ class CustomServiceRepository(
             .where(serviceEntity.id.eq(serviceId))
             .fetchOne()
     }
+
+    fun serviceInfos(serviceIds: List<Long>): MutableList<ServiceRateInfoDto> =
+        query.select(QServiceRateInfoDto(
+            serviceEntity.id,
+            serviceEntity.name,
+            serviceEntity.rate
+        ))
+            .from(serviceEntity)
+            .where(serviceEntity.id.`in`(serviceIds))
+            .orderBy(serviceEntity.id.desc())
+            .fetch()
 
 }

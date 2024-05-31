@@ -59,7 +59,7 @@ class CommandAccountService(
     }
 
     fun storeCustomRate(clientId: UUID, addCustomRateRequest: AddCustomRateRequest) {
-        accountPersistenceAdapter.storeCustomRate(addCustomRateRequest.userId, clientId, addCustomRateRequest)
+        accountPersistenceAdapter.storeCustomRate(addCustomRateRequest.userId!!, clientId, addCustomRateRequest)
     }
 
     fun updateStaticRate(staticRate: Double, userId: Long, clientId: UUID) {

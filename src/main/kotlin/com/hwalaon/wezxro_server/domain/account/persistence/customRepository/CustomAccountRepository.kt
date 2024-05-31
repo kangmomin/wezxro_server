@@ -1,4 +1,4 @@
-package com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery
+package com.hwalaon.wezxro_server.domain.account.persistence.customRepository
 
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QAccountEntity.accountEntity
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus

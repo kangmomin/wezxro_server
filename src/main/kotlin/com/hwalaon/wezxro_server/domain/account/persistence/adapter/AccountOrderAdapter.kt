@@ -3,7 +3,7 @@ package com.hwalaon.wezxro_server.domain.account.persistence.adapter
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
-import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.CustomAccountRepository
+import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.CustomAccountRepository
 import com.hwalaon.wezxro_server.domain.order.persistence.port.AccountPort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component

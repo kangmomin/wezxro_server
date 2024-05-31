@@ -3,12 +3,16 @@ package com.hwalaon.wezxro_server.domain.account.persistence
 import com.hwalaon.wezxro_server.domain.account.controller.request.AddCustomRateRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.UpdateStatusRequest
+import com.hwalaon.wezxro_server.domain.account.controller.response.CustomRateInfoResponse
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.persistence.mapper.AccountMapper
+import com.hwalaon.wezxro_server.domain.account.persistence.mapper.CustomRateMapper
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
-import com.hwalaon.wezxro_server.domain.account.persistence.repository.CustomRateRepository
-import com.hwalaon.wezxro_server.domain.account.persistence.repository.detailQuery.CustomAccountRepository
+import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.CustomAccountRepository
+import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.CustomCustomRepository
+import com.hwalaon.wezxro_server.domain.account.persistence.port.AccountServicePort
+import com.hwalaon.wezxro_server.domain.account.persistence.port.dto.ServiceRateInfoDto
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -17,7 +21,9 @@ class AccountPersistenceAdapter(
     private val accountEntityRepository: AccountEntityRepository,
     private val accountMapper: AccountMapper,
     private val customAccountRepository: CustomAccountRepository,
-    private val customRateRepository: CustomRateRepository,
+    private val customCustomRepository: CustomCustomRepository,
+    private val customRateMapper: CustomRateMapper,
+    private val accountServicePort: AccountServicePort
 ) {
     fun login(loginRequest: LoginRequest) =
         accountEntityRepository.findOneByEmailAndClientIdAndStatusNot(
@@ -68,23 +74,20 @@ class AccountPersistenceAdapter(
         accountEntityRepository.findByUserIdAndClientIdAndStatusNot(userId, clientId).let { account ->
             account ?: throw AccountNotFoundException()
 
-            val ids = addCustomRateRequest.customRates.map { it.crId }
+            val ids = addCustomRateRequest.customRates!!.map { it.crId }
             account.customRate?.removeIf { cr -> cr.id !in ids }
 
             addCustomRateRequest.customRates.forEach {addCustomRate ->
-                if (addCustomRate.crId == null) {
+                if (addCustomRate.crId == null || addCustomRate.crId == 0L) {
                     account.addCustomRate(addCustomRate)
                     return@forEach
                 }
 
                 if (account.customRate == null) account.customRate = mutableListOf()
 
-                account.customRate = account.customRate?.map { cr ->
-                    if (cr.id != addCustomRate.crId) return@map cr
-                    cr.rate = addCustomRate.rate ?: 0.0
-
-                    return@map cr
-                }?.toMutableList()
+                account.customRate?.forEach { cr ->
+                    if (cr.id == addCustomRate.crId) cr.rate = addCustomRate.rate ?: 0.0
+                }
             }
         }
 
@@ -133,5 +136,31 @@ class AccountPersistenceAdapter(
 
             return accountMapper.toDomain(it)
         }
+    }
+
+    fun getCustomRate(clientId: UUID, userId: Long): MutableList<CustomRateInfoResponse> {
+        var customRates = customCustomRepository.getCustomRates(userId, clientId)
+
+        val serviceIds = customRates.map {
+            it.serviceId
+        }
+        val serviceInfos = accountServicePort.serviceInfo(serviceIds)
+
+        customRates = customRates.map { cr ->
+            var serviceInfo: ServiceRateInfoDto? = null
+
+            serviceInfos.forEachIndexed() { idx, sr ->
+                if (cr.serviceId == sr.serviceId) {
+                    serviceInfo = sr
+                }
+            }
+
+            cr.originalRate = serviceInfo?.originalRate
+            cr.serviceName = serviceInfo?.serviceName
+
+            return@map cr
+        }.toMutableList()
+
+        return customRates
     }
 }
