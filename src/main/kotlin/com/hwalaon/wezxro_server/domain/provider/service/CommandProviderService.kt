@@ -20,9 +20,8 @@ class CommandProviderService(
         providerPersistence.save(provider)
     }
 
-    fun updateStatus(providerId: Long, clientId: UUID) {
-        providerPersistence.changeStatus(providerId, clientId)
-    }
+    fun updateStatus(providerId: Long, clientId: UUID) =
+        providerPersistence.changeStatus(providerId, clientId) ?: throw ProviderNotFoundException()
 
     fun syncProviderServices(providerId: Long, clientId: UUID) {
         val providerDetail = providerPersistence.providerDetail(providerId, clientId) ?: throw ProviderNotFoundException()

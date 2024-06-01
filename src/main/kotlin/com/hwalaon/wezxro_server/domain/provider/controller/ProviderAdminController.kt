@@ -53,14 +53,14 @@ class ProviderAdminController(
         return BasicResponse.ok("도매처가 등록되었습니다.")
     }
 
-    @PostMapping("/status/{providerId}")
+    @PatchMapping("/status/{providerId}")
     fun changeStatus(
         @PathVariable providerId: Long,
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ): ResponseEntity<BasicResponse.BaseResponse> {
-        commandProviderService.updateStatus(providerId, principalDetails.account.clientId!!)
+        val status = commandProviderService.updateStatus(providerId, principalDetails.account.clientId!!)
 
-        return BasicResponse.ok("")
+        return BasicResponse.ok("도매처를 ${status}로 변경하였습니다.")
     }
 
     @GetMapping("/list")

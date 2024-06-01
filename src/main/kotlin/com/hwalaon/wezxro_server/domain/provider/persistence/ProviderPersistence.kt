@@ -50,11 +50,13 @@ class ProviderPersistence(
             providerMapper.toDomain(it)
         }
 
-    fun changeStatus(providerId: Long, clientId: UUID) {
-        val provider = providerRepository.findByClientIdAndIdAndStatusIsNot(clientId, providerId) ?: throw ProviderNotFoundException()
+    fun changeStatus(providerId: Long, clientId: UUID): BasicStatus? {
+        val provider = providerRepository.findByClientIdAndIdAndStatusIsNot(clientId, providerId) ?: return null
 
         if (provider.status!! == BasicStatus.ACTIVE) provider.status = BasicStatus.DEACTIVE
         else if (provider.status!! == BasicStatus.DEACTIVE) provider.status = BasicStatus.ACTIVE
+
+        return provider.status!!
     }
 
     fun adminList(clientId: UUID) =
