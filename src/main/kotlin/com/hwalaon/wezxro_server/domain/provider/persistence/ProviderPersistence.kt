@@ -1,7 +1,5 @@
 package com.hwalaon.wezxro_server.domain.provider.persistence
 
-import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
-import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderMapper
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderServiceMapper
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
@@ -60,7 +58,7 @@ class ProviderPersistence(
     }
 
     fun adminList(clientId: UUID) =
-        providerRepository.findAllByClientIdAndStatusIsNot(clientId).map {
+        providerRepository.findAllByClientIdAndStatusIsNotOrderById(clientId).map {
             providerMapper.toDomain(it)
         }
 
