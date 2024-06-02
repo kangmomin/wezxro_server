@@ -89,4 +89,11 @@ class ServicePersistenceAdapter(
 
         return ""
     }
+
+    fun validStatus(categoryId: Long, providerId: Long): Boolean {
+        val isProviderDeactive = serviceProviderPort.isProviderDeactive(providerId)
+        val isCategoryDeactive = serviceCategoryPort.isCategoryDeactive(categoryId)
+
+        return !(isProviderDeactive || isCategoryDeactive)
+    }
 }

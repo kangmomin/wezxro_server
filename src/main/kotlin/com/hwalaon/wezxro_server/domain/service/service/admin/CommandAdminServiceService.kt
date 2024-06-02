@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.service.service.admin
 
 import com.hwalaon.wezxro_server.domain.service.controller.request.StoreServiceRequest
+import com.hwalaon.wezxro_server.domain.service.exception.ProviderOrCategoryDeactiveException
 import com.hwalaon.wezxro_server.domain.service.exception.ServiceConflictException
 import com.hwalaon.wezxro_server.domain.service.exception.ServiceNotFoundException
 import com.hwalaon.wezxro_server.domain.service.model.Service
@@ -34,6 +35,10 @@ class CommandAdminServiceService(
         service.id = serviceId
 
         if (!servicePersistenceAdapter.valid(service)) throw ServiceConflictException()
+
+        if (service.status!! == BasicStatus.ACTIVE &&
+            !servicePersistenceAdapter.validStatus(service.categoryId!!, service.providerId!!))
+            throw ProviderOrCategoryDeactiveException()
 
         servicePersistenceAdapter.update(service) ?: throw ServiceNotFoundException()
     }
