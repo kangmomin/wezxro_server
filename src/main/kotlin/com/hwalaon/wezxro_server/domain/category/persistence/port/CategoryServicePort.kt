@@ -7,4 +7,6 @@ import java.util.UUID
 @Component
 interface CategoryServicePort {
     fun updateStatusByCategoryId(categoryId: Long, clientId: UUID, status: BasicStatus)
+
+    fun deleteByCategoryId(categoryId: Long, clientId: UUID)
 }

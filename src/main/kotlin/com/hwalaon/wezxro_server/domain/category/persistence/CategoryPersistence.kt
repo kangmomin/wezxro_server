@@ -3,6 +3,7 @@ package com.hwalaon.wezxro_server.domain.category.persistence
 import com.hwalaon.wezxro_server.domain.category.exception.CategoryNotFoundException
 import com.hwalaon.wezxro_server.domain.category.mapper.CategoryMapper
 import com.hwalaon.wezxro_server.domain.category.model.Category
+import com.hwalaon.wezxro_server.domain.category.persistence.port.CategoryServicePort
 import com.hwalaon.wezxro_server.domain.category.persistence.repository.CategoryRepository
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.repository.findByIdOrNull
@@ -10,9 +11,10 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class CategoryPersistenceAdapter(
+class CategoryPersistence(
     private val categoryRepository: CategoryRepository,
-    private val categoryMapper: CategoryMapper
+    private val categoryMapper: CategoryMapper,
+    private val categoryServicePort: CategoryServicePort
 ) {
 
     /** sort로 정렬한 카테고리들 반환 */
@@ -41,6 +43,8 @@ class CategoryPersistenceAdapter(
         val category = categoryRepository.findByIdOrNull(id)
             ?: throw CategoryNotFoundException()
         category.status = BasicStatus.DELETED
+
+        categoryServicePort.deleteByCategoryId(id, category.clientId!!)
     }
 
     fun validCategory(category: Category, clientId: UUID) =
