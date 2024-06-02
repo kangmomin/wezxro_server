@@ -69,16 +69,16 @@ class CustomOrderRepository(
                 accountEntity.email
             ))
             .from(orderEntity)
-            .leftJoin(serviceEntity)
+            .join(serviceEntity)
             .on(
                 serviceEntity.id.eq(orderEntity.serviceId),
                 serviceEntity.clientId.eq(clientId)
             )
-            .leftJoin(providerEntity)
+            .join(providerEntity)
             .on(
                 providerEntity.id.eq(serviceEntity.providerId)
             )
-            .leftJoin(accountEntity)
+            .join(accountEntity)
             .on(accountEntity.userId.eq(orderEntity.userId))
             .orderBy(orderEntity.createdAt.desc())
             .fetch()
