@@ -7,6 +7,8 @@ import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
 import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceProviderPort
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
@@ -29,4 +31,7 @@ class ProviderAdapter(
         providerRepository.findAllByIdInAndStatus(providerIds).map {
             it.id!!
         }
+
+    override fun isProviderDeactive(providerId: Long): Boolean =
+        (providerRepository.findByIdOrNull(providerId)?.status ?: BasicStatus.DEACTIVE) == BasicStatus.DEACTIVE
 }

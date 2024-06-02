@@ -45,7 +45,7 @@ class ServiceAdminController(
         BasicResponse.ok("서비스를 삭제하였습니다.")
     }
 
-    @PostMapping("/status/{serviceId}")
+    @PatchMapping("/status/{serviceId}")
     fun changeStatus(
         @PathVariable serviceId: Long,
         @AuthenticationPrincipal principalDetails: PrincipalDetails

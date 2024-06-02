@@ -23,7 +23,10 @@ class CommandAdminServiceService(
         servicePersistenceAdapter.delete(id)
 
     fun updateStatus(serviceId: Long, clientId: UUID): BasicStatus {
-        return servicePersistenceAdapter.toggleStatus(serviceId, clientId) ?: throw ServiceNotFoundException()
+        val status = servicePersistenceAdapter.toggleStatus(serviceId, clientId)
+            ?: throw ServiceNotFoundException()
+
+        return status
     }
 
     fun update(storeServiceRequest: StoreServiceRequest, serviceId:Long, clientId: UUID) {

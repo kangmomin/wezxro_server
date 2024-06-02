@@ -9,4 +9,5 @@ interface ServiceProviderPort {
      * returns deactive provider ids
      */
     fun providerByDeactive(providerIds: List<Long>): List<Long>
+    fun isProviderDeactive(providerId: Long): Boolean
 }

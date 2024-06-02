@@ -1,8 +1,11 @@
 package com.hwalaon.wezxro_server.domain.service.persistence
 
+import com.hwalaon.wezxro_server.domain.service.exception.ProviderOrCategoryDeactiveException
 import com.hwalaon.wezxro_server.domain.service.mapper.ServiceMapper
 import com.hwalaon.wezxro_server.domain.service.model.Service
 import com.hwalaon.wezxro_server.domain.service.persistence.customRepository.CustomServiceRepository
+import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceCategoryPort
+import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceProviderPort
 import com.hwalaon.wezxro_server.domain.service.persistence.repository.ServiceRepository
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.repository.findByIdOrNull
@@ -14,7 +17,9 @@ import javax.management.ServiceNotFoundException
 class ServicePersistenceAdapter(
     private val serviceRepository: ServiceRepository,
     private val customServiceRepository: CustomServiceRepository,
-    private val serviceMapper: ServiceMapper
+    private val serviceMapper: ServiceMapper,
+    private val serviceProviderPort: ServiceProviderPort,
+    private val serviceCategoryPort: ServiceCategoryPort
 ) {
 
     fun userServiceDetail(serviceId: Long, userId: Long, clientId: UUID) =
@@ -52,8 +57,17 @@ class ServicePersistenceAdapter(
     fun toggleStatus(serviceId: Long, clientId: UUID): BasicStatus? {
         val service = serviceRepository.findByClientIdAndId(clientId, serviceId) ?: return null
 
-        if (service.status!! == BasicStatus.ACTIVE) service.status = BasicStatus.DEACTIVE
-        else if (service.status!! == BasicStatus.DEACTIVE) service.status = BasicStatus.ACTIVE
+        // 이 부분은 service 영역인데 service로 옮기기엔 너무 헤비해서 일단 여따 박아 넣음
+        // ---------- service 영역 -------------
+        val isProviderDeactive = serviceProviderPort.isProviderDeactive(service.providerId!!)
+        val isCategoryDeactive = serviceCategoryPort.isCategoryDeactive(service.categoryId!!)
+
+        if (service.status!! == BasicStatus.DEACTIVE &&
+            (isProviderDeactive || isCategoryDeactive))
+            throw ProviderOrCategoryDeactiveException()
+        // ---------- service 영역 -------------
+
+        service.status = if (service.status!! == BasicStatus.ACTIVE) BasicStatus.DEACTIVE else BasicStatus.ACTIVE
 
         return service.status
     }

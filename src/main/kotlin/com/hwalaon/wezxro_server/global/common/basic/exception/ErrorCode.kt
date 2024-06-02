@@ -38,6 +38,8 @@ enum class ErrorCode(
     CATEGORY_CONFLICT_ERROR("이미 존재하는 카테고리입니다.", HttpStatus.CONFLICT, "C209"),
 
 
+    // service
+    SERVICE_CANT_ACTIVE("서비스의 도매처나 카테고리가 비활성화 상태입니다.", HttpStatus.OK, "S2001"),
     SERVICE_CONFLICT_ERROR("이미 존재하는 서비스 입니다.", HttpStatus.CONFLICT, "S209"),
     SERVICE_NOT_FOUND_ERROR("서비스를 찾을 수 없습니다.", HttpStatus.OK, "S204"),
 
