@@ -3,6 +3,7 @@ package com.hwalaon.wezxro_server.domain.deposit.mapper
 import com.hwalaon.wezxro_server.domain.deposit.model.Deposit
 import com.hwalaon.wezxro_server.domain.deposit.persistence.entity.DepositEntity
 import com.hwalaon.wezxro_server.domain.deposit.persistence.entity.PendingDepositEntity
+import com.hwalaon.wezxro_server.domain.deposit.persistence.redis.DepositRedisRepository
 import com.hwalaon.wezxro_server.global.common.basic.mapper.BasicMapper
 import org.springframework.stereotype.Component
 
@@ -27,6 +28,28 @@ class DepositMapper: BasicMapper<Deposit, DepositEntity> {
         ).let {
             it.createdAt = entity.createdAt
             it.updatedAt = entity.updatedAt
+            it
+        }
+
+    fun toDomain(entity: PendingDepositEntity) =
+        Deposit(
+            null,
+            entity.amount,
+            entity.userId,
+            entity.name,
+            entity.businessName,
+            entity.businessPhone,
+            entity.businessOwner,
+            entity.businessEmail,
+            entity.businessRegno,
+            entity.personalPhone,
+            entity.status,
+            entity.type,
+            entity.note,
+            entity.clientId,
+        ).let {
+            it.createdAt = null
+            it.updatedAt = null
             it
         }
 

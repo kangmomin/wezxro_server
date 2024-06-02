@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.deposit.service
 
+import com.hwalaon.wezxro_server.domain.deposit.model.constant.DepositType
 import com.hwalaon.wezxro_server.domain.deposit.persistence.DepositPersistence
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 import java.util.*
@@ -12,4 +13,5 @@ class QueryDepositService(
         depositPersistence.pendingList(clientId)
 
     fun depositListByUserId(userId: Long) = depositPersistence.pendingListByUserId(userId)
+    fun list(clientId: UUID, status: DepositType?) = depositPersistence.list(clientId, status)
 }

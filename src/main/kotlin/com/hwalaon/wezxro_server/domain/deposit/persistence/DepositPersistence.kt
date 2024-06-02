@@ -4,6 +4,7 @@ import com.hwalaon.wezxro_server.domain.deposit.controller.response.DepositListR
 import com.hwalaon.wezxro_server.domain.deposit.mapper.DepositMapper
 import com.hwalaon.wezxro_server.domain.deposit.model.Deposit
 import com.hwalaon.wezxro_server.domain.deposit.model.constant.DepositType
+import com.hwalaon.wezxro_server.domain.deposit.persistence.customRepository.CustomDepositRepository
 import com.hwalaon.wezxro_server.domain.deposit.persistence.dto.CheckPayDto
 import com.hwalaon.wezxro_server.domain.deposit.persistence.dto.DepositInfoDto
 import com.hwalaon.wezxro_server.domain.deposit.persistence.entity.DepositEntity
@@ -18,6 +19,7 @@ import java.util.*
 class DepositPersistence(
     private val depositRepository: DepositRepository,
     private val depositRedisRepository: DepositRedisRepository,
+    private val customDepositRepository: CustomDepositRepository,
     private val depositMapper: DepositMapper,
     private val accountPort: AccountDepositPort
 ) {
@@ -102,4 +104,25 @@ class DepositPersistence(
     }
 
     fun updateMoney(userId: Long, money: Long) = accountPort.updateMoney(userId, money)
+    fun list(clientId: UUID, status: DepositType?): MutableList<Deposit> {
+        val depositList: MutableList<Deposit> = ArrayList()
+
+        // Pending 상태의 Deposit은 Redis에 있기에 Pending Deposit이 필요한 경우 depositList에 넣어줌
+        if (status == null || status == DepositType.PENDING) {
+            depositList.addAll(
+                depositRedisRepository.findByClientId(clientId).map {
+                    depositMapper.toDomain(it)
+                }
+            )
+        }
+
+        // CANCEL 이나 DONE deposit 을 전부 긁어와 depositList 에 추가
+        depositList.addAll(
+            customDepositRepository.searchDeposit(clientId, status).map {
+                depositMapper.toDomain(it)
+            }
+        )
+
+        return depositList
+    }
 }
