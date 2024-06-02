@@ -2,11 +2,11 @@ package com.hwalaon.wezxro_server.domain.provider.persistence.adpater
 
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
-import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.provider.mapper.ProviderMapper
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
+import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceProviderPort
 import org.springframework.stereotype.Component
 
 @Component
@@ -14,7 +14,7 @@ class ProviderAdapter(
     private val customProviderRepository: CustomProviderRepository,
     private val providerRepository: ProviderRepository,
     private val providerMapper: ProviderMapper
-): ProviderPort {
+): ProviderPort, ServiceProviderPort {
 
     override fun providerApiInfo(providerId: Long): ProviderApiDto? =
         customProviderRepository.getApiInfo(providerId)
@@ -24,4 +24,9 @@ class ProviderAdapter(
             providerMapper.toDomain(it)
         }
     }
+
+    override fun providerByDeactive(providerIds: List<Long>): List<Long> =
+        providerRepository.findAllByIdInAndStatus(providerIds).map {
+            it.id!!
+        }
 }

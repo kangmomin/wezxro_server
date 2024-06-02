@@ -19,6 +19,7 @@ interface ProviderRepository: JpaRepository<ProviderEntity, Long> {
         id2: Long = 0
     ): Boolean
     fun findAllByClientIdAndStatus(clientId: UUID, status: BasicStatus = BasicStatus.ACTIVE): List<ProviderEntity>
+    fun findAllByIdInAndStatus(id: List<Long>, status: BasicStatus = BasicStatus.DEACTIVE): List<ProviderEntity>
     fun findAllByClientIdAndStatusIsNotOrderById(clientId: UUID, status: BasicStatus = BasicStatus.DELETED): List<ProviderEntity>
     fun findByClientIdAndIdAndStatusIsNot(clientId: UUID, id: Long, status: BasicStatus = BasicStatus.DELETED): ProviderEntity?
 
