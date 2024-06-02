@@ -28,6 +28,12 @@ class ServiceAdapter(
         }
     }
 
+    override fun updateStatusByProviderId(providerId: Long, status: BasicStatus, clientId: UUID) {
+        serviceRepository.findAllByClientIdAndProviderId(clientId, providerId).forEach {
+            it.status = status
+        }
+    }
+
     override fun serviceInfo(serviceIds: List<Long>): MutableList<ServiceRateInfoDto> =
         customServiceRepository.serviceInfos(serviceIds)
 }

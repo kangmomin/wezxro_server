@@ -182,4 +182,8 @@ class ProviderPersistence(
 
         return ""
     }
+
+    fun updateServicesStatus(providerId: Long, clientId: UUID, status: BasicStatus) {
+        servicePort.updateStatusByProviderId(providerId, status, clientId)
+    }
 }

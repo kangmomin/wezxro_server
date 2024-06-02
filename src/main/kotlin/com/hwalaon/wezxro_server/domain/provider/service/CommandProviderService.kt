@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundExcep
 import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.ProviderPersistence
 import com.hwalaon.wezxro_server.global.annotation.CommandService
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.exception.ApiRequestFailedException
 import java.util.*
 
@@ -20,8 +21,13 @@ class CommandProviderService(
         providerPersistence.save(provider)
     }
 
-    fun updateStatus(providerId: Long, clientId: UUID) =
-        providerPersistence.changeStatus(providerId, clientId) ?: throw ProviderNotFoundException()
+    fun updateStatus(providerId: Long, clientId: UUID): BasicStatus {
+        val status = providerPersistence.changeStatus(providerId, clientId) ?: throw ProviderNotFoundException()
+
+        providerPersistence.updateServicesStatus(providerId, clientId, status)
+
+        return status
+    }
 
     fun syncProviderServices(providerId: Long, clientId: UUID) {
         val providerDetail = providerPersistence.providerDetail(providerId, clientId) ?: throw ProviderNotFoundException()
