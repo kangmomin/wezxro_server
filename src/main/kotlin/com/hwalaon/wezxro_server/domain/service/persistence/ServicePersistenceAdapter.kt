@@ -43,6 +43,7 @@ class ServicePersistenceAdapter(
         serviceRepository.findByIdOrNull(id).let {
             if (it == null) throw ServiceNotFoundException()
             it.status = BasicStatus.DELETED
+            it.name = "deleted_service_${it.name}"
         }
 
     fun userServiceDetailList(userId: Long?, clientId: UUID?, category: Long?) =
