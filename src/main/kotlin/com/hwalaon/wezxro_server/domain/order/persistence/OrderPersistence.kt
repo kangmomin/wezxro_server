@@ -5,7 +5,7 @@ import com.hwalaon.wezxro_server.domain.order.model.Order
 import com.hwalaon.wezxro_server.domain.order.persistence.customRepository.CustomOrderRepository
 import com.hwalaon.wezxro_server.domain.order.persistence.port.AccountPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
-import com.hwalaon.wezxro_server.domain.order.persistence.port.ServicePort
+import com.hwalaon.wezxro_server.domain.order.persistence.port.OrderServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
 import com.hwalaon.wezxro_server.domain.order.persistence.repository.OrderRepository
 import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
@@ -15,13 +15,12 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.security.auth.login.AccountNotFoundException
-import kotlin.collections.ArrayList
 
 @Component
 class OrderPersistence(
     private val customOrderRepository: CustomOrderRepository,
     private val orderRepository: OrderRepository,
-    private val servicePort: ServicePort,
+    private val orderServicePort: OrderServicePort,
     private val providerPort: ProviderPort,
     private val accountPort: AccountPort,
     private val orderMapper: OrderMapper,
@@ -34,7 +33,7 @@ class OrderPersistence(
         customOrderRepository.adminOrderList(clientId)
 
     fun serviceAddOrderInfo(serviceId: Long) =
-        servicePort.serviceAddOrderInfo(serviceId)
+        orderServicePort.serviceAddOrderInfo(serviceId)
 
 
     fun add(order: Order, providerInfo: ProviderApiDto, apiServiceId: Long): Long {

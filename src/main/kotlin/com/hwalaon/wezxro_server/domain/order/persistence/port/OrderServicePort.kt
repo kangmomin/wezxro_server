@@ -4,6 +4,6 @@ import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ServiceAddOrd
 import org.springframework.stereotype.Component
 
 @Component
-interface ServicePort {
+interface OrderServicePort {
     fun serviceAddOrderInfo(serviceId: Long): ServiceAddOrderInfoDto
 }
