@@ -10,8 +10,10 @@ import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -54,5 +56,15 @@ class AdminDepositController(
         commandDepositService.update(principalDetails.account.clientId!!, updateDepositRequest)
 
         return BasicResponse.ok("충전 기록을 수정하였습니다.")
+    }
+
+    @DeleteMapping("/delete/{depositId}")
+    fun deleteDeposit(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable depositId: Long
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandDepositService.delete(principalDetails.account.clientId!!, depositId)
+
+        return BasicResponse.ok("충전 기록을 삭제하였습니다.")
     }
 }

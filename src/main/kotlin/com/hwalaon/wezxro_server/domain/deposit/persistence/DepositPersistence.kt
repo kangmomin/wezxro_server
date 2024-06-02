@@ -88,7 +88,7 @@ class DepositPersistence(
             )
         }.toMutableList()
 
-        val doneDeposits = depositRepository.findByUserIdOrderByUpdatedAtDesc(userId).map {
+        val doneDeposits = depositRepository.findByUserIdAndStatusNotOrderByUpdatedAtDesc(userId).map {
             DepositListResponse(
                 depositId = it.id!!.toString(),
                 amount = it.amount!!,
@@ -134,6 +134,13 @@ class DepositPersistence(
         deposit.note = updateDepositRequest.note
         deposit.status = updateDepositRequest.status
 
+        return ""
+    }
+
+    fun deleteDeposit(clientId: UUID, depositId: Long): String? {
+        val deposit = depositRepository.findByIdAndClientId(depositId, clientId) ?: return null
+
+        deposit.status = DepositType.DELETE
         return ""
     }
 }

@@ -19,6 +19,7 @@ class CustomDepositRepository(
         val sql = query.select(d)
             .from(d)
             .where(d.clientId.eq(clientId))
+            .where(d.status.ne(DepositType.DELETE))
 
         if (status != null) sql.where(d.status.eq(status))
 

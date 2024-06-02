@@ -114,4 +114,8 @@ class CommandDepositService(
         depositPersistence.updateDepositInfo(clientId, updateDepositRequest)
             ?: throw DepositNotFoundException()
     }
+
+    fun delete(clientId: UUID, depositId: Long) {
+        depositPersistence.deleteDeposit(clientId, depositId) ?: throw DepositNotFoundException()
+    }
 }
