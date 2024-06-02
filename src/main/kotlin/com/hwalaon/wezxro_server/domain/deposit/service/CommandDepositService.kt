@@ -3,8 +3,10 @@ package com.hwalaon.wezxro_server.domain.deposit.service
 import com.google.gson.Gson
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.deposit.controller.request.CheckPayRequest
+import com.hwalaon.wezxro_server.domain.deposit.controller.request.UpdateDepositRequest
 import com.hwalaon.wezxro_server.domain.deposit.controller.response.CheckPayResponse
 import com.hwalaon.wezxro_server.domain.deposit.exception.DepositConflictException
+import com.hwalaon.wezxro_server.domain.deposit.exception.DepositNotFoundException
 import com.hwalaon.wezxro_server.domain.deposit.model.Deposit
 import com.hwalaon.wezxro_server.domain.deposit.persistence.DepositPersistence
 import com.hwalaon.wezxro_server.domain.deposit.persistence.dto.CheckPayDto
@@ -13,6 +15,7 @@ import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.springframework.beans.factory.annotation.Value
+import java.util.*
 
 
 @CommandService
@@ -105,5 +108,10 @@ class CommandDepositService(
         val checkPayResponse = Gson().fromJson(responseBody, CheckPayDto::class.java)
 
         return checkPayResponse
+    }
+
+    fun update(clientId: UUID, updateDepositRequest: UpdateDepositRequest) {
+        depositPersistence.updateDepositInfo(clientId, updateDepositRequest)
+            ?: throw DepositNotFoundException()
     }
 }

@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.deposit.persistence
 
+import com.hwalaon.wezxro_server.domain.deposit.controller.request.UpdateDepositRequest
 import com.hwalaon.wezxro_server.domain.deposit.controller.response.DepositListResponse
 import com.hwalaon.wezxro_server.domain.deposit.mapper.DepositMapper
 import com.hwalaon.wezxro_server.domain.deposit.model.Deposit
@@ -124,5 +125,15 @@ class DepositPersistence(
         )
 
         return depositList
+    }
+
+    fun updateDepositInfo(clientId: UUID, updateDepositRequest: UpdateDepositRequest): String? {
+        val deposit = (depositRepository.findByIdAndClientId(updateDepositRequest.depositId, clientId)
+            ?: return null)
+
+        deposit.note = updateDepositRequest.note
+        deposit.status = updateDepositRequest.status
+
+        return ""
     }
 }

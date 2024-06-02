@@ -1,14 +1,18 @@
 package com.hwalaon.wezxro_server.domain.deposit.controller
 
+import com.hwalaon.wezxro_server.domain.deposit.controller.request.UpdateDepositRequest
 import com.hwalaon.wezxro_server.domain.deposit.controller.response.DepositListResponse
 import com.hwalaon.wezxro_server.domain.deposit.model.constant.DepositType
 import com.hwalaon.wezxro_server.domain.deposit.service.CommandDepositService
 import com.hwalaon.wezxro_server.domain.deposit.service.QueryDepositService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -40,5 +44,15 @@ class AdminDepositController(
         }
 
         return BasicResponse.ok(response)
+    }
+
+    @PatchMapping("/update")
+    fun updateDeposit(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @RequestBody @Valid updateDepositRequest: UpdateDepositRequest
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandDepositService.update(principalDetails.account.clientId!!, updateDepositRequest)
+
+        return BasicResponse.ok("충전 기록을 수정하였습니다.")
     }
 }
