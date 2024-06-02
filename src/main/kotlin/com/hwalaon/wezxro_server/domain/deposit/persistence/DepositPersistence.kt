@@ -37,9 +37,9 @@ class DepositPersistence(
                 depositId = it.id!!,
                 amount = it.amount!!,
                 name = it.name!!,
-                type = it.type ?: "default",
+                status = DepositType.PENDING,
                 note = it.note ?: "",
-                updatedAt = LocalDateTime.now().toString()
+                updatedAt = LocalDateTime.now()
             )
         }
 
@@ -79,9 +79,9 @@ class DepositPersistence(
                 depositId = it.id!!,
                 amount = it.amount!!,
                 name = it.name!!,
-                type = it.type ?: "default",
+                status = DepositType.PENDING,
                 note = it.note ?: "",
-                updatedAt = LocalDateTime.now().toString()
+                updatedAt = LocalDateTime.now()
             )
         }.toMutableList()
 
@@ -90,9 +90,9 @@ class DepositPersistence(
                 depositId = it.id!!.toString(),
                 amount = it.amount!!,
                 name = it.name!!,
-                type = it.type ?: "default",
+                status = it.status!!,
                 note = it.note ?: "",
-                updatedAt = it.updatedAt!!.toString()
+                updatedAt = it.updatedAt!!
             )
         }
 

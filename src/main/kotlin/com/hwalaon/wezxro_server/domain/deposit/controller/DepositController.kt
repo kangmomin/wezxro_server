@@ -28,6 +28,7 @@ class DepositController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         val deposit = addDepositRequest.toDomain()
         deposit.clientId = principalDetails.account.clientId
+        if (deposit.type == null) deposit.type = "DEFAULT"
         deposit.userId = principalDetails.account.userId ?: throw UnAuthorizedException()
         commandDepositService.save(deposit)
 
