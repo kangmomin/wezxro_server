@@ -2,13 +2,13 @@ package com.hwalaon.wezxro_server.domain.order.persistence
 
 import com.hwalaon.wezxro_server.domain.order.mapper.OrderMapper
 import com.hwalaon.wezxro_server.domain.order.model.Order
+import com.hwalaon.wezxro_server.domain.order.model.constant.OrderStatus
 import com.hwalaon.wezxro_server.domain.order.persistence.customRepository.CustomOrderRepository
 import com.hwalaon.wezxro_server.domain.order.persistence.port.AccountPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.OrderServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
 import com.hwalaon.wezxro_server.domain.order.persistence.repository.OrderRepository
-import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import com.hwalaon.wezxro_server.global.common.util.request.AddOrderInfoRequestDto
 import org.springframework.data.repository.findByIdOrNull
@@ -78,16 +78,20 @@ class OrderPersistence(
     fun providerApiInfo(providerId: Long) =
         providerPort.providerApiInfo(providerId)
 
-    fun cancelOrder(order: Order): String? {
-        val p = providerPort.providerApiInfo(order.providerId!!) ?: throw ProviderNotFoundException()
+    fun cancelOrder(order: Order): Result<String> {
+        val p = providerPort.providerApiInfo(order.providerId!!) ?: return Result.failure(Error("provider not found"))
 
         val createCancel = ApiProvider(p.apiKey, p.apiUrl).createSingleCancel(order.apiOrderId!!)
         if (createCancel.error != null) {
             print("orderId: ${order.apiOrderId} \n orderExceptionMsg: ${createCancel.cancel}")
-            return null
+            return Result.failure(Error("api exception"))
         }
 
-        return ""
+        val orderEntity = orderRepository.findByIdOrNull(order.id!!) ?: return Result.failure(Error("order not found"))
+
+        orderEntity.status = OrderStatus.CANCELED
+
+        return Result.success("")
     }
 
     fun orderInfo(orderId: Long): Order? =

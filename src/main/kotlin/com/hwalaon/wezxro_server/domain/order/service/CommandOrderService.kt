@@ -40,6 +40,12 @@ class CommandOrderService(
         val orderInfo = orderPersistence.orderInfo(orderId) ?: throw OrderNotFoundException()
         val clientMatch = orderPersistence.isClientMatch(orderInfo.userId!!, clientId) ?: throw AccountNotFoundException()
         if (!clientMatch) throw ForbiddenException()
-        orderPersistence.cancelOrder(orderInfo) ?: throw ApiRequestFailedException()
+        orderPersistence.cancelOrder(orderInfo).onFailure {
+            when (it.message) {
+                "order not found" -> throw OrderNotFoundException()
+                "api exception" -> throw ApiRequestFailedException()
+                "provider not found" -> throw ProviderNotFoundException()
+            }
+        }
     }
 }
