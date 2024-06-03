@@ -16,15 +16,8 @@ data class UpdateAccountRequest (
     @field:NotEmpty(message = "이메일은 필수 값입니다.")
     val email: String,
 
-    @field:Size(min = 8, message = "비밀번호는 8자 이상이어야 합니다.")
-    @field:NotEmpty(message = "비밀번호는 필수 값입니다.")
-    val password: String,
-
     @field:NotEmpty(message = "이름은 필수 값입니다.")
     val name: String,
-
-    @field:NotNull(message = "보유액은 필수 값입니다.")
-    val money: Double,
 
     @field:NotNull(message = "상태 값은 필수 값입니다.")
     val status: BasicStatus,
@@ -34,8 +27,8 @@ data class UpdateAccountRequest (
             userId = userId,
             email = email,
             name = name,
-            money = money,
-            password = password,
+            money = null,
+            password = null,
             status = status,
             random = null,
             clientId = null,

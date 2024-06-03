@@ -39,6 +39,7 @@ class CustomAccountRepository(
             .from(accountEntity)
             .where(
                 accountEntity.userId.ne(userId),
-                accountEntity.email.eq(email))
+                accountEntity.email.eq(email),
+                accountEntity.clientId.eq(clientId))
             .fetchFirst() > 0
 }

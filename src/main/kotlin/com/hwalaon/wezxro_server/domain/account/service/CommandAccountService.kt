@@ -38,7 +38,11 @@ class CommandAccountService(
 
     fun updateAccountInfo(account: Account) {
         if (validAccountUpdate(account)) throw AccountAlreadyJoinedException()
-        accountPersistenceAdapter.updateInfo(account)
+        accountPersistenceAdapter.updateInfo(account).onFailure {
+            when (it.message) {
+                "not found" -> throw AccountNotFoundException()
+            }
+        }
     }
 
     /**

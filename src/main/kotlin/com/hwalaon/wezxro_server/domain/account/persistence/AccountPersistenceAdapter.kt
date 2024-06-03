@@ -13,6 +13,7 @@ import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.Cus
 import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.CustomCustomRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.port.AccountServicePort
 import com.hwalaon.wezxro_server.domain.account.persistence.port.dto.ServiceRateInfoDto
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -45,18 +46,17 @@ class AccountPersistenceAdapter(
     fun isExistAccount(email: String, clientId: UUID, userId: Long) =
         customAccountRepository.isExistAccountForUpdate(email, clientId, userId)
 
-    fun updateInfo(account: Account) =
-        accountEntityRepository.findById(account.userId!!).let {
-            if (it.isEmpty) throw AccountNotFoundException()
+    fun updateInfo(account: Account): Result<Nothing?> {
+        val accountEntity =
+            accountEntityRepository.findByUserIdAndClientIdAndStatusNot(account.userId!!, account.clientId!!)
+            ?: return Result.failure(Error("not found"))
 
-            val accountEntity = it.get()
-            accountEntity.email = account.email
-            accountEntity.name = account.name
-            accountEntity.password = account.password
-            accountEntity.money = account.money
-            accountEntity.status = account.status
-            accountEntity.staticRate = account.staticRate
-        }
+        accountEntity.email = account.email
+        accountEntity.name = account.name
+        accountEntity.status = account.status
+
+        return Result.success(null)
+    }
 
     fun findById(id: Long, clientId: UUID): Account? {
         return accountMapper.toDomain(

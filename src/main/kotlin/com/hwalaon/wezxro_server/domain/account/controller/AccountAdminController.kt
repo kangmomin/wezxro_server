@@ -25,11 +25,10 @@ class AccountAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         val account = updateAccountRequest.toDomain()
         account.clientId = principalDetails.account.clientId
-        account.userId = principalDetails.account.userId
 
-        commandAccountService.updateAccountInfo(account).run {
-            return BasicResponse.ok("계정 정보를 성공적으로 변경하였습니다.")
-        }
+        commandAccountService.updateAccountInfo(account)
+
+        return BasicResponse.ok("계정 정보를 성공적으로 변경하였습니다.")
     }
 
     @DeleteMapping("/{id}")
