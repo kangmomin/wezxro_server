@@ -81,6 +81,16 @@ class AccountAdminController(
         BasicResponse.ok("개별 감가액의 업데이트가 정상적으로 처리 되었습니다.")
     }
 
+    @DeleteMapping("/custom-rate/all/{userId}")
+    fun deleteCustomRateAll(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable userId: Long
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandAccountService.deleteCustomRate(userId, principalDetails.account.clientId!!)
+
+        return BasicResponse.ok("유저의 모든 개별 감가액을 설정하였습니다.")
+    }
+
     @GetMapping("/custom-rate/{userId}")
     fun customRateList(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,

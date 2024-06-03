@@ -103,4 +103,10 @@ class CommandAccountService(
     fun updateStatus(clientId: UUID, updateStatusRequest: UpdateStatusRequest) {
         accountPersistenceAdapter.updateStatus(updateStatusRequest, clientId) ?: throw AccountNotFoundException()
     }
+
+    fun deleteCustomRate(userId: Long, clientId: UUID) {
+        accountPersistenceAdapter.storeCustomRate(userId, clientId, AddCustomRateRequest(
+            userId, ArrayList()
+        ))
+    }
 }
