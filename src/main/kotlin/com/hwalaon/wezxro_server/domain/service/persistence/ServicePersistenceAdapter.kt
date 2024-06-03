@@ -4,6 +4,7 @@ import com.hwalaon.wezxro_server.domain.service.exception.ProviderOrCategoryDeac
 import com.hwalaon.wezxro_server.domain.service.mapper.ServiceMapper
 import com.hwalaon.wezxro_server.domain.service.model.Service
 import com.hwalaon.wezxro_server.domain.service.persistence.customRepository.CustomServiceRepository
+import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceAccountPort
 import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceCategoryPort
 import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceProviderPort
 import com.hwalaon.wezxro_server.domain.service.persistence.repository.ServiceRepository
@@ -19,7 +20,8 @@ class ServicePersistenceAdapter(
     private val customServiceRepository: CustomServiceRepository,
     private val serviceMapper: ServiceMapper,
     private val serviceProviderPort: ServiceProviderPort,
-    private val serviceCategoryPort: ServiceCategoryPort
+    private val serviceCategoryPort: ServiceCategoryPort,
+    private val serviceAccountPort: ServiceAccountPort
 ) {
 
     fun userServiceDetail(serviceId: Long, userId: Long, clientId: UUID) =
@@ -96,4 +98,7 @@ class ServicePersistenceAdapter(
 
         return !(isProviderDeactive || isCategoryDeactive)
     }
+
+    fun deleteCustomRate(serviceId: Long) =
+        serviceAccountPort.deleteAllCustomRateByServiceId(serviceId)
 }

@@ -4,4 +4,5 @@ import com.hwalaon.wezxro_server.domain.account.persistence.entity.CustomRateEnt
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface CustomRateRepository: JpaRepository<CustomRateEntity, Long> {
+    fun findAllByServiceId(serviceId: Long): MutableList<CustomRateEntity>
 }

@@ -42,4 +42,8 @@ class CommandAdminServiceService(
 
         servicePersistenceAdapter.update(service) ?: throw ServiceNotFoundException()
     }
+
+    fun deleteCustomRate(serviceId: Long) =
+        servicePersistenceAdapter.deleteCustomRate(serviceId)
+
 }

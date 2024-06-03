@@ -65,4 +65,14 @@ class ServiceAdminController(
 
         return BasicResponse.ok("서비스를 업데이트 하였습니다.")
     }
+
+    @DeleteMapping("/custom-rate/{serviceId}")
+    fun deleteServiceCustomRate(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        @PathVariable serviceId: Long
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandAdminServiceService.deleteCustomRate(serviceId)
+
+        return BasicResponse.ok("서비스의 개별 감가액을 전부 삭제하였습니다.")
+    }
 }
