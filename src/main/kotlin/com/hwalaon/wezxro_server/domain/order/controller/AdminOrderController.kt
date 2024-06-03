@@ -34,6 +34,15 @@ class AdminOrderController(
         return BasicResponse.ok("주문을 수정하였습니다.")
     }
 
+    @DeleteMapping("/delete/{orderId}")
+    fun deleteOrder(
+        @PathVariable orderId: Long
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandOrderService.deleteOrder(orderId)
+
+        return BasicResponse.ok("주문 정보를 삭제하였습니다.")
+    }
+
     @PatchMapping("/cancel/{orderId}")
     fun cancelOrder(
         @PathVariable orderId: Long,

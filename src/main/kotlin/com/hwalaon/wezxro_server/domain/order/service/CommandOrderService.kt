@@ -62,4 +62,12 @@ class CommandOrderService(
 
         return
     }
+
+    fun deleteOrder(orderId: Long) {
+        orderPersistence.delete(orderId).onFailure {
+            when (it.message) {
+                "not found" -> throw OrderNotFoundException()
+            }
+        }
+    }
 }

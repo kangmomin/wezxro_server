@@ -80,6 +80,7 @@ class CustomOrderRepository(
             )
             .join(accountEntity)
             .on(accountEntity.userId.eq(orderEntity.userId))
+            .where(orderEntity.status.ne(OrderStatus.DELETED))
             .orderBy(orderEntity.createdAt.desc())
             .fetch()
     }
@@ -89,7 +90,8 @@ class CustomOrderRepository(
             .where(
                 orderEntity.userId.eq(userId),
                 orderEntity.status.ne(OrderStatus.COMPLETED),
-                orderEntity.status.ne(OrderStatus.CANCELED)
+                orderEntity.status.ne(OrderStatus.CANCELED),
+                orderEntity.status.ne(OrderStatus.DELETED),
             )
             .fetch()
 
@@ -106,7 +108,8 @@ class CustomOrderRepository(
             )
         )
             .from(orderEntity)
-            .where(orderEntity.userId.eq(userId))
+            .where(orderEntity.userId.eq(userId),
+                orderEntity.status.ne(OrderStatus.DELETED))
             .fetch()
     }
 

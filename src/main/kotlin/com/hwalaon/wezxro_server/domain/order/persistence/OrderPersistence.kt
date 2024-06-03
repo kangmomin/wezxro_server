@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.order.persistence
 
 import com.hwalaon.wezxro_server.domain.order.controller.request.UpdateOrderRequest
+import com.hwalaon.wezxro_server.domain.order.exception.OrderNotFoundException
 import com.hwalaon.wezxro_server.domain.order.mapper.OrderMapper
 import com.hwalaon.wezxro_server.domain.order.model.Order
 import com.hwalaon.wezxro_server.domain.order.model.constant.OrderStatus
@@ -88,7 +89,7 @@ class OrderPersistence(
             return Result.failure(Error("api exception"))
         }
 
-        val orderEntity = orderRepository.findByIdOrNull(order.id!!) ?: return Result.failure(Error("order not found"))
+        val orderEntity = orderRepository.findByIdAndStatusNot(order.id!!) ?: return Result.failure(Error("order not found"))
 
         orderEntity.status = OrderStatus.CANCELED
 
@@ -96,7 +97,7 @@ class OrderPersistence(
     }
 
     fun orderInfo(orderId: Long): Order? =
-        orderRepository.findByIdOrNull(orderId).let {
+        orderRepository.findByIdAndStatusNot(orderId).let {
             if (it == null) return null
             orderMapper.toDomain(it)
         }
@@ -108,7 +109,7 @@ class OrderPersistence(
     }
 
     fun update(updateOrderRequest: UpdateOrderRequest): Result<String> {
-        val orderEntity = orderRepository.findByIdOrNull(updateOrderRequest.orderId)
+        val orderEntity = orderRepository.findByIdAndStatusNot(updateOrderRequest.orderId!!)
             ?: return Result.failure(Error("order not found"))
 
         orderEntity.remain = updateOrderRequest.remains
@@ -117,5 +118,14 @@ class OrderPersistence(
         orderEntity.info!!.link = updateOrderRequest.link
 
         return Result.success("")
+    }
+
+    fun delete(orderId: Long): Result<Nothing?> {
+        val orderEntity = orderRepository.findByIdAndStatusNot(orderId)
+            ?: return Result.failure(Error("not found"))
+
+        orderEntity.status = OrderStatus.DELETED
+
+        return Result.success(null)
     }
 }

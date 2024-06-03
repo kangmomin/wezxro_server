@@ -8,5 +8,6 @@ enum class OrderStatus(
     PROCESSING("processing"),
     INPROGRESS("inprogress"),
     PARTIALS("partials"),
-    PENDING("pending")
+    PENDING("pending"),
+    DELETED("deleted")
 }
