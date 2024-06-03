@@ -9,6 +9,7 @@ import com.hwalaon.wezxro_server.global.security.jwt.JwtParser
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.core.GrantedAuthorityDefaults
@@ -40,6 +41,11 @@ class SecurityConfig(
 
                 it.requestMatchers("/u/login", "/u/join", "/u/login/demo", "/master/c/*", "/d/check").permitAll()
                     .requestMatchers("/admin/**").hasRole(AccountRole.ADMIN.toString())
+                    .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                    // GET을 제외한 모든 요청에 대해 "USER", "ADMIN", "MASTER" 역할 요구
+                    .requestMatchers(HttpMethod.POST, "/**").hasAnyRole("USER", "ADMIN", "MASTER")
+                    .requestMatchers(HttpMethod.PATCH, "/**").hasAnyRole("USER", "ADMIN", "MASTER")
+                    .requestMatchers(HttpMethod.DELETE, "/**").hasAnyRole("USER", "ADMIN", "MASTER")
                     .anyRequest().authenticated()
             }
             .formLogin { it.disable() }
