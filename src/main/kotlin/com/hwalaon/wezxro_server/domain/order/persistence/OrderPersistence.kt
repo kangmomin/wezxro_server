@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.order.persistence
 
+import com.hwalaon.wezxro_server.domain.order.controller.request.UpdateOrderRequest
 import com.hwalaon.wezxro_server.domain.order.mapper.OrderMapper
 import com.hwalaon.wezxro_server.domain.order.model.Order
 import com.hwalaon.wezxro_server.domain.order.model.constant.OrderStatus
@@ -104,5 +105,17 @@ class OrderPersistence(
         val clientId = accountPort.getClientId(userId) ?: return null
 
         return clientId == rawClientId
+    }
+
+    fun update(updateOrderRequest: UpdateOrderRequest): Result<String> {
+        val orderEntity = orderRepository.findByIdOrNull(updateOrderRequest.orderId)
+            ?: return Result.failure(Error("order not found"))
+
+        orderEntity.remain = updateOrderRequest.remains
+        orderEntity.startCnt = updateOrderRequest.startCnt
+        orderEntity.status = updateOrderRequest.status ?: orderEntity.status
+        orderEntity.info!!.link = updateOrderRequest.link
+
+        return Result.success("")
     }
 }

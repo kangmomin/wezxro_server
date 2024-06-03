@@ -28,8 +28,10 @@ class AdminOrderController(
     fun updateOrder(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @RequestBody @Valid updateOrderRequest: UpdateOrderRequest
-    ) {
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandOrderService.updateOrder(updateOrderRequest)
 
+        return BasicResponse.ok("주문을 수정하였습니다.")
     }
 
     @PatchMapping("/cancel/{orderId}")
