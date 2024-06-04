@@ -21,14 +21,17 @@ class DepositEntity (
     @Column(nullable = false,)
     /** 입금할 금액 */
     var amount: Long?,
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     /** 예금주 이름 */
     var name: String?,
 
+    @Column(length = 100)
     var businessEmail: String?,
     var businessPhone: String?,
     var businessOwner: String?,
+    @Column(length = 50)
     var businessName: String?,
+    @Column(length = 500)
     var businessRegno: String?,
     var personalPhone: String?,
 
@@ -36,6 +39,7 @@ class DepositEntity (
     @Column(nullable = false)
     var status: DepositType?,
     var type: String?,
+    @Column(length = 50)
     var note: String?,
     var clientId: UUID?,
 ): BasicTimeEntity()

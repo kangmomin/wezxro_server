@@ -13,7 +13,7 @@ class CategoryEntity (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
 
-    @Column(unique = true)
+    @Column(length = 200)
     var name: String?,
 
     var sort: Int?,

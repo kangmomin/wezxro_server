@@ -37,7 +37,8 @@ class OrderEntity (
     @OneToOne(mappedBy = "order",
         fetch = FetchType.LAZY,
         cascade = [CascadeType.REMOVE, CascadeType.PERSIST],
-        orphanRemoval = true,)
+        orphanRemoval = true)
+    @Column(columnDefinition = "TEXT")
     var info: OrderInfoEntity?,
 
     @Column(nullable = false)

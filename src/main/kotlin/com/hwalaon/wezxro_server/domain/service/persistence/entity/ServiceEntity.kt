@@ -24,7 +24,7 @@ class ServiceEntity (
     @Column(nullable = false)
     var apiServiceId: Long?,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     var name: String?,
     @Column(nullable = false, name = "\"type\"")
     @Enumerated(EnumType.STRING)
@@ -39,7 +39,7 @@ class ServiceEntity (
     @Column(nullable = false)
     var max: Long?,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     var description: String?,
 
     @Column(nullable = false)

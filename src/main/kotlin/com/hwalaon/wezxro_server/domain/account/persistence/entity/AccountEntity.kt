@@ -15,14 +15,14 @@ class AccountEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val userId: Long?,
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     var name: String?,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     var password: String?,
 
     @Column(nullable = false,
-        updatable = false)
+        updatable = false, length = 200)
     var email: String?,
 
     @Column(nullable = false)

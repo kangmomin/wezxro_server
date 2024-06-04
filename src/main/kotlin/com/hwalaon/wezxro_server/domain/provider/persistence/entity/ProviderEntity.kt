@@ -21,13 +21,13 @@ data class ProviderEntity(
     @Column(length = 50, nullable = false)
     var name: String?,
 
-    @Column(length = 200)
+    @Column(columnDefinition = "TEXT")
     var description: String?,
 
-    @Column(name = "api_key", nullable = false)
+    @Column(name = "api_key", nullable = false, columnDefinition = "TEXT")
     var apiKey: String?,
 
-    @Column(name = "api_url", length = 100, nullable = false)
+    @Column(name = "api_url", length = 100, nullable = false, columnDefinition = "TEXT")
     var apiUrl: String?,
 
     @Enumerated(EnumType.STRING)
