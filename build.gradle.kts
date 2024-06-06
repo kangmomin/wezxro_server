@@ -47,6 +47,7 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 	implementation("com.squareup.okhttp3:okhttp") // OkHttp
 	implementation("org.springframework.boot:spring-boot-starter-mail")
+	implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")

@@ -36,16 +36,15 @@ class CommandDepositService(
         val response = CheckPayResponse("200", "OK")
         if (checkPayRequest.rtpayData == null) return CheckPayResponse("200", "OK")
 
-        if (checkPayRequest.regPkey != rtpKey) {
-            response.RCODE = "600"
-            return response
-        }
+//        if (checkPayRequest.regPkey != rtpKey) {
+//            response.RCODE = "600"
+//            return response
+//        }
 
         try {
-            val checkPayDto = getRTPay(rtpKey,
+            val checkPayDto = getRTPay(
                 if (checkPayRequest.ugrd == null) "https://rtpay.net/CheckPay/setPurl.php"
-                else requestUrl,
-                checkPayRequest)
+                else requestUrl, checkPayRequest)
 
             if (checkPayDto.RCODE != "200") {
                 response.RCODE = checkPayDto.RCODE
@@ -70,7 +69,7 @@ class CommandDepositService(
     }
 
     fun getRTPay(
-        RTP_KEY: String, requestUrl: String,
+        requestUrl: String,
         checkPayRequest: CheckPayRequest
     ): CheckPayDto {
         val ugrd = checkPayRequest.ugrd
