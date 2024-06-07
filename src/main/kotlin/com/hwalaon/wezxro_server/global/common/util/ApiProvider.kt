@@ -12,9 +12,11 @@ import com.hwalaon.wezxro_server.global.common.util.response.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.lang.reflect.Type
 
@@ -34,11 +36,21 @@ class ApiProvider(
     private fun fetchApi(action: String,
                          params: String = json.encodeToString(ApiRequest(apiKey, action))
     ): String {
-        // apiProvider 의 param 에 어떤 데이터가 들어가는지 확인
+        // JSON 문자열을 Map으로 변환
+        val paramMap: Map<String, String> = Gson().fromJson(params, Map::class.java) as Map<String, String>
+
+        // URL에 쿼리 파라미터 추가
+        val urlBuilder = apiUrl.toHttpUrlOrNull()?.newBuilder()
+        paramMap.forEach { (key, value) ->
+            urlBuilder?.addQueryParameter(key, value)
+        }
+
+        // 완성된 URL
+        val urlWithParams = urlBuilder?.build().toString()
+
         val request = Request.Builder()
-                .url(apiUrl)
-                .post(params
-                    .toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .url(urlWithParams)
+                .post("".toRequestBody())
                 .build()
 
 
