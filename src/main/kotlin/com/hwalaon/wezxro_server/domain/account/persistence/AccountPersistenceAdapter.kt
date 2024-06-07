@@ -11,8 +11,10 @@ import com.hwalaon.wezxro_server.domain.account.persistence.mapper.CustomRateMap
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEntityRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.CustomAccountRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.CustomCustomRepository
+import com.hwalaon.wezxro_server.domain.account.persistence.entity.IpEntity
 import com.hwalaon.wezxro_server.domain.account.persistence.port.AccountServicePort
 import com.hwalaon.wezxro_server.domain.account.persistence.port.dto.ServiceRateInfoDto
+import com.hwalaon.wezxro_server.domain.account.persistence.repository.IpRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
@@ -24,7 +26,8 @@ class AccountPersistenceAdapter(
     private val customAccountRepository: CustomAccountRepository,
     private val customCustomRepository: CustomCustomRepository,
     private val customRateMapper: CustomRateMapper,
-    private val accountServicePort: AccountServicePort
+    private val accountServicePort: AccountServicePort,
+    private val ipRepository: IpRepository
 ) {
     fun login(loginRequest: LoginRequest) =
         accountEntityRepository.findOneByEmailAndClientIdAndStatusNot(
@@ -34,6 +37,14 @@ class AccountPersistenceAdapter(
             if (it == null) throw AccountNotFoundException()
             accountMapper.toDomain(it)
         }
+
+    fun loginLog(userId: Long, ip: String) {
+        ipRepository.save(IpEntity(
+            id = null,
+            userId = userId,
+            ip = ip
+        ))
+    }
 
     fun join(account: Account) =
         accountMapper.toEntity(account).let {
