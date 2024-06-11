@@ -11,6 +11,9 @@ import com.hwalaon.wezxro_server.domain.service.persistence.customRepository.Cus
 import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceCategoryPort
 import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceProviderPort
 import com.hwalaon.wezxro_server.domain.service.persistence.repository.ServiceRepository
+import com.hwalaon.wezxro_server.domain.wapi.persistence.port.WapiServicePort
+import com.hwalaon.wezxro_server.domain.wapi.persistence.port.dto.WapiServiceDto
+import com.hwalaon.wezxro_server.domain.wapi.service.WapiService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.stereotype.Component
 import java.util.*
@@ -21,7 +24,7 @@ class ServiceAdapter(
     private val serviceRepository: ServiceRepository,
     private val serviceProviderPort: ServiceProviderPort,
     private val serviceCategoryPort: ServiceCategoryPort
-    ): OrderServicePort, ProviderServicePort, AccountServicePort, CategoryServicePort {
+    ): OrderServicePort, ProviderServicePort, AccountServicePort, CategoryServicePort, WapiServicePort {
     override fun serviceAddOrderInfo(serviceId: Long): ServiceAddOrderInfoDto {
           return customServiceRepository.addOrderServiceInfo(serviceId) ?: throw ServiceNotFoundException()
     }
@@ -80,5 +83,21 @@ class ServiceAdapter(
                 it.status = status
             }
         }
+    }
+
+    override fun getServices(clientId: UUID): MutableList<WapiServiceDto> {
+        return serviceRepository.findByClientId(clientId).map {
+            WapiServiceDto(
+                id = it.id!!,
+                name = it.name!!,
+                type = it.type!!.toString(),
+                min = it.min!!,
+                max = it.max!!,
+                rate = it.rate!!,
+                categoryId = it.categoryId!!,
+                refill = it.refill ?: false,
+                cancel = it.cancel ?: false
+            )
+        }.toMutableList()
     }
 }

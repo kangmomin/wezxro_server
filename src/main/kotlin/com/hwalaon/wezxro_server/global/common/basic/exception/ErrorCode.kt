@@ -59,4 +59,7 @@ enum class ErrorCode(
     // Deposit
     DEPOSIT_CONFLICT_ERROR("동일한 정보의 충전 신청이 존재합니다.", HttpStatus.CONFLICT, "D209"),
     DEPOSIT_NOT_FOUND_ERROR("존재하지 않는 충전 신청입니다.", HttpStatus.OK, "D204"),
+
+    // wapi
+    CLIENT_FORBIDDEN("client cannot access the api", HttpStatus.BAD_REQUEST, ""),
 }

@@ -15,5 +15,6 @@ data class Account(
     var status: BasicStatus?,
     var clientId: UUID?,
     var staticRate: Double?,
-    var role: AccountRole?
+    var role: AccountRole?,
+    var key: String?,
 ): BasicTime()

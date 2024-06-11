@@ -42,4 +42,12 @@ class CustomAccountRepository(
                 accountEntity.email.eq(email),
                 accountEntity.clientId.eq(clientId))
             .fetchFirst() > 0
+
+    fun getClientIdByUserKey(key: String) =
+        query.select(accountEntity.clientId)
+            .from(accountEntity)
+            .where(
+                accountEntity.key.eq(key),
+                accountEntity.status.eq(BasicStatus.ACTIVE))
+            .fetchOne()
 }

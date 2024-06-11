@@ -4,11 +4,13 @@ import com.hwalaon.wezxro_server.domain.account.controller.request.DemoLoginRequ
 import com.hwalaon.wezxro_server.domain.account.controller.request.JoinRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
+import com.hwalaon.wezxro_server.domain.account.controller.response.KeyResponse
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -23,8 +25,11 @@ AccountController(
 ) {
 
     @PostMapping("/login")
-    fun login(@RequestBody @Valid loginRequest: LoginRequest) =
-        BasicResponse.ok(queryAccountService.login(loginRequest))
+    fun login(
+        @RequestBody @Valid loginRequest: LoginRequest,
+        req: HttpServletRequest
+    ) =
+        BasicResponse.ok(queryAccountService.login(loginRequest, req.remoteAddr))
 
     @PostMapping("/login/demo")
     fun demoLogin(
@@ -46,4 +51,12 @@ AccountController(
             AccountDetailResponse.fromDomain(
                 queryAccountService.detail(userInfo)))
 
+    @PostMapping("/key")
+    fun generateKey(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val key = commandAccountService.generateKey(principalDetails.account.userId!!)
+
+        return BasicResponse.ok( KeyResponse(key) )
+    }
 }

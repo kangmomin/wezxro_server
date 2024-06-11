@@ -15,6 +15,7 @@ import com.hwalaon.wezxro_server.domain.account.persistence.entity.IpEntity
 import com.hwalaon.wezxro_server.domain.account.persistence.port.AccountServicePort
 import com.hwalaon.wezxro_server.domain.account.persistence.port.dto.ServiceRateInfoDto
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.IpRepository
+import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
@@ -160,7 +161,7 @@ class AccountPersistenceAdapter(
         customRates = customRates.map { cr ->
             var serviceInfo: ServiceRateInfoDto? = null
 
-            serviceInfos.forEachIndexed() { idx, sr ->
+            serviceInfos.forEach() { sr ->
                 if (cr.serviceId == sr.serviceId) {
                     serviceInfo = sr
                 }
@@ -173,5 +174,23 @@ class AccountPersistenceAdapter(
         }.toMutableList()
 
         return customRates
+    }
+
+    fun updateKey(userId: Long, key: String): Result<Nothing?> {
+        val user = accountEntityRepository.findByIdOrNull(userId) ?: return Result.failure(Error("not found"))
+
+        if (user.status == BasicStatus.DELETED) return Result.failure(Error("not found"))
+
+        user.key = key
+
+        return Result.success(null)
+    }
+
+    /**
+     * if it's valid, it returns true
+     * otherwise false
+     */
+    fun validKey(key: String): Boolean? {
+        return accountEntityRepository.findByKey(key) == null
     }
 }

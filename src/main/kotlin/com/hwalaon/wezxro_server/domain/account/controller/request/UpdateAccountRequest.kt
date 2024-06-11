@@ -33,6 +33,7 @@ data class UpdateAccountRequest (
             random = null,
             clientId = null,
             staticRate = null,
-            role = null
+            role = null,
+            key = null
         )
 }

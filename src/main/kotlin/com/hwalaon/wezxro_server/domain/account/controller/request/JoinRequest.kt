@@ -33,6 +33,7 @@ data class JoinRequest (
             random = null,
             clientId = key,
             staticRate = 0.0,
-            role = null
+            role = null,
+            key = null
         )
 }

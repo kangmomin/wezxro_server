@@ -18,4 +18,6 @@ interface AccountEntityRepository: JpaRepository<AccountEntity, Long> {
 
     /** 데모 계정 가져오기 */
     fun findByClientIdAndStatusAndRole(clientId: UUID, status: BasicStatus = BasicStatus.ACTIVE, role: AccountRole = AccountRole.DEMO): AccountEntity?
+
+    fun findByKey(key: String): AccountEntity?
 }

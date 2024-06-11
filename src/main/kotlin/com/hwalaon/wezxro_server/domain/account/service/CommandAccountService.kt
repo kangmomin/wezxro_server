@@ -10,6 +10,7 @@ import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.exception.NotEnoughDataException
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.security.SecureRandom
 import java.util.*
 
 @CommandService
@@ -107,6 +108,40 @@ class CommandAccountService(
     fun deleteCustomRate(userId: Long, clientId: UUID) {
         accountPersistenceAdapter.storeCustomRate(userId, clientId, AddCustomRateRequest(
             userId, ArrayList()
-        ))
+        )
+        )
+    }
+
+    fun generateKey(userId: Long): String {
+        val key = generateUniqueKey()
+
+        // 재귀 함수를 통해 valid 한 key 값이 나올 때 까지 반복.
+        if (accountPersistenceAdapter.validKey(key) == true) return generateKey(userId)
+
+        accountPersistenceAdapter.updateKey(userId, key).onFailure {
+            when (it.message) {
+                "not found" -> throw AccountNotFoundException()
+            }
+        }
+
+        return key
+    }
+
+    private fun generateUniqueKey(): String {
+        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+        val random = SecureRandom()
+        val key = StringBuilder(20)
+
+        val usedChars = mutableSetOf<Char>()
+
+        while (key.length < 20) {
+            val randomChar = chars[random.nextInt(chars.length)]
+            if (randomChar !in usedChars) {
+                key.append(randomChar)
+                usedChars.add(randomChar)
+            }
+        }
+
+        return key.toString()
     }
 }

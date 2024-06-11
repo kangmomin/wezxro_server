@@ -38,6 +38,10 @@ class AccountEntity(
     @Column(nullable = false)
     var clientId: UUID?,
 
+    @Column(nullable = true,
+        length = 20)
+    var key: String?,
+
     @Column(nullable = false)
     var staticRate: Double?,
 
