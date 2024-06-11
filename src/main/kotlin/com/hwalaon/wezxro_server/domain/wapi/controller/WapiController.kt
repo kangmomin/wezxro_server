@@ -3,6 +3,7 @@ package com.hwalaon.wezxro_server.domain.wapi.controller
 import com.hwalaon.wezxro_server.domain.wapi.controller.response.*
 import com.hwalaon.wezxro_server.domain.wapi.service.WapiService
 import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
+import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,8 +18,8 @@ class WapiController(
 
     @PostMapping
     fun handleRequest(
-        @RequestParam key: String,
-        @RequestParam action: String,
+        @RequestParam(required = false) key: String?,
+        @RequestParam(required = false) action: String?,
         @RequestParam(required = false) service: Int?,
         @RequestParam(required = false) link: String?,
         @RequestParam(required = false) quantity: Int?,
@@ -29,32 +30,36 @@ class WapiController(
         @RequestParam(required = false) refill: Int?,
         @RequestParam(required = false) refills: String?
     ): ResponseEntity<out Any> {
+        if (key.isNullOrBlank()) return BasicResponse.wapiError("Invalid API key")
+        if (action.isNullOrBlank()) return BasicResponse.wapiError("Incorrect Request")
+
         return try {
             when (action) {
                 "services" -> getServiceList(key)
                 "add" -> addOrder(key, service!!, link!!, quantity!!, runs, interval)
                 "status" -> if (orders != null) getMultipleOrderStatus(key, orders) else getOrderStatus(key, order!!)
                 "refill" -> if (orders != null) createMultipleRefill(key, orders) else createRefill(key, order!!)
-                "refill_status" -> if (refills != null) getMultipleRefillStatus(key, refills) else getRefillStatus(key, refill!!)
+                "refill_status" -> if (refills != null) getMultipleRefillStatus(key, refills) else getRefillStatus(
+                    key,
+                    refill!!
+                )
+
                 "cancel" -> createCancel(key, orders!!)
                 "balance" -> getUserBalance(key)
-                else -> ResponseEntity.badRequest().body("Invalid action parameter")
+                else -> BasicResponse.wapiError("Invalid action parameter")
             }
+        } catch (e: BasicException) {
+            BasicResponse.wapiError(e.errorCode.msg)
         } catch (e: Exception) {
-            ResponseEntity.badRequest().body("Incorrect Request")
+            BasicResponse.wapiError("Incorrect Request")
         }
     }
 
-    fun getServiceList(key: String): ResponseEntity<Any> {
-        return try {
-            val services = wapiService.services(key)
+    fun getServiceList(key: String): ResponseEntity<List<ServiceResponse>> {
+        val services = wapiService.services(key)
 
-            // 서비스 리스트를 반환하는 로직 구현
-            ResponseEntity.ok(services)
-        } catch (e: BasicException) {
-            ResponseEntity.badRequest()
-                .body(WapiErrorResponse(e.errorCode.msg))
-        }
+        // 서비스 리스트를 반환하는 로직 구현
+        return ResponseEntity.ok(services)
     }
 
     fun addOrder(

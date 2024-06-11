@@ -39,7 +39,7 @@ class SecurityConfig(
                     CorsUtils.isPreFlightRequest(req)
                 }).permitAll()
 
-                it.requestMatchers("/u/login", "/u/join", "/u/login/demo", "/master/c/*", "/d/check").permitAll()
+                it.requestMatchers("/u/login", "/u/join", "/u/login/demo", "/master/c/*", "/d/check", "/api/v2").permitAll()
                     .requestMatchers("/admin/**").hasRole(AccountRole.ADMIN.toString())
                     .requestMatchers(HttpMethod.GET, "/**").permitAll()
                     // GET을 제외한 모든 요청에 대해 "USER", "ADMIN", "MASTER" 역할 요구

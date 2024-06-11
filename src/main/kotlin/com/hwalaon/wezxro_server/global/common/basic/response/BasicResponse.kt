@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.global.common.basic.response
 
+import com.hwalaon.wezxro_server.domain.wapi.controller.response.WapiErrorResponse
 import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -11,6 +12,13 @@ data class BasicResponse<T> (
 ) {
 
     companion object {
+        fun wapiError(msg: String) =
+            ResponseEntity
+                .badRequest()
+                .body(
+                    WapiErrorResponse(msg)
+                )
+
         fun error(errorInfo: ErrorCode) = ResponseEntity
             .status(errorInfo.status)
             .body(

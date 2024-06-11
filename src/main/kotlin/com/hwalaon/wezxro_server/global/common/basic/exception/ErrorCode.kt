@@ -61,5 +61,5 @@ enum class ErrorCode(
     DEPOSIT_NOT_FOUND_ERROR("존재하지 않는 충전 신청입니다.", HttpStatus.OK, "D204"),
 
     // wapi
-    CLIENT_FORBIDDEN("client cannot access the api", HttpStatus.BAD_REQUEST, ""),
+    INVALID_KEY("Invalid API Key", HttpStatus.BAD_REQUEST, ""),
 }
