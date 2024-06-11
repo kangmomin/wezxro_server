@@ -16,6 +16,8 @@ class Service (
     var rate: Double?,
     var min: Long?,
     var max: Long?,
+    var cancel: Boolean?,
+    var refill: Boolean?,
     var description: String?,
     var status: BasicStatus?,
     var originalRate: Double?
@@ -36,6 +38,8 @@ class Service (
                 categoryId = null,
                 providerId = null,
                 apiServiceId = null,
+                cancel = null,
+                refill = null
             )
     }
 }

@@ -47,5 +47,10 @@ class ServiceEntity (
     var status: BasicStatus?,
 
     @Column(nullable = false)
+    var cancel: Boolean?,
+    @Column(nullable = false)
+    var refill: Boolean?,
+
+    @Column(nullable = false)
     var originalRate: Double?
 ): BasicTimeEntity()

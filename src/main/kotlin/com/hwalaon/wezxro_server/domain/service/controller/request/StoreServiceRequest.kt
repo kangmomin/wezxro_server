@@ -40,7 +40,13 @@ data class StoreServiceRequest (
     val description: String?,
 
     @field:NotNull(message = "도매처 서비스의 비용은 필수 입력 값 입니다.")
-    val originalRate: Double?
+    val originalRate: Double?,
+
+    @field:NotNull(message = "리필 여부는 필수 입력 값입니다.")
+    val refill: Boolean?,
+
+    @field: NotNull(message = "취소 가능 여부는 필수 입력 값입니다.")
+    val cancel: Boolean?
 ) {
     fun toDomain(clientId: UUID) =
         Service(
@@ -56,6 +62,8 @@ data class StoreServiceRequest (
             max = this.max,
             description = this.description,
             status = this.status,
-            originalRate = this.originalRate
+            originalRate = this.originalRate,
+            refill = this.refill,
+            cancel = this.cancel
         )
 }

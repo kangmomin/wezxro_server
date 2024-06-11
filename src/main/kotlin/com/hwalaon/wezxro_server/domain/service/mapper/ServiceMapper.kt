@@ -21,7 +21,9 @@ class ServiceMapper: BasicMapper<Service, ServiceEntity> {
             originalRate = entity.originalRate,
             rate = entity.rate,
             status = entity.status,
-            clientId = entity.clientId
+            clientId = entity.clientId,
+            cancel = entity.cancel,
+            refill = entity.refill
         ).let {
             it.createdAt = entity.createdAt
             it.updatedAt = entity.updatedAt
@@ -42,7 +44,9 @@ class ServiceMapper: BasicMapper<Service, ServiceEntity> {
             originalRate = domain.originalRate,
             rate = domain.rate,
             status = domain.status,
-            clientId = domain.clientId
+            clientId = domain.clientId,
+            refill = domain.refill,
+            cancel = domain.cancel
         ).let {
             it.createdAt = domain.createdAt
             it.updatedAt = domain.updatedAt

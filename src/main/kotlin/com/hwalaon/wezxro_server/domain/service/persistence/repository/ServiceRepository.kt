@@ -13,4 +13,5 @@ interface ServiceRepository: JpaRepository<ServiceEntity, Int> {
     fun findByClientIdAndId(clientId: UUID, id: Long): ServiceEntity?
     fun findAllByClientIdAndProviderId(clientId: UUID, providerId: Long): MutableList<ServiceEntity>
     fun findAllByClientIdAndCategoryId(clientId: UUID, categoryId: Long): MutableList<ServiceEntity>
+    fun findByClientId(clientId: UUID): MutableList<ServiceEntity>
 }
