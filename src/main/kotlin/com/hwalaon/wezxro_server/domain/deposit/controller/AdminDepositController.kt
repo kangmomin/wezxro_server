@@ -8,6 +8,7 @@ import com.hwalaon.wezxro_server.domain.deposit.service.QueryDepositService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -26,6 +27,8 @@ class AdminDepositController(
     private val commandDepositService: CommandDepositService,
     private val queryDepositService: QueryDepositService,
 ) {
+
+    private val logger = LoggerFactory.getLogger(AdminDepositController::class.java)
 
     @GetMapping("/list")
     fun depositList(
@@ -55,6 +58,8 @@ class AdminDepositController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandDepositService.update(principalDetails.account.clientId!!, updateDepositRequest)
 
+        logger.info("Update: by - ${principalDetails.account.userId!!} / ${updateDepositRequest.depositId}")
+
         return BasicResponse.ok("충전 기록을 수정하였습니다.")
     }
 
@@ -64,6 +69,8 @@ class AdminDepositController(
         @PathVariable depositId: Long
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandDepositService.delete(principalDetails.account.clientId!!, depositId)
+
+        logger.info("Delete: by - ${principalDetails.account.userId!!} / $depositId")
 
         return BasicResponse.ok("충전 기록을 삭제하였습니다.")
     }

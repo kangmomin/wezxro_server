@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -17,6 +18,8 @@ class ServiceAdminController(
     private val commandAdminServiceService: CommandAdminServiceService,
     private val queryAdminServiceService: QueryAdminServiceService
 ) {
+
+    private val logger = LoggerFactory.getLogger(ServiceAdminController::class.java)
 
     @GetMapping("/list")
     fun getServices(
@@ -31,18 +34,25 @@ class ServiceAdminController(
     fun addService(
         @RequestBody @Valid storeServiceRequest: StoreServiceRequest,
         @AuthenticationPrincipal principalDetails: PrincipalDetails
-    ) =
-        commandAdminServiceService.add(
-            storeServiceRequest.toDomain(principalDetails.account.clientId!!)
-        ).let {
-            BasicResponse.created(MsgResponse("서비스를 생성하였습니다."))
-        }
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val service = storeServiceRequest.toDomain(principalDetails.account.clientId!!)
+        val serviceId = commandAdminServiceService.add(service)
+
+        logger.info("Create: by - ${principalDetails.account.userId!!} / $serviceId")
+
+        return BasicResponse.created(MsgResponse("서비스를 생성하였습니다."))
+    }
 
     @DeleteMapping("/delete/{id}")
     fun deleteService(
-        @PathVariable id: Int
-    ) = commandAdminServiceService.delete(id).run {
-        BasicResponse.ok("서비스를 삭제하였습니다.")
+        @PathVariable id: Int,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        commandAdminServiceService.delete(id)
+
+        logger.info("Delete: by - ${principalDetails.account.userId!!} / $id")
+
+        return BasicResponse.ok("서비스를 삭제하였습니다.")
     }
 
     @PatchMapping("/status/{serviceId}")
@@ -51,6 +61,8 @@ class ServiceAdminController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ): ResponseEntity<BasicResponse.BaseResponse> {
         val updatedStatus = commandAdminServiceService.updateStatus(serviceId, principalDetails.account.clientId!!)
+
+        logger.info("Update: by - ${principalDetails.account.userId!!} / $serviceId / status(${updatedStatus})")
 
         return BasicResponse.ok("서비스를 ${updatedStatus.name}로 수정하였습니다.")
     }
@@ -63,6 +75,8 @@ class ServiceAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandAdminServiceService.update(storeServiceRequest, serviceId, principalDetails.account.clientId!!)
 
+        logger.info("Update: by - ${principalDetails.account.userId!!} / $serviceId")
+
         return BasicResponse.ok("서비스를 업데이트 하였습니다.")
     }
 
@@ -72,6 +86,8 @@ class ServiceAdminController(
         @PathVariable serviceId: Long
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandAdminServiceService.deleteCustomRate(serviceId)
+
+        logger.info("Delete: by - ${principalDetails.account.userId!!} / $serviceId")
 
         return BasicResponse.ok("서비스의 개별 감가액을 전부 삭제하였습니다.")
     }

@@ -14,10 +14,10 @@ import java.util.*
 class CommandAdminServiceService(
     private val servicePersistenceAdapter: ServicePersistenceAdapter
 ) {
-    fun add(service: Service) {
+    fun add(service: Service): Long {
         if (!servicePersistenceAdapter.valid(service))
             throw ServiceConflictException()
-        servicePersistenceAdapter.save(service)
+        return servicePersistenceAdapter.save(service).id!!
     }
 
     fun delete(id: Int) =

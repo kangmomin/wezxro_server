@@ -36,7 +36,7 @@ class ProviderPersistence(
 
     fun save(provider: Provider) =
         providerRepository.save(
-            providerMapper.toEntity(provider)).id
+            providerMapper.toEntity(provider)).id!!
 
     fun getBalance(provider: Provider): UserBalanceDto {
         val api = ApiProvider(apiUrl = provider.apiUrl!!, apiKey = provider.apiKey!!)

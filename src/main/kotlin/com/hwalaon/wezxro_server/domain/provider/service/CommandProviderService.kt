@@ -13,12 +13,12 @@ import java.util.*
 class CommandProviderService(
     private val providerPersistence: ProviderPersistence
 ) {
-    fun addProvider(provider: Provider) {
+    fun addProvider(provider: Provider): Long {
         if (!providerPersistence.valid(provider)) throw ProviderConflictException()
         val balance = providerPersistence.getBalance(provider).balance
         provider.balance = balance.toDouble()
 
-        providerPersistence.save(provider)
+        return providerPersistence.save(provider)
     }
 
     fun updateStatus(providerId: Long, clientId: UUID): BasicStatus {

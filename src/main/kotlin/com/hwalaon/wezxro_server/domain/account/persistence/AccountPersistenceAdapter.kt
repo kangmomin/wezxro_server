@@ -58,7 +58,7 @@ class AccountPersistenceAdapter(
     fun isExistAccount(email: String, clientId: UUID, userId: Long) =
         customAccountRepository.isExistAccountForUpdate(email, clientId, userId)
 
-    fun updateInfo(account: Account): Result<Nothing?> {
+    fun updateInfo(account: Account): Result<Account> {
         val accountEntity =
             accountEntityRepository.findByUserIdAndClientIdAndStatusNot(account.userId!!, account.clientId!!)
             ?: return Result.failure(Error("not found"))
@@ -67,7 +67,8 @@ class AccountPersistenceAdapter(
         accountEntity.name = account.name
         accountEntity.status = account.status
 
-        return Result.success(null)
+        val accountDomain = accountMapper.toDomain(accountEntity)
+        return Result.success(accountDomain)
     }
 
     fun findById(id: Long, clientId: UUID): Account? {

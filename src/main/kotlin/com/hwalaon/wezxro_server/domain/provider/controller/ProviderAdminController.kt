@@ -10,6 +10,7 @@ import com.hwalaon.wezxro_server.domain.provider.service.QueryProviderService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -20,6 +21,8 @@ class ProviderAdminController(
     private val queryProviderService: QueryProviderService,
     private val commandProviderService: CommandProviderService
 ) {
+
+    private val logger = LoggerFactory.getLogger(ProviderAdminController::class.java)
 
     @GetMapping("/detail/{providerId}")
     fun providerDetail(
@@ -49,7 +52,10 @@ class ProviderAdminController(
         provider.userId = principalDetails.account.userId!!
         provider.clientId = principalDetails.account.clientId!!
 
-        commandProviderService.addProvider(provider)
+        val providerId = commandProviderService.addProvider(provider)
+
+        logger.info("Create: by - ${principalDetails.account.userId!!} / $providerId")
+
         return BasicResponse.ok("도매처가 등록되었습니다.")
     }
 
@@ -59,6 +65,8 @@ class ProviderAdminController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ): ResponseEntity<BasicResponse.BaseResponse> {
         val status = commandProviderService.updateStatus(providerId, principalDetails.account.clientId!!)
+
+        logger.info("Update: by - ${principalDetails.account.userId!!} / $providerId / status($status)")
 
         return BasicResponse.ok("도매처를 ${status}로 변경하였습니다.")
     }
@@ -144,6 +152,8 @@ class ProviderAdminController(
         providerRequest.clientId = principalDetails.account.clientId
         commandProviderService.updateProvider(providerRequest)
 
+        logger.info("Update: by - ${principalDetails.account.userId!!} / ${updateProviderRequest.providerId}")
+
         return BasicResponse.ok("도매처 정보를 업데이트 하였습니다.")
     }
 
@@ -153,6 +163,8 @@ class ProviderAdminController(
         @PathVariable providerId: Long
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandProviderService.delete(providerId, principalDetails.account.clientId!!)
+
+        logger.info("Delete: by - ${principalDetails.account.userId!!} / $providerId")
 
         return BasicResponse.ok("도매처를 삭제하였습니다.")
     }
