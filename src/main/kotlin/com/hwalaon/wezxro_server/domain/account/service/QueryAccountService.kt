@@ -24,24 +24,11 @@ import java.util.*
 @ReadOnlyService
 class QueryAccountService(
     private val accountPersistenceAdapter: AccountPersistenceAdapter,
-    private val passwordEncoder: PasswordEncoder,
     private val jwtGenerator: JwtGenerator,
     private val javaMailSender: JavaMailSender,
     @Value("\${spring.mail.username}")
     private val senderEmail: String,
 ) {
-
-    fun login(loginRequest: LoginRequest, ip: String): TokenDto {
-        val account = accountPersistenceAdapter.login(loginRequest)
-
-        if (passwordEncoder.matches(loginRequest.password, account.password).not() ||
-            account.userId == null)
-            throw AccountNotFoundException()
-
-        accountPersistenceAdapter.loginLog(userId = account.userId!!, ip = ip)
-
-        return jwtGenerator.generate(account.userId!!)
-    }
 
     fun detail(userInfo: PrincipalDetails) =
         accountPersistenceAdapter.findById(userInfo.account.userId ?: 0, userInfo.account.clientId!!)

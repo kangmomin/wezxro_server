@@ -176,14 +176,14 @@ class AccountPersistenceAdapter(
         return customRates
     }
 
-    fun updateKey(userId: Long, key: String): Result<Nothing?> {
+    fun updateKey(userId: Long, key: String): Result<String> {
         val user = accountEntityRepository.findByIdOrNull(userId) ?: return Result.failure(Error("not found"))
 
         if (user.status == BasicStatus.DELETED) return Result.failure(Error("not found"))
 
         user.key = key
 
-        return Result.success(null)
+        return Result.success(key)
     }
 
     /**

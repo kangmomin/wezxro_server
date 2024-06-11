@@ -29,7 +29,7 @@ AccountController(
         @RequestBody @Valid loginRequest: LoginRequest,
         req: HttpServletRequest
     ) =
-        BasicResponse.ok(queryAccountService.login(loginRequest, req.remoteAddr))
+        BasicResponse.ok(commandAccountService.login(loginRequest, req.remoteAddr))
 
     @PostMapping("/login/demo")
     fun demoLogin(

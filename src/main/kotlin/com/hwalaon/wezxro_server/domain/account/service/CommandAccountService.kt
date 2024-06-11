@@ -9,6 +9,8 @@ import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAd
 import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.exception.NotEnoughDataException
+import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
+import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import org.springframework.security.crypto.password.PasswordEncoder
 import java.security.SecureRandom
 import java.util.*
@@ -16,8 +18,20 @@ import java.util.*
 @CommandService
 class CommandAccountService(
     private val accountPersistenceAdapter: AccountPersistenceAdapter,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val jwtGenerator: JwtGenerator
 ) {
+    fun login(loginRequest: LoginRequest, ip: String): TokenDto {
+        val account = accountPersistenceAdapter.login(loginRequest)
+
+        if (passwordEncoder.matches(loginRequest.password, account.password).not() ||
+            account.userId == null)
+            throw AccountNotFoundException()
+
+        accountPersistenceAdapter.loginLog(userId = account.userId!!, ip = ip)
+
+        return jwtGenerator.generate(account.userId!!)
+    }
 
     fun join(joinRequest: JoinRequest) =
         joinRequest.let {
@@ -116,7 +130,7 @@ class CommandAccountService(
         val key = generateUniqueKey()
 
         // 재귀 함수를 통해 valid 한 key 값이 나올 때 까지 반복.
-        if (accountPersistenceAdapter.validKey(key) == true) return generateKey(userId)
+        if (accountPersistenceAdapter.validKey(key) == false) return generateKey(userId)
 
         accountPersistenceAdapter.updateKey(userId, key).onFailure {
             when (it.message) {
