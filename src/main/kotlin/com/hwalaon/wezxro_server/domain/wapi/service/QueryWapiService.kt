@@ -3,13 +3,12 @@ package com.hwalaon.wezxro_server.domain.wapi.service
 import com.hwalaon.wezxro_server.domain.wapi.controller.response.ServiceResponse
 import com.hwalaon.wezxro_server.domain.wapi.exception.WapiInvalidKeyException
 import com.hwalaon.wezxro_server.domain.wapi.persistence.WapiPersistence
-import com.hwalaon.wezxro_server.global.annotation.CommandService
+import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 
-@CommandService
-class WapiService(
+@ReadOnlyService
+class QueryWapiService(
     private val wapiPersistence: WapiPersistence
 ) {
-
     fun services(key: String): List<ServiceResponse> {
         val clientId = wapiPersistence.clientIdByKey(key) ?: throw WapiInvalidKeyException()
         val serviceDtoList = wapiPersistence.services(clientId)

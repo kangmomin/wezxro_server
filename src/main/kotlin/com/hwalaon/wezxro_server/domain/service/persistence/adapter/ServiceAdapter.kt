@@ -13,7 +13,6 @@ import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceProvider
 import com.hwalaon.wezxro_server.domain.service.persistence.repository.ServiceRepository
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.WapiServicePort
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.dto.WapiServiceDto
-import com.hwalaon.wezxro_server.domain.wapi.service.WapiService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.stereotype.Component
 import java.util.*

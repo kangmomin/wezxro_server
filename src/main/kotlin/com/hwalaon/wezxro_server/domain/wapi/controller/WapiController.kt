@@ -1,7 +1,8 @@
 package com.hwalaon.wezxro_server.domain.wapi.controller
 
 import com.hwalaon.wezxro_server.domain.wapi.controller.response.*
-import com.hwalaon.wezxro_server.domain.wapi.service.WapiService
+import com.hwalaon.wezxro_server.domain.wapi.service.CommandWapiService
+import com.hwalaon.wezxro_server.domain.wapi.service.QueryWapiService
 import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import org.springframework.http.ResponseEntity
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v2")
 class WapiController(
-    private val wapiService: WapiService
+    private val commandWapiService: CommandWapiService,
+    private val queryWapiService: QueryWapiService
 ) {
 
     @PostMapping
@@ -56,7 +58,7 @@ class WapiController(
     }
 
     fun getServiceList(key: String): ResponseEntity<List<ServiceResponse>> {
-        val services = wapiService.services(key)
+        val services = queryWapiService.services(key)
 
         // 서비스 리스트를 반환하는 로직 구현
         return ResponseEntity.ok(services)
