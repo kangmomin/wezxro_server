@@ -50,4 +50,12 @@ class CustomAccountRepository(
                 accountEntity.key.eq(key),
                 accountEntity.status.eq(BasicStatus.ACTIVE))
             .fetchOne()
+
+    fun getUserBalance(key: String) =
+        query.select(accountEntity.money)
+            .from(accountEntity)
+            .where(
+                accountEntity.key.eq(key),
+                accountEntity.status.eq(BasicStatus.ACTIVE)
+            ).fetchOne()
 }

@@ -133,7 +133,11 @@ class WapiController(
     }
 
     fun getUserBalance(key: String): ResponseEntity<BalanceResponse> {
+        val balance = commandWapiService.userBalance(key)
+
         // 사용자 잔액 확인 로직 구현
-        return ResponseEntity.ok(BalanceResponse(balance = "100.84292", currency = "USD"))
+        return ResponseEntity.ok(
+            BalanceResponse(balance.toString(), "₩")
+        )
     }
 }

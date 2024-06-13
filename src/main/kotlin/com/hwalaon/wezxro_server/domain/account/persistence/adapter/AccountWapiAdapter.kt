@@ -11,4 +11,7 @@ class AccountWapiAdapter(
 ): WapiAccountPort {
     override fun getClientIdByUserKey(key: String): UUID? =
         customAccountRepository.getClientIdByUserKey(key)
+
+    override fun getUserBalanceByKey(key: String): Double? =
+        customAccountRepository.getUserBalance(key)
 }

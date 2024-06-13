@@ -22,4 +22,11 @@ class WapiPersistence(
 
     fun clientIdByKey(key: String) =
         wapiAccountPort.getClientIdByUserKey(key)
+
+    fun balance(key: String): Result<Double?> {
+        val balance = wapiAccountPort.getUserBalanceByKey(key)
+            ?: return Result.failure(Error("not found"))
+
+        return Result.success(balance)
+    }
 }
