@@ -30,12 +30,14 @@ class ServiceAdapter(
 
     override fun deleteByProviderId(providerId: Long, clientId: UUID) {
         serviceRepository.findAllByClientIdAndProviderId(clientId, providerId).forEach { s ->
+            if (s.status == BasicStatus.DELETED) return
             s.status = BasicStatus.DELETED
             s.name = "deleted_service_${s.name}"
         }
     }
     override fun deleteByCategoryId(categoryId: Long, clientId: UUID) {
         serviceRepository.findAllByClientIdAndCategoryId(clientId, categoryId).forEach { s ->
+            if (s.status == BasicStatus.DELETED) return
             s.status = BasicStatus.DELETED
             s.name = "deleted_service_${s.name}"
         }

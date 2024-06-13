@@ -49,6 +49,7 @@ class ServicePersistenceAdapter(
     fun delete(id: Int) =
         serviceRepository.findByIdOrNull(id).let {
             if (it == null) throw ServiceNotFoundException()
+            if (it.status == BasicStatus.DELETED) return
             it.status = BasicStatus.DELETED
             it.name = "deleted_service_${it.name}"
         }
