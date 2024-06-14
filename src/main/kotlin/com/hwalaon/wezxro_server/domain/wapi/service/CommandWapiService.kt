@@ -13,16 +13,6 @@ import com.hwalaon.wezxro_server.global.annotation.CommandService
 class CommandWapiService(
     private val wapiPersistence: WapiPersistence
 ) {
-    fun userBalance(key: String): Double {
-        val balance = wapiPersistence.balance(key).onFailure {
-            when (it.message) {
-                "not found" -> throw WapiInvalidKeyException()
-            }
-        }
-
-        return balance.getOrNull()!!
-    }
-
     fun addOrder(key: String, orderData: WapiAddOrderRequest): Long {
         val serviceInfo = wapiPersistence.serviceInfo(orderData.service!!)
             ?: throw WapiInvalidServiceIdException()

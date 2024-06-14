@@ -9,6 +9,15 @@ import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 class QueryWapiService(
     private val wapiPersistence: WapiPersistence
 ) {
+    fun userBalance(key: String): Double {
+        val balance = wapiPersistence.balance(key).onFailure {
+            when (it.message) {
+                "not found" -> throw WapiInvalidKeyException()
+            }
+        }
+
+        return balance.getOrNull()!!
+    }
     fun services(key: String): List<ServiceResponse> {
         val clientId = wapiPersistence.clientIdByKey(key) ?: throw WapiInvalidKeyException()
         val serviceDtoList = wapiPersistence.services(clientId)

@@ -128,7 +128,9 @@ class WapiController(
         return ResponseEntity.ok(response)
     }
 
-    fun createCancel(key: String, orders: String): ResponseEntity<List<CancelResponse>> {
+    fun createCancel(key: String, ordersString: String): ResponseEntity<List<CancelResponse>> {
+        val orders = ordersString.split(",")
+
         // 주문 취소 로직 구현
         val response = listOf(
             CancelResponse(order = 9, cancel = mapOf("error" to "Incorrect order ID")),
@@ -138,7 +140,7 @@ class WapiController(
     }
 
     fun getUserBalance(key: String): ResponseEntity<BalanceResponse> {
-        val balance = commandWapiService.userBalance(key)
+        val balance = queryWapiService.userBalance(key)
 
         // 사용자 잔액 확인 로직 구현
         return ResponseEntity.ok(
