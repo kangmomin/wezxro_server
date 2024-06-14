@@ -87,7 +87,7 @@ class ServiceAdapter(
     }
 
     override fun getServices(clientId: UUID): MutableList<WapiServiceDto> {
-        return serviceRepository.findByClientId(clientId).map {
+        return serviceRepository.findAllByClientIdAndStatusNotOrderById(clientId).map {
             WapiServiceDto(
                 id = it.id!!,
                 name = it.name!!,
