@@ -1,11 +1,16 @@
 package com.hwalaon.wezxro_server.domain.wapi.controller
 
+import com.hwalaon.wezxro_server.domain.wapi.controller.request.WapiAddOrderRequest
 import com.hwalaon.wezxro_server.domain.wapi.controller.response.*
+import com.hwalaon.wezxro_server.domain.wapi.exception.WapiInvalidServiceIdException
+import com.hwalaon.wezxro_server.domain.wapi.exception.WapiMissingLinkException
+import com.hwalaon.wezxro_server.domain.wapi.exception.WapiMissingQuantityException
 import com.hwalaon.wezxro_server.domain.wapi.service.CommandWapiService
 import com.hwalaon.wezxro_server.domain.wapi.service.QueryWapiService
 import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -22,11 +27,7 @@ class WapiController(
     fun handleRequest(
         @RequestParam(required = false) key: String?,
         @RequestParam(required = false) action: String?,
-        @RequestParam(required = false) service: Int?,
-        @RequestParam(required = false) link: String?,
-        @RequestParam(required = false) quantity: Int?,
-        @RequestParam(required = false) runs: Int?,
-        @RequestParam(required = false) interval: Int?,
+        @ModelAttribute orderData: WapiAddOrderRequest?,
         @RequestParam(required = false) order: Int?,
         @RequestParam(required = false) orders: String?,
         @RequestParam(required = false) refill: Int?,
@@ -38,7 +39,7 @@ class WapiController(
         return try {
             when (action) {
                 "services" -> getServiceList(key)
-                "add" -> addOrder(key, service!!, link!!, quantity!!, runs, interval)
+                "add" -> addOrder(key, orderData)
                 "status" -> if (orders != null) getMultipleOrderStatus(key, orders) else getOrderStatus(key, order!!)
                 "refill" -> if (orders != null) createMultipleRefill(key, orders) else createRefill(key, order!!)
                 "refill_status" -> if (refills != null) getMultipleRefillStatus(key, refills) else getRefillStatus(
@@ -53,6 +54,7 @@ class WapiController(
         } catch (e: BasicException) {
             BasicResponse.wapiError(e.errorCode.msg)
         } catch (e: Exception) {
+            e.printStackTrace()
             BasicResponse.wapiError("Incorrect Request")
         }
     }
@@ -66,14 +68,17 @@ class WapiController(
 
     fun addOrder(
         key: String,
-        service: Int,
-        link: String,
-        quantity: Int,
-        runs: Int?,
-        interval: Int?
+        orderData: WapiAddOrderRequest?
     ): ResponseEntity<AddOrderResponse> {
+        if (orderData == null) throw Exception()
+        if (orderData.link.isNullOrBlank()) throw WapiMissingLinkException()
+        if (orderData.quantity == null) throw WapiMissingQuantityException()
+        if (orderData.service == null) throw WapiInvalidServiceIdException()
+
+        val orderId = commandWapiService.addOrder(key, orderData)
+
         // 주문 추가 로직 구현
-        return ResponseEntity.ok(AddOrderResponse(order = 23501))
+        return ResponseEntity.ok(AddOrderResponse(order = orderId))
     }
 
     fun getOrderStatus(key: String, order: Int): ResponseEntity<OrderStatusResponse> {

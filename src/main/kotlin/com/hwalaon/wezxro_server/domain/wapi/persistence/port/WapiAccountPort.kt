@@ -7,4 +7,5 @@ import java.util.UUID
 interface WapiAccountPort {
     fun getClientIdByUserKey(key: String): UUID?
     fun getUserBalanceByKey(key: String): Double?
+    fun getUserIdByKey(key: String): Long?
 }

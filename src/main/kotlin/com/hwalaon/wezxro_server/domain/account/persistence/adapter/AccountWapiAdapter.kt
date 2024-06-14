@@ -14,4 +14,7 @@ class AccountWapiAdapter(
 
     override fun getUserBalanceByKey(key: String): Double? =
         customAccountRepository.getUserBalance(key)
+
+    override fun getUserIdByKey(key: String): Long? =
+        customAccountRepository.getUserIdByKey(key)
 }

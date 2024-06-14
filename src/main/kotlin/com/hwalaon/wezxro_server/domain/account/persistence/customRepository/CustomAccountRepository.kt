@@ -58,4 +58,12 @@ class CustomAccountRepository(
                 accountEntity.key.eq(key),
                 accountEntity.status.eq(BasicStatus.ACTIVE)
             ).fetchOne()
+
+    fun getUserIdByKey(key: String) =
+        query.select(accountEntity.userId)
+            .from(accountEntity)
+            .where(
+                accountEntity.key.eq(key)
+            )
+            .fetchOne()
 }

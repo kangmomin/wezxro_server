@@ -9,5 +9,6 @@ import java.util.UUID
 interface WapiServicePort {
 
     fun getServices(clientId: UUID): MutableList<WapiServiceDto>
+    fun serviceInfo(service: Long): Service?
 
 }

@@ -7,6 +7,8 @@ import com.hwalaon.wezxro_server.domain.order.persistence.port.OrderServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ServiceAddOrderInfoDto
 import com.hwalaon.wezxro_server.domain.provider.persistence.port.ProviderServicePort
 import com.hwalaon.wezxro_server.domain.service.exception.ServiceNotFoundException
+import com.hwalaon.wezxro_server.domain.service.mapper.ServiceMapper
+import com.hwalaon.wezxro_server.domain.service.model.Service
 import com.hwalaon.wezxro_server.domain.service.persistence.customRepository.CustomServiceRepository
 import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceCategoryPort
 import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceProviderPort
@@ -14,6 +16,7 @@ import com.hwalaon.wezxro_server.domain.service.persistence.repository.ServiceRe
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.WapiServicePort
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.dto.WapiServiceDto
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -22,7 +25,8 @@ class ServiceAdapter(
     private val customServiceRepository: CustomServiceRepository,
     private val serviceRepository: ServiceRepository,
     private val serviceProviderPort: ServiceProviderPort,
-    private val serviceCategoryPort: ServiceCategoryPort
+    private val serviceCategoryPort: ServiceCategoryPort,
+    private val serviceMapper: ServiceMapper
     ): OrderServicePort, ProviderServicePort, AccountServicePort, CategoryServicePort, WapiServicePort {
     override fun serviceAddOrderInfo(serviceId: Long): ServiceAddOrderInfoDto {
           return customServiceRepository.addOrderServiceInfo(serviceId) ?: throw ServiceNotFoundException()
@@ -101,4 +105,10 @@ class ServiceAdapter(
             )
         }.toMutableList()
     }
+
+    override fun serviceInfo(service: Long): Service? =
+        serviceRepository.findByIdOrNull(service.toInt()).let {
+            if (it == null) return it
+            serviceMapper.toDomain(it)
+        }
 }

@@ -37,12 +37,12 @@ class ApiProvider(
                          params: String = json.encodeToString(ApiRequest(apiKey, action))
     ): String {
         // JSON 문자열을 Map으로 변환
-        val paramMap: Map<String, String> = Gson().fromJson(params, Map::class.java) as Map<String, String>
+        val paramMap: Map<String, Any?> = Gson().fromJson(params, Map::class.java) as Map<String, String>
 
         // URL에 쿼리 파라미터 추가
         val urlBuilder = apiUrl.toHttpUrlOrNull()?.newBuilder()
         paramMap.forEach { (key, value) ->
-            urlBuilder?.addQueryParameter(key, value)
+            urlBuilder?.addQueryParameter(key, value?.toString() ?: "")
         }
 
         // 완성된 URL
@@ -55,9 +55,10 @@ class ApiProvider(
 
 
         client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw ApiRequestFailedException()
-            }
+//            --- 240614 서버 에러 메시지를 resonse 하기 위해 주석화 ---
+//            if (!response.isSuccessful) {
+//                throw ApiRequestFailedException()
+//            }
             val apiResponse = response.body?.string() ?: throw ApiRequestFailedException()
             try {
                 val errorMessage = Gson().fromJson(apiResponse, ProviderApiErrorDto::class.java).error

@@ -7,6 +7,7 @@ import com.hwalaon.wezxro_server.domain.provider.model.Provider
 import com.hwalaon.wezxro_server.domain.provider.persistence.customRepository.CustomProviderRepository
 import com.hwalaon.wezxro_server.domain.provider.persistence.repository.ProviderRepository
 import com.hwalaon.wezxro_server.domain.service.persistence.port.ServiceProviderPort
+import com.hwalaon.wezxro_server.domain.wapi.persistence.port.WapiProviderPort
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -16,7 +17,7 @@ class ProviderAdapter(
     private val customProviderRepository: CustomProviderRepository,
     private val providerRepository: ProviderRepository,
     private val providerMapper: ProviderMapper
-): ProviderPort, ServiceProviderPort {
+): ProviderPort, ServiceProviderPort, WapiProviderPort {
 
     override fun providerApiInfo(providerId: Long): ProviderApiDto? =
         customProviderRepository.getApiInfo(providerId)
@@ -34,4 +35,7 @@ class ProviderAdapter(
 
     override fun isProviderDeactive(providerId: Long): Boolean =
         (providerRepository.findByIdOrNull(providerId)?.status ?: BasicStatus.DEACTIVE) == BasicStatus.DEACTIVE
+
+    override fun getProviderInfoById(id: Long): ProviderApiDto? =
+        customProviderRepository.getApiInfo(id)
 }

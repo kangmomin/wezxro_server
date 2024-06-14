@@ -1,9 +1,15 @@
 package com.hwalaon.wezxro_server.domain.wapi.persistence
 
-import com.hwalaon.wezxro_server.domain.wapi.persistence.port.WapiAccountPort
-import com.hwalaon.wezxro_server.domain.wapi.persistence.port.WapiCategoryPort
-import com.hwalaon.wezxro_server.domain.wapi.persistence.port.WapiServicePort
+import com.hwalaon.wezxro_server.domain.order.controller.request.AddOrderRequest
+import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
+import com.hwalaon.wezxro_server.domain.service.model.Service
+import com.hwalaon.wezxro_server.domain.wapi.controller.request.WapiAddOrderRequest
+import com.hwalaon.wezxro_server.domain.wapi.exception.WapiBasicException
+import com.hwalaon.wezxro_server.domain.wapi.exception.WapiInvalidKeyException
+import com.hwalaon.wezxro_server.domain.wapi.persistence.port.*
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.dto.WapiServiceDto
+import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
+import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -11,7 +17,9 @@ import java.util.UUID
 class WapiPersistence(
     private val wapiServicePort: WapiServicePort,
     private val wapiCategoryPort: WapiCategoryPort,
-    private val wapiAccountPort: WapiAccountPort
+    private val wapiAccountPort: WapiAccountPort,
+    private val wapiOrderPort: WapiOrderPort,
+    private val wapiProviderPort: WapiProviderPort
 ) {
     fun services(clientId: UUID): MutableList<WapiServiceDto> {
         return wapiServicePort.getServices(clientId)
@@ -29,4 +37,42 @@ class WapiPersistence(
 
         return Result.success(balance)
     }
+
+    fun serviceInfo(serviceId: Long) =
+        wapiServicePort.serviceInfo(serviceId)
+
+    fun addOrder(key: String, orderData: WapiAddOrderRequest, serviceInfo: Service, providerInfo: ProviderApiDto): Long {
+        val order = AddOrderRequest(
+            categoryId = serviceInfo.categoryId,
+            serviceId = serviceInfo.id,
+            link = orderData.link,
+            count = orderData.quantity,
+            totalCharge = (serviceInfo.rate!! * orderData.quantity!!),
+            comments = orderData.comments,
+            commentsCustomPackage = orderData.commentsCustomPackage,
+            hashtag = orderData.hashtag,
+            hashtags = orderData.hashtags,
+            answerNumber = orderData.answerNumber,
+            expiry = orderData.expiry,
+            groups = orderData.groups,
+            mediaUrl = orderData.mediaUrl,
+            subDelay = orderData.subDelay,
+            subMax = orderData.subMax,
+            subMin = orderData.subMin,
+            subPosts = orderData.subPosts,
+            subUsername = orderData.subUsername,
+            username = orderData.username,
+            usernames = orderData.usernames,
+            usernamesCustom = orderData.usernamesCustom
+        ).toDomain()
+
+        order.type = serviceInfo.type
+        order.userId = wapiAccountPort.getUserIdByKey(key)
+        order.providerId = serviceInfo.providerId
+        order.info!!.order = order
+
+        return wapiOrderPort.addOrder(key, order, serviceInfo.apiServiceId!!, providerInfo)
+    }
+
+    fun getProviderInfo(providerId: Long) = wapiProviderPort.getProviderInfoById(providerId)
 }

@@ -62,4 +62,8 @@ enum class ErrorCode(
 
     // wapi
     INVALID_KEY("Invalid API Key", HttpStatus.BAD_REQUEST, ""),
+    MISSING_LINK("Missing Link", HttpStatus.BAD_REQUEST, ""),
+    MISSING_QUANTITY("Missing quantity", HttpStatus.BAD_REQUEST, ""),
+    INVALID_SERVICE_ID("Invalid service ID", HttpStatus.BAD_REQUEST, ""),
+    WAPI_BASIC_ERROR("Incorrect Request", HttpStatus.BAD_REQUEST, ""),
 }
