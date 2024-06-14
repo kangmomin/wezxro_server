@@ -1,7 +1,6 @@
 package com.hwalaon.wezxro_server.domain.order.persistence
 
 import com.hwalaon.wezxro_server.domain.order.controller.request.UpdateOrderRequest
-import com.hwalaon.wezxro_server.domain.order.exception.OrderNotFoundException
 import com.hwalaon.wezxro_server.domain.order.mapper.OrderMapper
 import com.hwalaon.wezxro_server.domain.order.model.Order
 import com.hwalaon.wezxro_server.domain.order.model.constant.OrderStatus
@@ -11,9 +10,9 @@ import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.OrderServicePort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
 import com.hwalaon.wezxro_server.domain.order.persistence.repository.OrderRepository
+import com.hwalaon.wezxro_server.domain.wapi.controller.response.OrderStatusResponse
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import com.hwalaon.wezxro_server.global.common.util.request.AddOrderInfoRequestDto
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.security.auth.login.AccountNotFoundException
@@ -128,4 +127,15 @@ class OrderPersistence(
 
         return Result.success(null)
     }
+
+    fun orderListByUsers(orders: List<Long>) =
+        orderRepository.findAllByIdInOrderByIdDesc(orders.toMutableList()).map {
+            OrderStatusResponse(
+                charge = it.totalCharge!!,
+                startCount = it.startCnt!!,
+                status = it.status!!.toString(),
+                remains =  it.remain!!.toString(),
+                currency = "₩"
+            )
+        }
 }

@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.domain.wapi.controller.response.*
 import com.hwalaon.wezxro_server.domain.wapi.exception.WapiInvalidServiceIdException
 import com.hwalaon.wezxro_server.domain.wapi.exception.WapiMissingLinkException
 import com.hwalaon.wezxro_server.domain.wapi.exception.WapiMissingQuantityException
+import com.hwalaon.wezxro_server.domain.wapi.exception.WapiOrderIdNotFoundException
 import com.hwalaon.wezxro_server.domain.wapi.service.CommandWapiService
 import com.hwalaon.wezxro_server.domain.wapi.service.QueryWapiService
 import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
@@ -40,15 +41,20 @@ class WapiController(
             when (action) {
                 "services" -> getServiceList(key)
                 "add" -> addOrder(key, orderData)
-                "status" -> if (orders != null) getMultipleOrderStatus(key, orders) else getOrderStatus(key, order!!)
-                "refill" -> if (orders != null) createMultipleRefill(key, orders) else createRefill(key, order!!)
-                "refill_status" -> if (refills != null) getMultipleRefillStatus(key, refills) else getRefillStatus(
-                    key,
-                    refill!!
-                )
+                "balance" -> getUserBalance(key)
+                "status" -> getMultipleOrderStatus(key, orders)
+
+//                ---------------- 24 06 15 --------------
+//                "status" -> if (orders != null) getMultipleOrderStatus(key, orders) else getOrderStatus(key, order!!)
+//                우리 사이트에선 안쓰일 API
+//
+//                "refill" -> if (orders != null) createMultipleRefill(key, orders) else createRefill(key, order!!)
+//                "refill_status" -> if (refills != null) getMultipleRefillStatus(key, refills) else getRefillStatus(
+//                    key,
+//                    refill!!
+//                )
 
                 "cancel" -> createCancel(key, orders!!)
-                "balance" -> getUserBalance(key)
                 else -> BasicResponse.wapiError("Invalid action parameter")
             }
         } catch (e: BasicException) {
@@ -84,17 +90,25 @@ class WapiController(
     fun getOrderStatus(key: String, order: Int): ResponseEntity<OrderStatusResponse> {
         // 주문 상태 확인 로직 구현
         return ResponseEntity.ok(
-            OrderStatusResponse("0.27819", "3572", "Partial", "157", "USD")
+            OrderStatusResponse(0.27819, 3572, "Partial", "157", "USD")
         )
     }
 
-    fun getMultipleOrderStatus(key: String, orders: String): ResponseEntity<Map<String, Any>> {
+    fun getMultipleOrderStatus(key: String, ordersString: String?): ResponseEntity<Map<String, Any>> {
+        if (ordersString.isNullOrBlank()) throw WapiOrderIdNotFoundException()
+
+        val orders = ordersString.split(",").map {
+            it.trim().toLong()
+        }.sortedDescending()
+        val orderStatus = queryWapiService.orderStatus(key, orders)
+
         // 여러 주문 상태 확인 로직 구현
-        val response = mapOf(
-            "1" to OrderStatusResponse("0.27819", "3572", "Partial", "157", "USD"),
-            "10" to mapOf("error" to "Incorrect order ID"),
-            "100" to OrderStatusResponse("1.44219", "234", "In progress", "10", "USD")
-        )
+        val response = HashMap<String, OrderStatusResponse>()
+
+        orders.mapIndexed { idx, it ->
+            response.put(it.toString(), orderStatus[idx])
+        }
+
         return ResponseEntity.ok(response)
     }
 

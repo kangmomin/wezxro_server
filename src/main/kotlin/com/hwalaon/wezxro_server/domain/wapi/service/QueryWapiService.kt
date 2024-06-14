@@ -42,4 +42,7 @@ class QueryWapiService(
             )
         }
     }
+
+    fun orderStatus(key: String, orders: List<Long>) =
+         wapiPersistence.getOrderStatus(key, orders)
 }

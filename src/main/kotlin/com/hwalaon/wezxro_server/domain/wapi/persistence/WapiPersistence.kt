@@ -4,12 +4,10 @@ import com.hwalaon.wezxro_server.domain.order.controller.request.AddOrderRequest
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
 import com.hwalaon.wezxro_server.domain.service.model.Service
 import com.hwalaon.wezxro_server.domain.wapi.controller.request.WapiAddOrderRequest
-import com.hwalaon.wezxro_server.domain.wapi.exception.WapiBasicException
+import com.hwalaon.wezxro_server.domain.wapi.controller.response.OrderStatusResponse
 import com.hwalaon.wezxro_server.domain.wapi.exception.WapiInvalidKeyException
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.*
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.dto.WapiServiceDto
-import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
-import com.hwalaon.wezxro_server.global.common.basic.exception.ErrorCode
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -75,4 +73,12 @@ class WapiPersistence(
     }
 
     fun getProviderInfo(providerId: Long) = wapiProviderPort.getProviderInfoById(providerId)
+    fun getOrderStatus(key: String, orders: List<Long>): List<OrderStatusResponse> {
+        val userId = (wapiAccountPort.getUserIdByKey(key)
+            ?: throw WapiInvalidKeyException())
+
+        wapiOrderPort.updateOrderStatus(userId)
+
+        return wapiOrderPort.orderStatusList(orders)
+    }
 }
