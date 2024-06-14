@@ -2,14 +2,17 @@ package com.hwalaon.wezxro_server.domain.order.persistence.adapter
 
 import com.hwalaon.wezxro_server.dashboard.controller.response.DashboardResponse
 import com.hwalaon.wezxro_server.dashboard.persistence.port.OrderPort
+import com.hwalaon.wezxro_server.domain.order.exception.WapiCancelUnavailableException
 import com.hwalaon.wezxro_server.domain.order.model.Order
 import com.hwalaon.wezxro_server.domain.order.model.constant.OrderStatus
 import com.hwalaon.wezxro_server.domain.order.persistence.OrderPersistence
 import com.hwalaon.wezxro_server.domain.order.persistence.customRepository.CustomOrderRepository
 import com.hwalaon.wezxro_server.domain.order.persistence.port.ProviderPort
 import com.hwalaon.wezxro_server.domain.order.persistence.port.dto.ProviderApiDto
+import com.hwalaon.wezxro_server.domain.order.persistence.repository.OrderRepository
 import com.hwalaon.wezxro_server.domain.provider.exception.ProviderNotFoundException
 import com.hwalaon.wezxro_server.domain.wapi.controller.response.OrderStatusResponse
+import com.hwalaon.wezxro_server.domain.wapi.exception.WapiOrderIdNotFoundException
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.WapiOrderPort
 import com.hwalaon.wezxro_server.global.common.util.ApiProvider
 import org.springframework.stereotype.Component
@@ -19,6 +22,7 @@ import java.util.*
 class OrderAdapter(
     private val orderPersistence: OrderPersistence,
     private val customOrderRepository: CustomOrderRepository,
+    private val orderRepository: OrderRepository,
     private val providerPort: ProviderPort
 ): WapiOrderPort, OrderPort {
     override fun addOrder(key: String, order: Order, apiServiceId: Long, providerInfo: ProviderApiDto): Long {
@@ -66,5 +70,21 @@ class OrderAdapter(
         }
 
         return "success"
+    }
+
+    override fun cancelOrder(orderId: Long) {
+        val order = orderRepository.findByIdAndStatusNot(orderId)
+            ?: throw WapiOrderIdNotFoundException()
+
+        if (order.status == OrderStatus.CANCELED ||
+            order.status == OrderStatus.COMPLETED) throw WapiCancelUnavailableException()
+
+
+        val providerApiInfo = providerPort.providerApiInfo(order.providerId!!)!!
+
+        val createCancel = ApiProvider(providerApiInfo.apiKey, providerApiInfo.apiUrl)
+            .createSingleCancel(order.apiOrderId!!)
+
+        if (createCancel.error != null) throw WapiCancelUnavailableException()
     }
 }

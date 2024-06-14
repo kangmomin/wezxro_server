@@ -2,10 +2,7 @@ package com.hwalaon.wezxro_server.domain.wapi.controller
 
 import com.hwalaon.wezxro_server.domain.wapi.controller.request.WapiAddOrderRequest
 import com.hwalaon.wezxro_server.domain.wapi.controller.response.*
-import com.hwalaon.wezxro_server.domain.wapi.exception.WapiInvalidServiceIdException
-import com.hwalaon.wezxro_server.domain.wapi.exception.WapiMissingLinkException
-import com.hwalaon.wezxro_server.domain.wapi.exception.WapiMissingQuantityException
-import com.hwalaon.wezxro_server.domain.wapi.exception.WapiOrderIdNotFoundException
+import com.hwalaon.wezxro_server.domain.wapi.exception.*
 import com.hwalaon.wezxro_server.domain.wapi.service.CommandWapiService
 import com.hwalaon.wezxro_server.domain.wapi.service.QueryWapiService
 import com.hwalaon.wezxro_server.global.common.basic.exception.BasicException
@@ -54,7 +51,7 @@ class WapiController(
 //                    refill!!
 //                )
 
-                "cancel" -> createCancel(key, orders!!)
+                "cancel" -> createCancel(key, orders)
                 else -> BasicResponse.wapiError("Invalid action parameter")
             }
         } catch (e: BasicException) {
@@ -142,15 +139,15 @@ class WapiController(
         return ResponseEntity.ok(response)
     }
 
-    fun createCancel(key: String, ordersString: String): ResponseEntity<List<CancelResponse>> {
-        val orders = ordersString.split(",")
+    fun createCancel(key: String, order: String?): ResponseEntity<Map<String, String>> {
+        if (order == null) throw WapiBasicException()
 
-        // 주문 취소 로직 구현
-        val response = listOf(
-            CancelResponse(order = 9, cancel = mapOf("error" to "Incorrect order ID")),
-            CancelResponse(order = 2, cancel = 1)
-        )
-        return ResponseEntity.ok(response)
+        commandWapiService.cancelOrder(
+            order.toLongOrNull()
+            ?: throw WapiBasicException(), key)
+
+        return ResponseEntity.ok(
+            mapOf("success" to "Your order will be cancel asap. Thank you for patience."))
     }
 
     fun getUserBalance(key: String): ResponseEntity<BalanceResponse> {

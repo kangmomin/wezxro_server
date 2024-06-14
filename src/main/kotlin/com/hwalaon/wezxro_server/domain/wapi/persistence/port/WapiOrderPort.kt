@@ -10,4 +10,5 @@ interface WapiOrderPort {
     fun addOrder(key: String, order: Order, apiServiceId: Long, providerInfo: ProviderApiDto): Long
     fun orderStatusList(orders: List<Long>): List<OrderStatusResponse>
     fun updateOrderStatus(userId: Long): String?
+    fun cancelOrder(orderId: Long)
 }

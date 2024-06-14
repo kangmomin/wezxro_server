@@ -67,4 +67,5 @@ enum class ErrorCode(
     INVALID_SERVICE_ID("Invalid service ID", HttpStatus.BAD_REQUEST, ""),
     WAPI_BASIC_ERROR("Incorrect Request", HttpStatus.BAD_REQUEST, ""),
     WAPI_ORDER_ID_NOT_FOUND("Order ID not Found", HttpStatus.BAD_REQUEST, ""),
+    WAPI_CANT_CANCEL("error.cancel_unavailable", HttpStatus.BAD_REQUEST, ""),
 }

@@ -6,6 +6,7 @@ import com.hwalaon.wezxro_server.domain.service.model.Service
 import com.hwalaon.wezxro_server.domain.wapi.controller.request.WapiAddOrderRequest
 import com.hwalaon.wezxro_server.domain.wapi.controller.response.OrderStatusResponse
 import com.hwalaon.wezxro_server.domain.wapi.exception.WapiInvalidKeyException
+import com.hwalaon.wezxro_server.domain.wapi.exception.WapiOrderIdNotFoundException
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.*
 import com.hwalaon.wezxro_server.domain.wapi.persistence.port.dto.WapiServiceDto
 import org.springframework.stereotype.Component
@@ -80,5 +81,16 @@ class WapiPersistence(
         wapiOrderPort.updateOrderStatus(userId)
 
         return wapiOrderPort.orderStatusList(orders)
+    }
+
+    fun updateOrderStatus(key: String) {
+        val userId = (wapiAccountPort.getUserIdByKey(key)
+            ?: throw WapiInvalidKeyException())
+
+        wapiOrderPort.updateOrderStatus(userId)
+    }
+
+    fun cancel(order: Long) {
+        wapiOrderPort.cancelOrder(order)
     }
 }
