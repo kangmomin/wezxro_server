@@ -38,7 +38,8 @@ class ServiceAdminController(
         val service = storeServiceRequest.toDomain(principalDetails.account.clientId!!)
         val serviceId = commandAdminServiceService.add(service)
 
-        logger.info("Create: by - ${principalDetails.account.userId!!} / $serviceId")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Create: by - ${principalDetails.account.userId!!} / $serviceId")
 
         return BasicResponse.created(MsgResponse("서비스를 생성하였습니다."))
     }
@@ -50,7 +51,8 @@ class ServiceAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandAdminServiceService.delete(id)
 
-        logger.info("Delete: by - ${principalDetails.account.userId!!} / $id")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / $id")
 
         return BasicResponse.ok("서비스를 삭제하였습니다.")
     }
@@ -62,7 +64,8 @@ class ServiceAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         val updatedStatus = commandAdminServiceService.updateStatus(serviceId, principalDetails.account.clientId!!)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / $serviceId / status(${updatedStatus})")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / $serviceId / status(${updatedStatus})")
 
         return BasicResponse.ok("서비스를 ${updatedStatus.name}로 수정하였습니다.")
     }
@@ -75,7 +78,8 @@ class ServiceAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandAdminServiceService.update(storeServiceRequest, serviceId, principalDetails.account.clientId!!)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / $serviceId")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / $serviceId")
 
         return BasicResponse.ok("서비스를 업데이트 하였습니다.")
     }
@@ -87,7 +91,8 @@ class ServiceAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandAdminServiceService.deleteCustomRate(serviceId)
 
-        logger.info("Delete: by - ${principalDetails.account.userId!!} / $serviceId")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / $serviceId")
 
         return BasicResponse.ok("서비스의 개별 감가액을 전부 삭제하였습니다.")
     }

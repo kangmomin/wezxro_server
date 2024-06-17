@@ -54,7 +54,8 @@ class ProviderAdminController(
 
         val providerId = commandProviderService.addProvider(provider)
 
-        logger.info("Create: by - ${principalDetails.account.userId!!} / $providerId")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Create: by - ${principalDetails.account.userId!!} / $providerId")
 
         return BasicResponse.ok("도매처가 등록되었습니다.")
     }
@@ -66,7 +67,8 @@ class ProviderAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         val status = commandProviderService.updateStatus(providerId, principalDetails.account.clientId!!)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / $providerId / status($status)")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / $providerId / status($status)")
 
         return BasicResponse.ok("도매처를 ${status}로 변경하였습니다.")
     }
@@ -152,7 +154,8 @@ class ProviderAdminController(
         providerRequest.clientId = principalDetails.account.clientId
         commandProviderService.updateProvider(providerRequest)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / ${updateProviderRequest.providerId}")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / ${updateProviderRequest.providerId}")
 
         return BasicResponse.ok("도매처 정보를 업데이트 하였습니다.")
     }
@@ -164,7 +167,8 @@ class ProviderAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandProviderService.delete(providerId, principalDetails.account.clientId!!)
 
-        logger.info("Delete: by - ${principalDetails.account.userId!!} / $providerId")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / $providerId")
 
         return BasicResponse.ok("도매처를 삭제하였습니다.")
     }

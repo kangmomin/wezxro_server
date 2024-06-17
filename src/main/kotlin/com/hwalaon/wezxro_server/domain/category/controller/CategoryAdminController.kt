@@ -30,7 +30,8 @@ class CategoryAdminController(
         val category = commandCategoryService.addCategory(
             categoryRequest.toDomain(), principalDetails.account.clientId!!
         )
-        logger.info("Create: by - ${principalDetails.account.userId!!} / ${category.id}")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Create: by - ${principalDetails.account.userId!!} / ${category.id}")
 
         return BasicResponse.ok(category)
     }
@@ -42,15 +43,23 @@ class CategoryAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandCategoryService.delete(id)
 
-        logger.info("Delete: by - ${principalDetails.account.userId!!} / $id")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / $id")
 
         return BasicResponse.ok("카테고리를 삭제하였습니다.")
     }
 
     @PatchMapping("/update/{id}")
-    fun categoryUpdate(@RequestBody @Valid categoryRequest: SaveCategoryRequest,
-                       @PathVariable("id") categoryId: Long): ResponseEntity<BasicResponse.BaseResponse> {
+    fun categoryUpdate(
+        @RequestBody @Valid categoryRequest: SaveCategoryRequest,
+        @PathVariable("id") categoryId: Long,
+        @AuthenticationPrincipal principalDetails: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
         commandCategoryService.updateCategory(categoryId, categoryRequest.toDomain())
+
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / $categoryId")
+
         return BasicResponse.ok("카테고리를 수정하였습니다.")
     }
 
@@ -81,7 +90,8 @@ class CategoryAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         val status = commandCategoryService.toggleStatus(categoryId, principalDetails.account.clientId!!)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / $categoryId / $status")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / $categoryId / $status")
 
         return BasicResponse.ok("카테고리를 ${if (status == BasicStatus.ACTIVE) "활성화" else "비활성화"} 했습니다.")
     }
@@ -94,7 +104,8 @@ class CategoryAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandCategoryService.updateSort(categoryId, categorySortRequest.sort!!, principalDetails.account.clientId!!)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / $categoryId / ${categorySortRequest.sort}")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / $categoryId / ${categorySortRequest.sort}")
 
         return BasicResponse.ok("정렬 번호를 수정하였습니다.")
     }

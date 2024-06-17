@@ -58,7 +58,8 @@ class AdminDepositController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandDepositService.update(principalDetails.account.clientId!!, updateDepositRequest)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / ${updateDepositRequest.depositId}")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / ${updateDepositRequest.depositId}")
 
         return BasicResponse.ok("충전 기록을 수정하였습니다.")
     }
@@ -70,7 +71,8 @@ class AdminDepositController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandDepositService.delete(principalDetails.account.clientId!!, depositId)
 
-        logger.info("Delete: by - ${principalDetails.account.userId!!} / $depositId")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / $depositId")
 
         return BasicResponse.ok("충전 기록을 삭제하였습니다.")
     }

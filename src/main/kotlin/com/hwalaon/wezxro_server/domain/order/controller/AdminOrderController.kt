@@ -34,7 +34,9 @@ class AdminOrderController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandOrderService.updateOrder(updateOrderRequest)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / ${updateOrderRequest.orderId}")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / " +
+                "${updateOrderRequest.orderId}")
 
         return BasicResponse.ok("주문을 수정하였습니다.")
     }
@@ -46,7 +48,8 @@ class AdminOrderController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandOrderService.deleteOrder(orderId)
 
-        logger.info("Delete: by - ${principalDetails.account.userId!!} / $orderId")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / $orderId")
 
         return BasicResponse.ok("주문 정보를 삭제하였습니다.")
     }

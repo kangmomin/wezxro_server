@@ -30,7 +30,8 @@ class AccountAdminController(
 
         commandAccountService.updateAccountInfo(account)
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / target - ${account.userId}")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / target - ${account.userId}")
 
         return BasicResponse.ok("계정 정보를 성공적으로 변경하였습니다.")
     }
@@ -42,7 +43,8 @@ class AccountAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandAccountService.deleteAccount(id, principalDetails.account.clientId!!)
 
-        logger.info("Delete: by - ${principalDetails.account.userId!!} / target - $id")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / target - $id")
 
         return BasicResponse.ok("삭제되었습니다.")
     }
@@ -80,7 +82,8 @@ class AccountAdminController(
             principalDetails.account.clientId!!
         )
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / target - $userId / static rate(${updateStaticRate.staticRate})")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / target - $userId / static rate(${updateStaticRate.staticRate})")
 
         return BasicResponse.ok("전체 감가액을 지정하였습니다.")
     }
@@ -90,7 +93,8 @@ class AccountAdminController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @RequestBody @Valid addCustomRateRequest: AddCustomRateRequest
     ) = commandAccountService.storeCustomRate(principalDetails.account.clientId!!, addCustomRateRequest).run {
-        logger.info("Update: by - ${principalDetails.account.userId!!} / target - ${addCustomRateRequest.userId} / custom rate")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / target - ${addCustomRateRequest.userId} / custom rate")
 
         BasicResponse.ok("개별 감가액의 업데이트가 정상적으로 처리 되었습니다.")
     }
@@ -101,7 +105,8 @@ class AccountAdminController(
         @PathVariable userId: Long
     ): ResponseEntity<BasicResponse.BaseResponse> {
         commandAccountService.deleteCustomRate(userId, principalDetails.account.clientId!!)
-        logger.info("Delete: by - ${principalDetails.account.userId!!} / target - $userId / custom rate")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Delete: by - ${principalDetails.account.userId!!} / target - $userId / custom rate")
 
         return BasicResponse.ok("유저의 모든 개별 감가액을 설정하였습니다.")
     }
@@ -127,7 +132,10 @@ class AccountAdminController(
             principalDetails.account.userId!!
         )
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / target - ${updateMoneyRequest.userId} / add fund(${updateMoneyRequest.balance})")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / " +
+                "target - ${updateMoneyRequest.userId} / " +
+                "add fund(${updateMoneyRequest.balance})")
 
         return BasicResponse.ok("유저의 잔액이 추가되었습니다.")
     }
@@ -143,7 +151,9 @@ class AccountAdminController(
             principalDetails.account.userId!!
         )
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / target - ${updateMoneyRequest.userId} / set balance / ${updateMoneyRequest.balance}")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / " +
+                "target - ${updateMoneyRequest.userId} / set balance / ${updateMoneyRequest.balance}")
 
         return BasicResponse.ok("잔액을 설정하였습니다.")
     }
@@ -159,7 +169,9 @@ class AccountAdminController(
             principalDetails.account.clientId!!
         )
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / target - ${updatePasswordRequest.userId} / set password")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / " +
+                "target - ${updatePasswordRequest.userId} / set password")
 
         return BasicResponse.ok("비밀번호를 설정하였습니다.")
     }
@@ -173,7 +185,9 @@ class AccountAdminController(
             principalDetails.account.clientId!!, updateStatusRequest,
         )
 
-        logger.info("Update: by - ${principalDetails.account.userId!!} / target - ${updateStatusRequest.userId} / status")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Update: by - ${principalDetails.account.userId!!} / " +
+                "target - ${updateStatusRequest.userId} / status")
 
         return BasicResponse.ok("Status를 업데이트 하였습니다.")
     }
@@ -185,7 +199,8 @@ class AccountAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         queryAccountService.sendMail(sendMailRequest)
 
-        logger.info("Mail: by - ${principalDetails.account.userId!!} / target - ${sendMailRequest.email}")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "Mail: by - ${principalDetails.account.userId!!} / target - ${sendMailRequest.email}")
 
         return BasicResponse.ok("메일을 전송하였습니다.")
     }
@@ -197,7 +212,8 @@ class AccountAdminController(
     ): ResponseEntity<BasicResponse.BaseResponse> {
         val jwt = queryAccountService.viewUserLogin(userId, principalDetails.account.clientId!!)
 
-        logger.info("View: by - ${principalDetails.account.userId!!} / target - $userId")
+        logger.info("clientId:${principalDetails.account.clientId!!} " +
+                "View: by - ${principalDetails.account.userId!!} / target - $userId")
 
         return BasicResponse.ok(jwt)
     }
