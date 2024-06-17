@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class AccountPersistenceAdapter(
+class AccountPersistence(
     private val accountEntityRepository: AccountEntityRepository,
     private val accountMapper: AccountMapper,
     private val customAccountRepository: CustomAccountRepository,

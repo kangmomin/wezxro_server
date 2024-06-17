@@ -1,14 +1,12 @@
 package com.hwalaon.wezxro_server.domain.account.service
 
-import com.hwalaon.wezxro_server.domain.account.controller.request.LoginRequest
 import com.hwalaon.wezxro_server.domain.account.controller.request.SendMailRequest
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
 import com.hwalaon.wezxro_server.domain.account.controller.response.CustomRateInfoResponse
 import com.hwalaon.wezxro_server.domain.account.controller.response.StaticRateResponse
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.exception.DemoAccountCantUseException
-import com.hwalaon.wezxro_server.domain.account.model.CustomRate
-import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
+import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistence
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
@@ -17,13 +15,12 @@ import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
-import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.*
 
 
 @ReadOnlyService
 class QueryAccountService(
-    private val accountPersistenceAdapter: AccountPersistenceAdapter,
+    private val accountPersistence: AccountPersistence,
     private val jwtGenerator: JwtGenerator,
     private val javaMailSender: JavaMailSender,
     @Value("\${spring.mail.username}")
@@ -31,14 +28,14 @@ class QueryAccountService(
 ) {
 
     fun detail(userInfo: PrincipalDetails) =
-        accountPersistenceAdapter.findById(userInfo.account.userId ?: 0, userInfo.account.clientId!!)
+        accountPersistence.findById(userInfo.account.userId ?: 0, userInfo.account.clientId!!)
             ?: throw AccountNotFoundException()
 
     fun adminDetail(id: Long, clientId: UUID) =
-        accountPersistenceAdapter.findById(id, clientId) ?: throw AccountNotFoundException()
+        accountPersistence.findById(id, clientId) ?: throw AccountNotFoundException()
 
     fun list(clientId: UUID?): AccountListResponse {
-        val accountList = accountPersistenceAdapter.list(clientId!!).map {
+        val accountList = accountPersistence.list(clientId!!).map {
             AccountListResponse.AccountDto(
                 userId = it.userId!!,
                 name = it.name!!,
@@ -66,7 +63,7 @@ class QueryAccountService(
     }
 
     fun getStaticRate(clientId: UUID?, userId: Long) =
-        accountPersistenceAdapter.findById(userId, clientId!!).let {
+        accountPersistence.findById(userId, clientId!!).let {
             if (it == null) throw AccountNotFoundException()
             StaticRateResponse.fromDomain(it)
         }
@@ -81,18 +78,18 @@ class QueryAccountService(
     }
 
     fun demoLogin(key: UUID): TokenDto {
-        val account = accountPersistenceAdapter.getDemoAccount(key) ?: throw DemoAccountCantUseException()
+        val account = accountPersistence.getDemoAccount(key) ?: throw DemoAccountCantUseException()
         return jwtGenerator.generate(account.userId!!)
     }
 
     fun viewUserLogin(userId: Long, clientId: UUID): TokenDto {
-        val account = accountPersistenceAdapter.findById(userId, clientId) ?: throw AccountNotFoundException()
+        val account = accountPersistence.findById(userId, clientId) ?: throw AccountNotFoundException()
 
         return jwtGenerator.generate(account.userId!!)
     }
 
     fun customRateByUserId(clientId: UUID, userId: Long): List<CustomRateInfoResponse> {
-        val crs = accountPersistenceAdapter.getCustomRate(clientId, userId)
+        val crs = accountPersistence.getCustomRate(clientId, userId)
 
         return crs.toList()
     }

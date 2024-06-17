@@ -5,7 +5,7 @@ import com.hwalaon.wezxro_server.domain.account.exception.AccountAlreadyJoinedEx
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
 import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.model.constant.AccountRole
-import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistenceAdapter
+import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistence
 import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.hwalaon.wezxro_server.global.common.basic.exception.NotEnoughDataException
@@ -17,43 +17,42 @@ import java.util.*
 
 @CommandService
 class CommandAccountService(
-    private val accountPersistenceAdapter: AccountPersistenceAdapter,
+    private val accountPersistence: AccountPersistence,
     private val passwordEncoder: PasswordEncoder,
     private val jwtGenerator: JwtGenerator
 ) {
     fun login(loginRequest: LoginRequest, ip: String): TokenDto {
-        val account = accountPersistenceAdapter.login(loginRequest)
+        val account = accountPersistence.login(loginRequest)
 
         if (passwordEncoder.matches(loginRequest.password, account.password).not() ||
             account.userId == null)
             throw AccountNotFoundException()
 
-        accountPersistenceAdapter.loginLog(userId = account.userId!!, ip = ip)
+        accountPersistence.loginLog(userId = account.userId!!, ip = ip)
 
         return jwtGenerator.generate(account.userId!!)
     }
 
-    fun join(joinRequest: JoinRequest) =
-        joinRequest.let {
-            val account = joinRequest.toDomain()
+    fun join(joinRequest: JoinRequest) {
+        val account = joinRequest.toDomain()
 
-            if (account.email == null) throw NotEnoughDataException()
-            if (validAccount(account)) throw AccountAlreadyJoinedException()
+        if (account.email == null) throw NotEnoughDataException()
+        if (validAccount(account)) throw AccountAlreadyJoinedException()
 
-            account.money = 0.0
-            account.status = BasicStatus.ACTIVE
-            account.random = "\$a$"
-            account.role = AccountRole.USER
-            // 비밀번호 암호화 설정
-            account.password = passwordEncoder.encode(account.password)
+        account.money = 0.0
+        account.status = BasicStatus.ACTIVE
+        account.random = "\$a$"
+        account.role = AccountRole.USER
+        // 비밀번호 암호화 설정
+        account.password = passwordEncoder.encode(account.password)
 
-            accountPersistenceAdapter.join(account)
-        }
+        accountPersistence.join(account)
+    }
 
 
     fun updateAccountInfo(account: Account) {
         if (validAccountUpdate(account)) throw AccountAlreadyJoinedException()
-        accountPersistenceAdapter.updateInfo(account).onFailure {
+        accountPersistence.updateInfo(account).onFailure {
             when (it.message) {
                 "not found" -> throw AccountNotFoundException()
             }
@@ -64,63 +63,63 @@ class CommandAccountService(
      * 계정이 있을 때 true를 리턴
      */
     private fun validAccount(account: Account): Boolean =
-        accountPersistenceAdapter.isExistAccount(account.email!!, account.clientId!!)
+        accountPersistence.isExistAccount(account.email!!, account.clientId!!)
 
     private fun validAccountUpdate(account: Account): Boolean =
-        accountPersistenceAdapter.isExistAccount(
+        accountPersistence.isExistAccount(
             email = account.email!!,
             clientId = account.clientId!!,
             userId = account.userId!!)
 
     fun deleteAccount(id: Long, clientId: UUID) {
-        val account = accountPersistenceAdapter.findById(id, clientId) ?: throw AccountNotFoundException()
+        val account = accountPersistence.findById(id, clientId) ?: throw AccountNotFoundException()
         account.status = BasicStatus.DELETED
     }
 
     fun storeCustomRate(clientId: UUID, addCustomRateRequest: AddCustomRateRequest) {
-        accountPersistenceAdapter.storeCustomRate(addCustomRateRequest.userId!!, clientId, addCustomRateRequest)
+        accountPersistence.storeCustomRate(addCustomRateRequest.userId!!, clientId, addCustomRateRequest)
     }
 
     fun updateStaticRate(staticRate: Double, userId: Long, clientId: UUID) {
-        val target = accountPersistenceAdapter.findById(userId, clientId) ?: throw AccountNotFoundException()
+        val target = accountPersistence.findById(userId, clientId) ?: throw AccountNotFoundException()
         target.staticRate = staticRate
-        accountPersistenceAdapter.updateInfo(target)
+        accountPersistence.updateInfo(target)
     }
 
     fun addFund(updateMoneyRequest: UpdateMoneyRequest, clientId: UUID, workerId: Long) {
-        val password = accountPersistenceAdapter.getPassword(workerId, clientId)
+        val password = accountPersistence.getPassword(workerId, clientId)
 
         if (!passwordEncoder.matches(updateMoneyRequest.password, password)) throw AccountNotFoundException()
 
-        accountPersistenceAdapter.addMoney(
+        accountPersistence.addMoney(
             updateMoneyRequest.userId!!, updateMoneyRequest.balance!!, clientId) ?: throw AccountNotFoundException()
     }
 
     fun setMoney(updateMoneyRequest: UpdateMoneyRequest, clientId: UUID, userId: Long) {
-        val password = accountPersistenceAdapter.getPassword(userId, clientId)
+        val password = accountPersistence.getPassword(userId, clientId)
 
         if (!passwordEncoder.matches(updateMoneyRequest.password, password)) throw AccountNotFoundException()
 
-        accountPersistenceAdapter.setMoney(
+        accountPersistence.setMoney(
             updateMoneyRequest.userId!!, updateMoneyRequest.balance!!, clientId) ?: throw AccountNotFoundException()
     }
 
     fun setPassword(updatePasswordRequest: UpdatePasswordRequest, userId: Long, clientId: UUID) {
-        val adminPassword = accountPersistenceAdapter.getPassword(userId, clientId)
+        val adminPassword = accountPersistence.getPassword(userId, clientId)
 
         if (!passwordEncoder.matches(updatePasswordRequest.adminPassword, adminPassword)) throw AccountNotFoundException()
 
         val encodedPassword = passwordEncoder.encode(updatePasswordRequest.newPassword)
-        accountPersistenceAdapter
+        accountPersistence
             .setPassword(encodedPassword, updatePasswordRequest.userId, clientId) ?: throw AccountNotFoundException()
     }
 
     fun updateStatus(clientId: UUID, updateStatusRequest: UpdateStatusRequest) {
-        accountPersistenceAdapter.updateStatus(updateStatusRequest, clientId) ?: throw AccountNotFoundException()
+        accountPersistence.updateStatus(updateStatusRequest, clientId) ?: throw AccountNotFoundException()
     }
 
     fun deleteCustomRate(userId: Long, clientId: UUID) {
-        accountPersistenceAdapter.storeCustomRate(userId, clientId, AddCustomRateRequest(
+        accountPersistence.storeCustomRate(userId, clientId, AddCustomRateRequest(
             userId, ArrayList()
         )
         )
@@ -130,9 +129,9 @@ class CommandAccountService(
         val key = generateUniqueKey()
 
         // 재귀 함수를 통해 valid 한 key 값이 나올 때 까지 반복.
-        if (accountPersistenceAdapter.validKey(key) == false) return generateKey(userId)
+        if (accountPersistence.validKey(key) == false) return generateKey(userId)
 
-        accountPersistenceAdapter.updateKey(userId, key).onFailure {
+        accountPersistence.updateKey(userId, key).onFailure {
             when (it.message) {
                 "not found" -> throw AccountNotFoundException()
             }

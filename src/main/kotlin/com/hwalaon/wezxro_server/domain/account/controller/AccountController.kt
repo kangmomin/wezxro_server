@@ -8,7 +8,6 @@ import com.hwalaon.wezxro_server.domain.account.controller.response.KeyResponse
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
-import com.hwalaon.wezxro_server.global.common.basic.response.MsgResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
@@ -28,14 +27,19 @@ AccountController(
     fun login(
         @RequestBody @Valid loginRequest: LoginRequest,
         req: HttpServletRequest
-    ) =
-        BasicResponse.ok(commandAccountService.login(loginRequest, req.remoteAddr))
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val token = commandAccountService.login(loginRequest, req.remoteAddr)
+        return BasicResponse.ok(token)
+    }
 
     @PostMapping("/login/demo")
     fun demoLogin(
         @RequestBody @Valid demoLoginRequest: DemoLoginRequest
-    ) = BasicResponse.ok(
-        queryAccountService.demoLogin(demoLoginRequest.key!!))
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val tokenDto = queryAccountService.demoLogin(demoLoginRequest.key!!)
+
+        return BasicResponse.ok(tokenDto)
+    }
 
     @PostMapping("/join")
     fun join(@RequestBody @Valid joinRequest: JoinRequest): ResponseEntity<BasicResponse.BaseResponse> {
@@ -46,10 +50,13 @@ AccountController(
 
     @GetMapping("/info")
     fun accountDetails(
-        @AuthenticationPrincipal userInfo: PrincipalDetails) =
-        BasicResponse.ok(
-            AccountDetailResponse.fromDomain(
-                queryAccountService.detail(userInfo)))
+        @AuthenticationPrincipal userInfo: PrincipalDetails
+    ): ResponseEntity<BasicResponse.BaseResponse> {
+        val accountDetail = queryAccountService.detail(userInfo)
+        val response = AccountDetailResponse.fromDomain(accountDetail)
+
+        return BasicResponse.ok(response)
+    }
 
     @PostMapping("/key")
     fun generateKey(
