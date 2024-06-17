@@ -47,9 +47,15 @@ class CategoryPersistence(
         categoryServicePort.deleteByCategoryId(id, category.clientId!!)
     }
 
+    /** validation for create */
     fun validCategory(category: Category, clientId: UUID) =
         categoryRepository.existsByNameAndSortAndClientIdAndStatusNot(
             category.name!!, category.sort!!, clientId)
+
+    /** validation for update */
+    fun validCategory(category: Category, clientId: UUID, categoryId: Long) =
+        categoryRepository.existsByNameAndSortAndClientIdAndIdNotAndStatusNot(
+            category.name!!, category.sort!!, clientId, categoryId)
 
     fun detail(categoryId: Long, clientId: UUID?): Category? =
         categoryRepository.findByIdAndClientIdAndStatus(categoryId, clientId).let {

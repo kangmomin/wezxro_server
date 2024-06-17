@@ -7,11 +7,13 @@ import com.hwalaon.wezxro_server.domain.category.persistence.CategoryPersistence
 import com.hwalaon.wezxro_server.domain.category.persistence.port.CategoryServicePort
 import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import org.springframework.beans.factory.annotation.Qualifier
 import java.util.*
 
 @CommandService
 class CommandCategoryService(
     private val categoryPersistence: CategoryPersistence,
+    @Qualifier("categoryServicePort")
     private val servicePort: CategoryServicePort
 ) {
 
@@ -22,8 +24,12 @@ class CommandCategoryService(
             categoryPersistence.save(category)
         }
 
-    fun updateCategory(categoryId: Long, category: Category) =
+    fun updateCategory(categoryId: Long, category: Category) {
+        val validCategory = categoryPersistence.validCategory(category, category.clientId!!, categoryId)
+        if (validCategory) throw CategoryConflictException()
+
         categoryPersistence.update(categoryId, category)
+    }
 
     fun delete(categoryId: Long) = categoryPersistence.delete(categoryId)
     fun toggleStatus(categoryId: Long, clientId: UUID): BasicStatus {
