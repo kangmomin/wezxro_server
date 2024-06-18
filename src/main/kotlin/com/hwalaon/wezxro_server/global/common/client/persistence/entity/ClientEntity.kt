@@ -19,4 +19,10 @@ class ClientEntity (
         updatable = true,
         nullable = false)
     var domain: String?,
+
+    @Column(nullable = false,)
+    var email: String?,
+
+    @Column(nullable = false,)
+    var emailPassword: String?
 )

@@ -45,6 +45,7 @@ enum class ErrorCode(
 
     // MC - Master Client(Master 단의 C이기에)
     CLIENT_CONFLICT_ERROR("이미 존재하는 클라이언트입니다.", HttpStatus.CONFLICT, "MC209"),
+    CLIENT_NOT_FOUND("존재하지 않는 클라이언트입니다.", HttpStatus.OK, "MC204"),
 
     // TK - ToKen
     TOKEN_NOT_VALID_ERROR("토큰 값이 정상적이지 않습니다.", HttpStatus.BAD_REQUEST, "TK400"),

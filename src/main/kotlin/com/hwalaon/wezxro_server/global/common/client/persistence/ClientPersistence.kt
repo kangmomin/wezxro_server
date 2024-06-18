@@ -14,8 +14,8 @@ class ClientPersistence(
     /**
      * 등록 가능한 domain이면 true return
      */
-    fun validClient(domain: String) =
-        !clientRepository.existsByDomain(domain)
+    fun validClient(domain: String, email: String) =
+        !clientRepository.existsByDomainAndEmail(domain, email)
 
     fun save(client: Client) =
         clientRepository.save(mapper.toEntity(client)).id!!

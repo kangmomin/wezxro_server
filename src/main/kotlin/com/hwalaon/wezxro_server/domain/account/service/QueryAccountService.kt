@@ -9,22 +9,28 @@ import com.hwalaon.wezxro_server.domain.account.exception.DemoAccountCantUseExce
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistence
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
+import com.hwalaon.wezxro_server.global.common.client.exception.ClientNotFoundException
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.JavaMailSenderImpl
 import java.util.*
+import javax.crypto.Cipher
+import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
 
 
 @ReadOnlyService
 class QueryAccountService(
     private val accountPersistence: AccountPersistence,
     private val jwtGenerator: JwtGenerator,
-    private val javaMailSender: JavaMailSender,
     @Value("\${spring.mail.username}")
     private val senderEmail: String,
+    @Value("\${secret-key}")
+    private val secretKey: String
 ) {
 
     fun detail(userInfo: PrincipalDetails) =
@@ -68,13 +74,47 @@ class QueryAccountService(
             StaticRateResponse.fromDomain(it)
         }
 
-    fun sendMail(sendMailRequest: SendMailRequest) {
-        val mailSender = SimpleMailMessage()
-        mailSender.setTo(sendMailRequest.email!!)
-        mailSender.subject = sendMailRequest.subject!!
-        mailSender.text = sendMailRequest.description!!
-        mailSender.from = senderEmail
-        javaMailSender.send(mailSender)
+    fun sendMail(sendMailRequest: SendMailRequest, clientId: UUID) {
+        val clientEmailInfo = accountPersistence.getEmailInfo(clientId)
+            ?: throw ClientNotFoundException()
+
+        val mailer = getJavaMailSender(
+            clientEmailInfo.email,
+            decrypt(clientEmailInfo.password))
+
+        val simpleMailMessage = SimpleMailMessage()
+
+        simpleMailMessage.setTo(sendMailRequest.email!!)
+        simpleMailMessage.subject = sendMailRequest.subject!!
+        simpleMailMessage.text = sendMailRequest.description!!
+        simpleMailMessage.from = senderEmail
+
+        mailer.send(simpleMailMessage)
+    }
+    private fun decrypt(value: String): String {
+        val key: SecretKey = SecretKeySpec(secretKey.toByteArray(), "AES")
+        val cipher = Cipher.getInstance("AES")
+        cipher.init(Cipher.DECRYPT_MODE, key)
+        val decodedValue = Base64.getDecoder().decode(value)
+        val decryptedValue = cipher.doFinal(decodedValue)
+        return String(decryptedValue)
+    }
+
+    private fun getJavaMailSender(email: String, password: String): JavaMailSender {
+        val mailSender = JavaMailSenderImpl()
+        mailSender.host = "smpt.${email.split("@")[1]}"
+        mailSender.port = 587
+
+        mailSender.username = email
+        mailSender.password = password
+
+        val props = mailSender.javaMailProperties
+        props["mail.transport.protocol"] = "smtp"
+        props["mail.smtp.auth"] = "true"
+        props["mail.smtp.starttls.enable"] = "true"
+        props["mail.debug"] = "true"
+
+        return mailSender
     }
 
     fun demoLogin(key: UUID): TokenDto {

@@ -12,6 +12,7 @@ import com.hwalaon.wezxro_server.domain.account.persistence.repository.AccountEn
 import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.CustomAccountRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.customRepository.CustomCustomRepository
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.IpEntity
+import com.hwalaon.wezxro_server.domain.account.persistence.port.AccountClientPort
 import com.hwalaon.wezxro_server.domain.account.persistence.port.AccountServicePort
 import com.hwalaon.wezxro_server.domain.account.persistence.port.dto.ServiceRateInfoDto
 import com.hwalaon.wezxro_server.domain.account.persistence.repository.IpRepository
@@ -28,7 +29,8 @@ class AccountPersistence(
     private val customCustomRepository: CustomCustomRepository,
     private val customRateMapper: CustomRateMapper,
     private val accountServicePort: AccountServicePort,
-    private val ipRepository: IpRepository
+    private val ipRepository: IpRepository,
+    private val clientPort: AccountClientPort,
 ) {
     fun login(loginRequest: LoginRequest) =
         accountEntityRepository.findOneByEmailAndClientIdAndStatusNot(
@@ -194,4 +196,6 @@ class AccountPersistence(
     fun validKey(key: String): Boolean? {
         return accountEntityRepository.findByKey(key) == null
     }
+
+    fun getEmailInfo(clientId: UUID) = clientPort.getClientEmailInfo(clientId)
 }

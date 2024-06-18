@@ -2,8 +2,6 @@ spring:
   mail:
     host: smtp.hostinger.com
     port: 587
-    username: ${EMAIL:"wezxro@hwalaon.com"}
-    password: ${EMAIL_PASSWORD:"!Wezxro538"}
     properties:
       mail:
         smtp:
@@ -46,4 +44,5 @@ jwt:
   refreshSecret: 'Y2Y3MTQ1N2EtMWQwYy00MTlhLWE2ODgtZDljMThmNDgyNzQ4ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5ODZiYzdmYzUtOWJkOC00MWZkLWI2MjktZWJmZTFmODg5YWE5'
   refreshExp: 7200
 
-rtpKey: ${ RTP_KEY:"" }
+rtpKey: ${RTP_KEY}
+secret-key: ${SECRET_KEY}

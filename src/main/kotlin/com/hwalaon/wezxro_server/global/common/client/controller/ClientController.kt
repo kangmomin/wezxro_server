@@ -18,7 +18,7 @@ class ClientController(
 
     @PostMapping("/add")
     fun addClient(@RequestBody @Valid addClientRequest: AddClientRequest) =
-        clientService.addClient(addClientRequest.domain).let {
+        clientService.addClient(addClientRequest).let {
             BasicResponse.created(
                 AddClientResponse(it!!))
         }

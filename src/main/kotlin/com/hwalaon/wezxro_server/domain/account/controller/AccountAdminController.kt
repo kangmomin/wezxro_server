@@ -197,7 +197,7 @@ class AccountAdminController(
         @AuthenticationPrincipal principalDetails: PrincipalDetails,
         @RequestBody @Valid sendMailRequest: SendMailRequest
     ): ResponseEntity<BasicResponse.BaseResponse> {
-        queryAccountService.sendMail(sendMailRequest)
+        queryAccountService.sendMail(sendMailRequest, principalDetails.account.clientId!!)
 
         logger.info("clientId:${principalDetails.account.clientId!!} " +
                 "Mail: by - ${principalDetails.account.userId!!} / target - ${sendMailRequest.email}")

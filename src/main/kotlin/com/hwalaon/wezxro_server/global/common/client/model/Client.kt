@@ -5,8 +5,12 @@ import java.util.*
 data class Client (
     var id: UUID?,
     var domain: String?,
+    var email: String?,
+    var password: String?,
 ) {
     constructor(
-        domain: String?
-    ) : this(id = null, domain = domain)
+        domain: String?,
+        email: String?,
+        password: String?
+    ) : this(id = null, domain = domain, email = email, password = password)
 }
