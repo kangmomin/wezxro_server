@@ -7,14 +7,12 @@ import com.hwalaon.wezxro_server.domain.category.persistence.CategoryPersistence
 import com.hwalaon.wezxro_server.domain.category.persistence.port.CategoryServicePort
 import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
-import org.springframework.beans.factory.annotation.Qualifier
 import java.util.*
 
 @CommandService
 class CommandCategoryService(
     private val categoryPersistence: CategoryPersistence,
-    @Qualifier("categoryServicePort")
-    private val servicePort: CategoryServicePort
+    private val categoryServicePort: CategoryServicePort
 ) {
 
     fun addCategory(category: Category, clientId: UUID) =
@@ -38,7 +36,7 @@ class CommandCategoryService(
         category.status = if (category.status === BasicStatus.ACTIVE) BasicStatus.DEACTIVE else BasicStatus.ACTIVE
 
         categoryPersistence.update(categoryId, category)
-        servicePort.updateStatusByCategoryId(categoryId, clientId, category.status!!)
+        categoryServicePort.updateStatusByCategoryId(categoryId, clientId, category.status!!)
 
         return category.status!!
     }
