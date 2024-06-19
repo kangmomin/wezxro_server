@@ -20,7 +20,7 @@ class ClientService(
 ) {
 
     fun addClient(request: AddClientRequest): UUID? {
-        if (!clientPersistence.validClient(request.domain!!, request.email!!))
+        if (clientPersistence.validClient(request.domain!!, request.email!!))
             throw ClientConflictException()
 
         val encryptedPassword = encrypt(request.password!!)
