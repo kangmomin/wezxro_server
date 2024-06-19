@@ -23,6 +23,9 @@ class ClientEntity (
     @Column(nullable = false,)
     var email: String?,
 
+    @Column(nullable = false)
+    var host: String?,
+
     @Column(nullable = false,)
     var emailPassword: String?
 )

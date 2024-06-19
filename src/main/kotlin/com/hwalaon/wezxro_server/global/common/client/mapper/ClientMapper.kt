@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component
 @Component
 class ClientMapper: BasicMapper<Client, ClientEntity> {
     override fun toDomain(entity: ClientEntity) =
-        Client(entity.id, entity.domain, entity.email, entity.emailPassword)
+        Client(entity.id, entity.domain, entity.email, entity.emailPassword, entity.host)
 
     override fun toEntity(domain: Client) =
-        ClientEntity(domain.id, domain.domain, domain.email, domain.password)
+        ClientEntity(domain.id, domain.domain, domain.email, domain.host, domain.password)
 }

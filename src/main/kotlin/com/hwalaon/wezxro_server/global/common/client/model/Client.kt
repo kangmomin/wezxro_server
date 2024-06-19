@@ -7,10 +7,18 @@ data class Client (
     var domain: String?,
     var email: String?,
     var password: String?,
+    var host: String?,
 ) {
     constructor(
         domain: String?,
         email: String?,
-        password: String?
-    ) : this(id = null, domain = domain, email = email, password = password)
+        password: String?,
+        host: String?
+    ) : this(
+        id = null,
+        domain = domain,
+        email = email,
+        password = password,
+        host = host
+    )
 }

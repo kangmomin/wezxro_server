@@ -5,6 +5,7 @@ import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListR
 import com.hwalaon.wezxro_server.domain.account.controller.response.CustomRateInfoResponse
 import com.hwalaon.wezxro_server.domain.account.controller.response.StaticRateResponse
 import com.hwalaon.wezxro_server.domain.account.exception.AccountNotFoundException
+import com.hwalaon.wezxro_server.domain.account.exception.CantSendMailException
 import com.hwalaon.wezxro_server.domain.account.exception.DemoAccountCantUseException
 import com.hwalaon.wezxro_server.domain.account.persistence.AccountPersistence
 import com.hwalaon.wezxro_server.global.annotation.ReadOnlyService
@@ -14,6 +15,7 @@ import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.mail.MailAuthenticationException
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
@@ -27,8 +29,6 @@ import javax.crypto.spec.SecretKeySpec
 class QueryAccountService(
     private val accountPersistence: AccountPersistence,
     private val jwtGenerator: JwtGenerator,
-    @Value("\${spring.mail.username}")
-    private val senderEmail: String,
     @Value("\${secret-key}")
     private val secretKey: String
 ) {
@@ -80,16 +80,21 @@ class QueryAccountService(
 
         val mailer = getJavaMailSender(
             clientEmailInfo.email,
-            decrypt(clientEmailInfo.password))
+            decrypt(clientEmailInfo.password),
+            clientEmailInfo.host)
 
         val simpleMailMessage = SimpleMailMessage()
 
         simpleMailMessage.setTo(sendMailRequest.email!!)
         simpleMailMessage.subject = sendMailRequest.subject!!
         simpleMailMessage.text = sendMailRequest.description!!
-        simpleMailMessage.from = senderEmail
+        simpleMailMessage.from = sendMailRequest.email
 
-        mailer.send(simpleMailMessage)
+        try {
+            mailer.send(simpleMailMessage)
+        } catch (e: MailAuthenticationException) {
+            throw CantSendMailException()
+        }
     }
     private fun decrypt(value: String): String {
         val key: SecretKey = SecretKeySpec(secretKey.toByteArray(), "AES")
@@ -100,9 +105,9 @@ class QueryAccountService(
         return String(decryptedValue)
     }
 
-    private fun getJavaMailSender(email: String, password: String): JavaMailSender {
+    private fun getJavaMailSender(email: String, password: String, host: String): JavaMailSender {
         val mailSender = JavaMailSenderImpl()
-        mailSender.host = "smpt.${email.split("@")[1]}"
+        mailSender.host = host
         mailSender.port = 587
 
         mailSender.username = email
@@ -112,7 +117,7 @@ class QueryAccountService(
         props["mail.transport.protocol"] = "smtp"
         props["mail.smtp.auth"] = "true"
         props["mail.smtp.starttls.enable"] = "true"
-        props["mail.debug"] = "true"
+        props["mail.debug"] = "false"
 
         return mailSender
     }

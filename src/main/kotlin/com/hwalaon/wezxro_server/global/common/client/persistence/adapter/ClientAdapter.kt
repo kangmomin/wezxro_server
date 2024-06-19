@@ -17,7 +17,7 @@ class ClientAdapter(
         return ClientEmailInfo(
             client.email!!,
             client.emailPassword!!,
-            client.email!!.split("@")[1]
+            client.host!!
         )
     }
 }
