@@ -14,6 +14,7 @@ import com.hwalaon.wezxro_server.global.common.client.exception.ClientNotFoundEx
 import com.hwalaon.wezxro_server.global.security.jwt.JwtGenerator
 import com.hwalaon.wezxro_server.global.security.jwt.dto.TokenDto
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
+import jakarta.mail.internet.InternetAddress
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.MailAuthenticationException
 import org.springframework.mail.SimpleMailMessage
@@ -88,7 +89,7 @@ class QueryAccountService(
         simpleMailMessage.setTo(sendMailRequest.email!!)
         simpleMailMessage.subject = sendMailRequest.subject!!
         simpleMailMessage.text = sendMailRequest.description!!
-        simpleMailMessage.from = sendMailRequest.email
+        simpleMailMessage.from = InternetAddress("wezxro@hwalaon.com").toString()
 
         try {
             mailer.send(simpleMailMessage)
