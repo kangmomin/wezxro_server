@@ -198,4 +198,5 @@ class AccountPersistence(
     }
 
     fun getEmailInfo(clientId: UUID) = clientPort.getClientEmailInfo(clientId)
+    fun exportList(clientId: UUID) = customAccountRepository.exportList(clientId)
 }

@@ -69,6 +69,9 @@ class QueryAccountService(
         )
     }
 
+    fun exportList(clientId: UUID) =
+        accountPersistence.exportList(clientId)
+
     fun getStaticRate(clientId: UUID?, userId: Long) =
         accountPersistence.findById(userId, clientId!!).let {
             if (it == null) throw AccountNotFoundException()
