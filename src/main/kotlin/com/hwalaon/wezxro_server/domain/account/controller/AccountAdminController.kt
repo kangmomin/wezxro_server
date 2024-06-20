@@ -252,7 +252,7 @@ class AccountAdminController(
 
         // Set response headers
         response.contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        response.setHeader("Content-Disposition", "attachment; filename=유저_정보.xlsx")
+        response.setHeader("Content-Disposition", "attachment; filename=userList.xlsx")
 
         // Write workbook to output stream
         workbook.write(response.outputStream)
