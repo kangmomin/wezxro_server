@@ -55,7 +55,9 @@ class CategoryAdminController(
         @PathVariable("id") categoryId: Long,
         @AuthenticationPrincipal principalDetails: PrincipalDetails
     ): ResponseEntity<BasicResponse.BaseResponse> {
-        commandCategoryService.updateCategory(categoryId, categoryRequest.toDomain())
+        val category = categoryRequest.toDomain()
+        category.clientId = principalDetails.account.clientId
+        commandCategoryService.updateCategory(categoryId, category)
 
         logger.info("clientId:${principalDetails.account.clientId!!} " +
                 "Delete: by - ${principalDetails.account.userId!!} / $categoryId")
