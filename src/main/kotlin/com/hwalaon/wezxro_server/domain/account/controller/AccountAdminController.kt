@@ -2,15 +2,22 @@ package com.hwalaon.wezxro_server.domain.account.controller
 
 import com.hwalaon.wezxro_server.domain.account.controller.request.*
 import com.hwalaon.wezxro_server.domain.account.controller.response.AccountDetailResponse
+import com.hwalaon.wezxro_server.domain.account.controller.response.AccountExportResponse
+import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse
+import com.hwalaon.wezxro_server.domain.account.controller.response.AccountListResponse.AccountDto
+import com.hwalaon.wezxro_server.domain.account.model.Account
 import com.hwalaon.wezxro_server.domain.account.service.CommandAccountService
 import com.hwalaon.wezxro_server.domain.account.service.QueryAccountService
 import com.hwalaon.wezxro_server.global.common.basic.response.BasicResponse
 import com.hwalaon.wezxro_server.global.security.principal.PrincipalDetails
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+import kotlin.reflect.full.memberProperties
 
 @RestController
 @RequestMapping("/admin/u")
@@ -216,5 +223,39 @@ class AccountAdminController(
                 "View: by - ${principalDetails.account.userId!!} / target - $userId")
 
         return BasicResponse.ok(jwt)
+    }
+
+    @GetMapping("/export")
+    fun exportToExcel(
+        @AuthenticationPrincipal principalDetails: PrincipalDetails,
+        response: HttpServletResponse
+    ) {
+        val list = queryAccountService.exportList(principalDetails.account.clientId!!)
+
+        val workbook = XSSFWorkbook()
+        val sheet = workbook.createSheet("Users")
+
+        // Header row
+        val headerRow = sheet.createRow(0)
+
+        AccountExportResponse::class.memberProperties.forEachIndexed { idx, it ->
+            headerRow.createCell(idx).setCellValue(it.name)
+        }
+
+        // Data rows
+        list.forEachIndexed { index, user ->
+            val row = sheet.createRow(index + 1)
+            AccountExportResponse::class.memberProperties.mapIndexed {idx, it ->
+                row.createCell(idx).setCellValue(it.get(user).toString())
+            }
+        }
+
+        // Set response headers
+        response.contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        response.setHeader("Content-Disposition", "attachment; filename=userList.xlsx")
+
+        // Write workbook to output stream
+        workbook.write(response.outputStream)
+        workbook.close()
     }
 }

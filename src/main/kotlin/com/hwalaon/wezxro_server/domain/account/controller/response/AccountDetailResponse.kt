@@ -1,6 +1,7 @@
 package com.hwalaon.wezxro_server.domain.account.controller.response
 
 import com.hwalaon.wezxro_server.domain.account.model.Account
+import com.hwalaon.wezxro_server.domain.account.model.constant.AccountRole
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 
 data class AccountDetailResponse(
@@ -9,6 +10,7 @@ data class AccountDetailResponse(
     val email: String,
     val money: Double,
     val status: BasicStatus,
+    val isDemo: Boolean,
     val staticRate: Double,
 ) {
     companion object {
@@ -19,7 +21,8 @@ data class AccountDetailResponse(
                 domain.email!!,
                 domain.money!!,
                 domain.status!!,
-                domain.staticRate!!
+                domain.role!! == AccountRole.DEMO,
+                domain.staticRate!!,
             )
     }
 }

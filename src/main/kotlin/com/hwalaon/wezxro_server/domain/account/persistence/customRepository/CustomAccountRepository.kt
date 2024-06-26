@@ -1,5 +1,6 @@
 package com.hwalaon.wezxro_server.domain.account.persistence.customRepository
 
+import com.hwalaon.wezxro_server.domain.account.controller.response.QAccountExportResponse
 import com.hwalaon.wezxro_server.domain.account.persistence.entity.QAccountEntity.accountEntity
 import com.hwalaon.wezxro_server.global.common.basic.constant.BasicStatus
 import com.querydsl.jpa.impl.JPAQueryFactory
@@ -66,4 +67,25 @@ class CustomAccountRepository(
                 accountEntity.key.eq(key)
             )
             .fetchOne()
+
+    fun exportList(clientId: UUID) =
+        query.select(
+            QAccountExportResponse(
+                accountEntity.userId,
+                accountEntity.name,
+                accountEntity.email,
+                accountEntity.money,
+                accountEntity.status,
+                accountEntity.staticRate,
+                accountEntity.role,
+                accountEntity.key,
+                accountEntity.updatedAt,
+                accountEntity.createdAt,
+            )
+        )
+            .from(accountEntity)
+            .where(accountEntity.clientId.eq(clientId))
+            .orderBy(accountEntity.userId.desc())
+            .fetch()
+
 }

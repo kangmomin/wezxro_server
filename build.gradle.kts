@@ -49,6 +49,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
+	// excel 변환용
+	implementation("org.apache.poi:poi:5.2.3")
+	implementation("org.apache.poi:poi-ooxml:5.2.3")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 
