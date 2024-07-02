@@ -2,11 +2,12 @@ package com.hwalaon.wezxro_server.global.common.client.service
 
 import com.hwalaon.wezxro_server.global.annotation.CommandService
 import com.hwalaon.wezxro_server.global.common.client.controller.request.AddClientRequest
+import com.hwalaon.wezxro_server.global.common.client.controller.request.UpdateEmailRequest
 import com.hwalaon.wezxro_server.global.common.client.exception.ClientConflictException
+import com.hwalaon.wezxro_server.global.common.client.exception.ClientNotFoundException
 import com.hwalaon.wezxro_server.global.common.client.model.Client
 import com.hwalaon.wezxro_server.global.common.client.persistence.ClientPersistence
 import org.springframework.beans.factory.annotation.Value
-import java.security.SecureRandom
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -35,5 +36,18 @@ class ClientService(
         cipher.init(Cipher.ENCRYPT_MODE, key)
         val encryptedValue = cipher.doFinal(value.toByteArray())
         return Base64.getEncoder().encodeToString(encryptedValue)
+    }
+
+    fun updateEmailInfo(updateEmailRequest: UpdateEmailRequest) {
+        val encrypted = encrypt(updateEmailRequest.password!!)
+
+        val updateClient = clientPersistence.updateClient(
+            updateEmailRequest.clientId!!,
+            updateEmailRequest.email!!,
+            encrypted,
+            updateEmailRequest.smtpHost!!
+        )
+
+        if (updateClient.isFailure) throw ClientNotFoundException()
     }
 }
