@@ -2,10 +2,11 @@ package com.hwalaon.wezxro_server.global.common.client.controller.request
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
 import java.util.UUID
 
 class UpdateEmailRequest (
-    @field: NotEmpty(message = "클라이언트 아이디가 없습니다.")
+    @field: NotNull(message = "클라이언트 아이디가 없습니다.")
     val clientId: UUID?,
 
     @field: NotEmpty(message = "이메일이 없습니다.")
